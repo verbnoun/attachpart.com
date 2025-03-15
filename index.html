@@ -1,506 +1,358 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <style>
-    body {
-      background-color: #1e1e1e;
-      color: #00ff00;
-      font-family: monospace;
-      padding: 20px;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attach Part</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: rgb(15, 15, 15);
+            --yellow: rgb(255, 252, 204);
+            --cyan: rgb(78, 211, 255);
+            --green: rgb(78, 201, 47);
+            --magenta: rgb(255, 20, 149);
+            
+            /* Type scale variables */
+            --base-font-size: 16px;
+            --scale-ratio: 1.25;
+            --line-height: 1.5;
+            
+            /* Calculate type scale */
+            --text-xs: calc(var(--base-font-size) / var(--scale-ratio));
+            --text-sm: var(--base-font-size);
+            --text-md: calc(var(--base-font-size) * var(--scale-ratio));
+            --text-lg: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio));
+            --text-xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
+            --text-2xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
+            --text-3xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
+        }
 
-    .terminal {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #000000;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    h1 {
-      display: none;
-    }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--black);
+            background-color: var(--yellow);
+            line-height: var(--line-height);
+        }
 
-    .ascii-art {
-      white-space: pre;
-      font-size: 14px;
-      line-height: 1.2;
-      margin-bottom: 20px;
-      opacity: 0;
-    }
+        /* Header */
+        header {
+            background-color: var(--black);
+            padding: 2rem;
+            text-align: center;
+        }
 
-    .terminal p {
-      margin: 0;
-      padding: 0;
-      min-height: 1.2em;
-      opacity: 0;
-    }
+        .logo {
+            font-family: 'Lexend', sans-serif;
+            font-weight: 300;
+            color: var(--yellow);
+            font-size: var(--text-3xl);
+            letter-spacing: 0.05em;
+        }
 
-    .cursor {
-      display: inline-block;
-      width: 8px;
-      height: 1em;
-      background-color: #00ff00;
-      animation: blink 1s infinite;
-      margin-left: 2px;
-    }
+        /* Stripes */
+        .stripes {
+            display: flex;
+            flex-direction: column;
+        }
 
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
+        .stripe {
+            height: 30px;
+            width: 100%;
+        }
 
-    @media (max-width: 600px) {
-      .terminal {
-        padding: 10px;
-        margin: 10px;
-      }
-      .ascii-art {
-        font-size: 8px;
-        overflow-x: auto;
-      }
-    }
-  </style>
+        .cyan {
+            background-color: var(--cyan);
+        }
+
+        .green {
+            background-color: var(--green);
+        }
+
+        .magenta {
+            background-color: var(--magenta);
+        }
+
+        /* Content Area */
+        main {
+            background-color: var(--yellow);
+            color: var(--black);
+            padding: 2rem;
+        }
+
+        /* Type Specimen */
+        .type-specimen {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .type-specimen h2 {
+            font-size: var(--text-2xl);
+            margin-bottom: 1.5rem;
+        }
+
+        .type-specimen h3 {
+            font-size: var(--text-xl);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .type-specimen p {
+            font-size: var(--text-sm);
+            margin-bottom: 1rem;
+        }
+
+        .font-example {
+            margin-bottom: 2rem;
+        }
+
+        .font-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .size-example {
+            margin-bottom: 1.5rem;
+        }
+
+        .weight-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .weight-example {
+            padding: 1rem;
+            border: 1px solid rgba(15, 15, 15, 0.2);
+            border-radius: 4px;
+        }
+
+        /* Typography Classes */
+        .text-xs {
+            font-size: var(--text-xs);
+        }
+
+        .text-sm {
+            font-size: var(--text-sm);
+        }
+
+        .text-md {
+            font-size: var(--text-md);
+        }
+
+        .text-lg {
+            font-size: var(--text-lg);
+        }
+
+        .text-xl {
+            font-size: var(--text-xl);
+        }
+
+        .text-2xl {
+            font-size: var(--text-2xl);
+        }
+
+        .text-3xl {
+            font-size: var(--text-3xl);
+        }
+
+        .font-light {
+            font-weight: 300;
+        }
+
+        .font-regular {
+            font-weight: 400;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        /* Type scale controls */
+        .type-controls {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background-color: rgba(15, 15, 15, 0.05);
+            border-radius: 8px;
+        }
+
+        .type-controls h3 {
+            margin-bottom: 1rem;
+        }
+
+        .control-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-value {
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .weight-examples {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="terminal">
-    <h1>ATTACH PART</h1>
-    <pre class="ascii-art"></pre>
-    <p>System initialized...</p>
-    <p>Running diagnostics...</p>
-    <p>All systems operational.</p>
-    <p>Ready for input.</p>
-    <span class="cursor"></span>
-  </div>
-
-  <script>
-   const asciiCharacters = {
-  'A': [
-    "   ██    ",
-    "  ████   ",
-    " ██  ██  ",
-    "██    ██ ",
-    "████████ ",
-    "██    ██ ",
-    "██    ██░"
-  ],
-  'B': [
-    "██████   ",
-    "██   ██  ",
-    "██████   ",
-    "██   ██  ",
-    "██   ██  ",
-    "██████   ",
-    "░░░░░░   "
-  ],
-  'C': [
-    " ██████  ",
-    "██    ██ ",
-    "██       ",
-    "██       ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  'D': [
-    "██████   ",
-    "██   ██  ",
-    "██    ██ ",
-    "██    ██ ",
-    "██   ██  ",
-    "██████   ",
-    "░░░░░░   "
-  ],
-  'E': [
-    "███████  ",
-    "██       ",
-    "█████    ",
-    "██       ",
-    "██       ",
-    "███████  ",
-    "░░░░░░░  "
-  ],
-  'F': [
-    "███████  ",
-    "██       ",
-    "█████    ",
-    "██       ",
-    "██       ",
-    "██       ",
-    "░░       "
-  ],
-  'G': [
-    " ██████  ",
-    "██    ██ ",
-    "██       ",
-    "██   ███ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  'H': [
-    "██    ██ ",
-    "██    ██ ",
-    "████████ ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    "░░    ░░ "
-  ],
-  'I': [
-    "████ ",
-    " ██  ",
-    " ██  ",
-    " ██  ",
-    " ██  ",
-    "████ ",
-    "░░░░ "
-  ],
-  'J': [
-    "     ██ ",
-    "     ██ ",
-    "     ██ ",
-    "██   ██ ",
-    "██   ██ ",
-    " █████  ",
-    "  ░░░   "
-  ],
-  'K': [
-    "██   ██  ",
-    "██  ██   ",
-    "█████    ",
-    "██  ██   ",
-    "██   ██  ",
-    "██    ██ ",
-    "░░    ░░ "
-  ],
-  'L': [
-    "██       ",
-    "██       ",
-    "██       ",
-    "██       ",
-    "██       ",
-    "███████  ",
-    "░░░░░░░  "
-  ],
-  'M': [
-    "██    ██ ",
-    "███  ███ ",
-    "████████ ",
-    "██ ██ ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    "░░    ░░ "
-  ],
-  'N': [
-    "██    ██ ",
-    "███   ██ ",
-    "████  ██ ",
-    "██ ██ ██ ",
-    "██  ████ ",
-    "██   ███ ",
-    "░░    ░░ "
-  ],
-  'O': [
-    " ██████  ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  'P': [
-    "██████   ",
-    "██   ██  ",
-    "██████   ",
-    "██       ",
-    "██       ",
-    "██       ",
-    "░░       "
-  ],
-  'Q': [
-    " ██████  ",
-    "██    ██ ",
-    "██    ██ ",
-    "██ ██ ██ ",
-    "██  ████ ",
-    " ████ ██ ",
-    "  ░░░░░░ "
-  ],
-  'R': [
-    "██████   ",
-    "██   ██  ",
-    "██████   ",
-    "██   ██  ",
-    "██   ██  ",
-    "██    ██ ",
-    "░░    ░░ "
-  ],
-  'S': [
-    " ██████  ",
-    "██       ",
-    " █████   ",
-    "     ██  ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  'T': [
-    "████████ ",
-    "   ██    ",
-    "   ██    ",
-    "   ██    ",
-    "   ██    ",
-    "   ██    ",
-    "   ░░    "
-  ],
-  'U': [
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  'V': [
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    " ██  ██  ",
-    "  ████   ",
-    "   ░░    "
-  ],
-  'W': [
-    "██     ██",
-    "██     ██",
-    "██  █  ██",
-    "██ ███ ██",
-    " ███ ███ ",
-    "  █   █  ",
-    "  ░   ░  "
-  ],
-  'X': [
-    "██    ██ ",
-    " ██  ██  ",
-    "  ████   ",
-    "  ████   ",
-    " ██  ██  ",
-    "██    ██ ",
-    "░░    ░░ "
-  ],
-  'Y': [
-    "██    ██ ",
-    " ██  ██  ",
-    "  ████   ",
-    "   ██    ",
-    "   ██    ",
-    "   ██    ",
-    "   ░░    "
-  ],
-  'Z': [
-    "███████ ",
-    "    ██  ",
-    "   ██   ",
-    "  ██    ",
-    " ██     ",
-    "███████ ",
-    "░░░░░░░ "
-  ],
-  ' ': [
-    "    ",
-    "    ",
-    "    ",
-    "    ",
-    "    ",
-    "    ",
-    "    "
-  ],
-  '.': [
-    "    ",
-    "    ",
-    "    ",
-    "    ",
-    "██  ",
-    "░░  ",
-    "    "
-  ],
-  '!': [
-    "██ ",
-    "██ ",
-    "██ ",
-    "██ ",
-    "   ",
-    "██ ",
-    "░░ "
-  ],
-  '?': [
-    " ████  ",
-    "██  ██ ",
-    "   ██  ",
-    "  ██   ",
-    "       ",
-    "  ██   ",
-    "  ░░   "
-  ],
-  '0': [
-    " ██████  ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  '1': [
-    "  ██   ",
-    " ███   ",
-    "  ██   ",
-    "  ██   ",
-    "  ██   ",
-    "██████ ",
-    "░░░░░░ "
-  ],
-  '2': [
-    " ██████  ",
-    "      ██ ",
-    " ██████  ",
-    "██       ",
-    "██       ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  '3': [
-    " ██████  ",
-    "      ██ ",
-    " ██████  ",
-    "      ██ ",
-    "      ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  '4': [
-    "██    ██ ",
-    "██    ██ ",
-    "████████ ",
-    "      ██ ",
-    "      ██ ",
-    "      ██ ",
-    "      ░░ "
-  ],
-  '5': [
-    "████████ ",
-    "██       ",
-    "███████  ",
-    "      ██ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  '6': [
-    " ██████  ",
-    "██       ",
-    "███████  ",
-    "██    ██ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  '7': [
-    "████████ ",
-    "     ██  ",
-    "    ██   ",
-    "   ██    ",
-    "  ██     ",
-    "  ██     ",
-    "  ░░     "
-  ],
-  '8': [
-    " ██████  ",
-    "██    ██ ",
-    " ██████  ",
-    "██    ██ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ],
-  '9': [
-    " ██████  ",
-    "██    ██ ",
-    " ███████ ",
-    "      ██ ",
-    "██    ██ ",
-    " ██████  ",
-    "  ░░░░   "
-  ]
-};
-
-    function generateAsciiArt(text) {
-      const lines = ['', '', '', '', ''];
-      const chars = text.toUpperCase().split('');
-      
-      chars.forEach(char => {
-        const asciiChar = asciiCharacters[char] || asciiCharacters[' '];
-        asciiChar.forEach((line, index) => {
-          lines[index] += line + " ";
+    <!-- Header -->
+    <header>
+        <h1 class="logo">Attach Part</h1>
+    </header>
+    
+    <!-- Colored Stripes -->
+    <div class="stripes">
+        <div class="stripe cyan"></div>
+        <div class="stripe green"></div>
+        <div class="stripe magenta"></div>
+    </div>
+    
+    <!-- Content Area -->
+    <main>
+        <div class="type-specimen">
+            <h2>Type Specimen</h2>
+            
+            <div class="font-example">
+                <h3>Lexend Light (300)</h3>
+                <p class="font-name">Logo Font</p>
+                <div class="size-example">
+                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-3xl">Attach Part</p>
+                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-2xl">Attach Part</p>
+                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-xl">Attach Part</p>
+                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-lg">Attach Part</p>
+                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-md">Attach Part</p>
+                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-sm">Attach Part</p>
+                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-xs">Attach Part</p>
+                </div>
+            </div>
+            
+            <div class="font-example">
+                <h3>Noto Sans JP</h3>
+                <p class="font-name">Body Font</p>
+                <div class="weight-examples">
+                    <div class="weight-example">
+                        <p class="font-light">Light (300)</p>
+                        <p class="font-light">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                    </div>
+                    <div class="weight-example">
+                        <p class="font-regular">Regular (400)</p>
+                        <p class="font-regular">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                    </div>
+                    <div class="weight-example">
+                        <p class="font-medium">Medium (500)</p>
+                        <p class="font-medium">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                    </div>
+                    <div class="weight-example">
+                        <p class="font-bold">Bold (700)</p>
+                        <p class="font-bold">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                    </div>
+                </div>
+                
+                <div class="size-example">
+                    <p class="text-3xl">Text 3XL - The quick brown fox.</p>
+                    <p class="text-2xl">Text 2XL - The quick brown fox.</p>
+                    <p class="text-xl">Text XL - The quick brown fox jumps over the lazy dog.</p>
+                    <p class="text-lg">Text LG - The quick brown fox jumps over the lazy dog.</p>
+                    <p class="text-md">Text MD - The quick brown fox jumps over the lazy dog.</p>
+                    <p class="text-sm">Text SM - The quick brown fox jumps over the lazy dog. This is the base font size.</p>
+                    <p class="text-xs">Text XS - The quick brown fox jumps over the lazy dog. This is the smallest size.</p>
+                </div>
+            </div>
+            
+            <div class="type-controls">
+                <h3>Type Scale Controls</h3>
+                
+                <div class="control-group">
+                    <label for="base-font-size">Base Font Size</label>
+                    <input type="range" id="base-font-size" min="12" max="24" step="1">
+                    <span class="control-value" id="base-font-size-value">16px</span>
+                </div>
+                
+                <div class="control-group">
+                    <label for="scale-ratio">Scale Ratio</label>
+                    <input type="range" id="scale-ratio" min="1.05" max="1.5" step="0.01">
+                    <span class="control-value" id="scale-ratio-value">1.25</span>
+                </div>
+                
+                <div class="control-group">
+                    <label for="line-height">Line Height</label>
+                    <input type="range" id="line-height" min="1" max="2" step="0.05">
+                    <span class="control-value" id="line-height-value">1.5</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const baseFontSizeInput = document.getElementById('base-font-size');
+            const scaleRatioInput = document.getElementById('scale-ratio');
+            const lineHeightInput = document.getElementById('line-height');
+            
+            const baseFontSizeValue = document.getElementById('base-font-size-value');
+            const scaleRatioValue = document.getElementById('scale-ratio-value');
+            const lineHeightValue = document.getElementById('line-height-value');
+            
+            const root = document.documentElement;
+            
+            // Update function for all controls
+            function updateTypeScale() {
+                const baseFontSize = baseFontSizeInput.value;
+                const scaleRatio = scaleRatioInput.value;
+                const lineHeight = lineHeightInput.value;
+                
+                // Update CSS variables
+                root.style.setProperty('--base-font-size', `${baseFontSize}px`);
+                root.style.setProperty('--scale-ratio', scaleRatio);
+                root.style.setProperty('--line-height', lineHeight);
+                
+                // Update displayed values
+                baseFontSizeValue.textContent = `${baseFontSize}px`;
+                scaleRatioValue.textContent = scaleRatio;
+                lineHeightValue.textContent = lineHeight;
+            }
+            
+            // Set initial values
+            baseFontSizeInput.value = 16;
+            scaleRatioInput.value = 1.25;
+            lineHeightInput.value = 1.5;
+            
+            // Add event listeners
+            baseFontSizeInput.addEventListener('input', updateTypeScale);
+            scaleRatioInput.addEventListener('input', updateTypeScale);
+            lineHeightInput.addEventListener('input', updateTypeScale);
+            
+            // Initialize
+            updateTypeScale();
         });
-      });
-      
-      return lines.join('\n');
-    }
-
-    const textElements = document.querySelectorAll('.terminal p');
-    const asciiArt = document.querySelector('.ascii-art');
-    const h1Text = document.querySelector('h1').textContent;
-    const originalTexts = Array.from(textElements).map(el => el.textContent);
-    let currentLine = 0;
-    let currentChar = 0;
-    
-    // Generate and set ASCII art
-    asciiArt.textContent = generateAsciiArt(h1Text);
-    
-    function showAsciiArt() {
-      asciiArt.style.opacity = '0';
-      let opacity = 0;
-      const interval = setInterval(() => {
-        opacity += 0.1;
-        asciiArt.style.opacity = opacity;
-        if (opacity >= 1) {
-          clearInterval(interval);
-          setTimeout(typeNextCharacter, 500);
-        }
-      }, 100);
-    }
-
-    function typeNextCharacter() {
-      if (currentLine >= originalTexts.length) return;
-      
-      const currentText = originalTexts[currentLine];
-      const currentElement = textElements[currentLine];
-      
-      if (currentChar === 0) {
-        currentElement.textContent = '';
-        currentElement.style.opacity = '1';
-      }
-      
-      if (currentChar < currentText.length) {
-        currentElement.textContent += currentText[currentChar];
-        currentChar++;
-        setTimeout(typeNextCharacter, Math.random() * 70 + 30);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        if (currentLine < originalTexts.length) {
-          setTimeout(typeNextCharacter, 500);
-        }
-      }
-    }
-
-    // Start with the ASCII art fade-in
-    setTimeout(showAsciiArt, 1000);
-  </script>
+    </script>
 </body>
 </html>
