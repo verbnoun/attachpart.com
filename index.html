@@ -537,7 +537,7 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="grain-container edge-grain">
+    <header class="grain-container">
         <svg viewBox="0 0 200 200">
             <filter id="noise-header">
                 <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -562,7 +562,7 @@
     
     <!-- Colored Stripes -->
     <div class="stripes">
-        <div class="stripe cyan grain-container edge-grain">
+        <div class="stripe cyan grain-container">
             <svg viewBox="0 0 200 200">
                 <filter id="noise-cyan">
                     <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -570,7 +570,7 @@
                 <rect width="100%" height="100%" filter="url(#noise-cyan)" />
             </svg>
         </div>
-        <div class="stripe green grain-container edge-grain">
+        <div class="stripe green grain-container">
             <svg viewBox="0 0 200 200">
                 <filter id="noise-green">
                     <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -578,7 +578,7 @@
                 <rect width="100%" height="100%" filter="url(#noise-green)" />
             </svg>
         </div>
-        <div class="stripe magenta grain-container edge-grain">
+        <div class="stripe magenta grain-container">
             <svg viewBox="0 0 200 200">
                 <filter id="noise-magenta">
                     <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -639,26 +639,6 @@
                 <div class="grain-gradient-example">
                     <div class="grain-gradient-title">Dark to Light Grain (10% width)</div>
                 </div>
-                <pre class="code-example">.grain-gradient-example {
-    position: relative;
-    background-color: var(--black);
-    overflow: hidden;
-}
-
-.grain-gradient-example::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0) 10%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-    filter: contrast(170%) brightness(900%);
-    mix-blend-mode: multiply;
-}</pre>
-                
                 <!-- Style Guide -->
                 <div class="style-guide">
                     <h2 class="style-guide-title">Brand Style Guide</h2>
