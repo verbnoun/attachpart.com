@@ -97,83 +97,12 @@
             .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
             .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
         }
-
-        /* Header-specific grain adjustments */
-        header.grain-container svg {
-            opacity: 0.15; /* Lower opacity for header */
-            filter: contrast(110%) brightness(150%); /* Adjusted filters for header */
-            mix-blend-mode: soft-light; /* Better for dark backgrounds */
-        }
-        
-        /* SVG Grain Definition */
-        .grain-container {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .grain-container svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.25;
-            filter: contrast(130%);
-        }
-        
-        /* Grain gradient example */
-        .grain-gradient-example {
-            height: 200px;
-            margin: 30px 0;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            background-color: var(--black);
-        }
-        
-        .grain-gradient-example::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(90deg, var(--cyan), transparent 10%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            filter: contrast(170%) brightness(1000%);
-        }
-        
-        /* Edge grain effect for main content */
-        .edge-grain::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(90deg, rgba(0,0,0,0.3), rgba(0,0,0,0) 10%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            filter: contrast(150%) brightness(800%);
-            z-index: 3;
-            pointer-events: none;
-            mix-blend-mode: multiply; /* Makes it darker instead of lighter */
-        }
-        
-        /* Adjust for black background */
-        header.grain-container.edge-grain::before {
-            mix-blend-mode: soft-light;
-        }
         
         /* Remove all rounded corners */
         .color-swatch,
         .text-example,
         .box-example,
         .bordered-box,
-        .grain-gradient-example,
         pre.code-example {
             border-radius: 0;
         }
@@ -412,11 +341,6 @@
             position: relative;
         }
         
-        /* For the SVG grain in main content */
-        main.grain-container svg {
-            viewBox: 0 0 200 200;
-        }
-        
         .section {
             margin-bottom: 3rem;
         }
@@ -533,11 +457,22 @@
         .font-bold {
             font-weight: 700;
         }
+        
+        /* Code example */
+        pre.code-example {
+            padding: 1rem;
+            background-color: var(--black);
+            color: var(--yellow);
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="grain-container edge-grain">
+    <header>
        
         <div class="container">
             <div class="row logo-container">
@@ -557,19 +492,19 @@
     
     <!-- Colored Stripes -->
     <div class="stripes">
-        <div class="stripe cyan grain-container edge-grain">
+        <div class="stripe cyan">
             
         </div>
-        <div class="stripe green grain-container edge-grain">
+        <div class="stripe green">
             
         </div>
-        <div class="stripe magenta grain-container edge-grain">
+        <div class="stripe magenta">
             
         </div>
     </div>
     
     <!-- Content Area -->
-    <main class="grain-container edge-grain">
+    <main>
         
         <div class="container">
             <div class="section type-specimen">
@@ -609,31 +544,6 @@
                     </div>
                 </div>
                 
-                <!-- Grain Gradient Example -->
-                <h3>Grain Gradient Example</h3>
-                <div class="grain-gradient-example">
-                    <div class="grain-gradient-title">Dark to Light Grain (10% width)</div>
-                </div>
-                <pre class="code-example">.grain-gradient-example {
-    position: relative;
-    background-color: var(--black);
-    overflow: hidden;
-}
-
-.grain-gradient-example::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0) 10%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-    filter: contrast(170%) brightness(900%);
-    mix-blend-mode: multiply;
-}</pre>
-                
                 <!-- Style Guide -->
                 <div class="style-guide">
                     <h2 class="style-guide-title">Brand Style Guide</h2>
@@ -666,16 +576,16 @@
                     <!-- Text Examples -->
                     <h3>Typography Examples</h3>
                     <div class="text-examples">
-                        <div class="text-example yellow-on-black edge-grain">
+                        <div class="text-example yellow-on-black">
                             <h4 class="text-example-title">Yellow on Black</h4>
                             <div class="text-example-content">
-                                <p>This is an example of yellow text on a black background with grain effect. Use this for headers and high-contrast UI elements.</p>
+                                <p>This is an example of yellow text on a black background. Use this for headers and high-contrast UI elements.</p>
                             </div>
                         </div>
-                        <div class="text-example black-on-yellow edge-grain">
+                        <div class="text-example black-on-yellow">
                             <h4 class="text-example-title">Black on Yellow</h4>
                             <div class="text-example-content">
-                                <p>This is an example of black text on a yellow background with grain effect. Use this for content areas and body text.</p>
+                                <p>This is an example of black text on a yellow background. Use this for content areas and body text.</p>
                             </div>
                         </div>
                     </div>
