@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-                    :root {
+        :root {
             --black: rgb(15, 15, 15);
             --yellow: rgb(255, 252, 204);
             --cyan: rgb(78, 211, 255);
@@ -31,22 +31,6 @@
             --text-xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
             --text-2xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
             --text-3xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
-            
-            /* Grain variables */
-            --black-grain-scale: 1;
-            --black-grain-opacity: 0.2;
-            
-            --yellow-grain-scale: 1;
-            --yellow-grain-opacity: 0.1;
-            
-            --cyan-grain-scale: 1;
-            --cyan-grain-opacity: 0.15;
-            
-            --green-grain-scale: 1;
-            --green-grain-opacity: 0.15;
-            
-            --magenta-grain-scale: 1;
-            --magenta-grain-opacity: 0.15;
         }
 
         * {
@@ -96,38 +80,33 @@
         .col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
         .col-12 { flex: 0 0 100%; max-width: 100%; }
 
-        /* Column ordering classes */
-        .order-1 { order: 1; }
-        .order-2 { order: 2; }
-        .order-3 { order: 3; }
-        .order-4 { order: 4; }
-        .order-5 { order: 5; }
-        .order-6 { order: 6; }
-
         /* Responsive breakpoints */
         @media (max-width: 768px) {
             .col-md-12 { flex: 0 0 100%; max-width: 100%; }
             .col-md-6 { flex: 0 0 50%; max-width: 50%; }
             .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-            
-            .order-md-1 { order: 1; }
-            .order-md-2 { order: 2; }
-            .order-md-3 { order: 3; }
-            .order-md-4 { order: 4; }
-            .order-md-5 { order: 5; }
-            .order-md-6 { order: 6; }
         }
 
         @media (max-width: 576px) {
             .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
             .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
-            
-            .order-sm-1 { order: 1; }
-            .order-sm-2 { order: 2; }
-            .order-sm-3 { order: 3; }
-            .order-sm-4 { order: 4; }
-            .order-sm-5 { order: 5; }
-            .order-sm-6 { order: 6; }
+        }
+
+        /* SVG Grain Definition */
+        .grain-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grain-container svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.15;
         }
 
         /* Header */
@@ -136,26 +115,6 @@
             padding: 2rem 0;
             position: relative;
         }
-        
-        .black-bg {
-            background-color: var(--black);
-        }
-        
-        .yellow-bg {
-            background-color: var(--yellow);
-        }
-        
-        .cyan-bg {
-            background-color: var(--cyan);
-        }
-        
-        .green-bg {
-            background-color: var(--green);
-        }
-        
-        .magenta-bg {
-            background-color: var(--magenta);
-        }
 
         .logo {
             font-family: 'Lexend', sans-serif;
@@ -163,19 +122,21 @@
             color: var(--yellow);
             font-size: var(--text-3xl);
             letter-spacing: 0.05em;
+            position: relative;
+            z-index: 2;
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            z-index: 2;
         }
 
         .header-nav {
             display: flex;
             gap: 1.5rem;
+            position: relative;
+            z-index: 2;
         }
 
         .header-nav a {
@@ -229,24 +190,15 @@
         .section-title {
             margin-bottom: 1.5rem;
             font-size: var(--text-2xl);
-        }
-
-        .card {
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            padding: 1.5rem;
-            height: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .card-title {
-            font-size: var(--text-lg);
-            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
         }
 
         /* Type Specimen */
         .type-specimen {
             margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
         }
 
         .type-specimen h2 {
@@ -289,27 +241,6 @@
             padding: 1rem;
             border: 1px solid rgba(15, 15, 15, 0.2);
             border-radius: 4px;
-        }
-
-        /* Feature showcase */
-        .feature-item {
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background-color: var(--black);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-
-        .feature-icon span {
-            color: var(--yellow);
-            font-size: 24px;
         }
 
         /* Typography Classes */
@@ -356,110 +287,19 @@
         .font-bold {
             font-weight: 700;
         }
-
-        /* Type scale controls */
-        .controls-section {
-            margin-top: 3rem;
-            background-color: rgba(15, 15, 15, 0.05);
-            border-radius: 8px;
-            padding: 0;
-            overflow: hidden;
-        }
-        
-        .controls-header {
-            background-color: rgba(15, 15, 15, 0.1);
-            padding: 1rem 1.5rem;
-        }
-
-        .controls-content {
-            padding: 1.5rem;
-        }
-
-        .control-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .control-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .control-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .control-col {
-            flex: 1;
-            min-width: 120px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-
-        .control-value {
-            font-family: monospace;
-            font-size: 0.9rem;
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        .control-code {
-            display: block;
-            background-color: rgba(15, 15, 15, 0.05);
-            padding: 0.5rem;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Grain controls */
-        .grain-controls {
-            margin-top: 2rem;
-        }
-        
-        .grain-preview {
-            height: 50px;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        
-        .grain-color-black {
-            background-color: var(--black);
-        }
-        
-        .grain-color-yellow {
-            background-color: var(--yellow);
-        }
-        
-        .grain-color-cyan {
-            background-color: var(--cyan);
-        }
-        
-        .grain-color-green {
-            background-color: var(--green);
-        }
-        
-        .grain-color-magenta {
-            background-color: var(--magenta);
-        }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="black-bg with-grain">
+    <header class="grain-container">
+        <svg>
+            <filter id="noise-header">
+                <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noise-header)" />
+        </svg>
         <div class="container">
-            <div class="row header-content">
+            <div class="row">
                 <div class="col col-6 col-md-12">
                     <h1 class="logo">Attach Part</h1>
                 </div>
@@ -478,15 +318,41 @@
     
     <!-- Colored Stripes -->
     <div class="stripes">
-        <div class="stripe cyan-bg cyan with-grain"></div>
-        <div class="stripe green-bg green with-grain"></div>
-        <div class="stripe magenta-bg magenta with-grain"></div>
+        <div class="stripe cyan grain-container">
+            <svg>
+                <filter id="noise-cyan">
+                    <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#noise-cyan)" />
+            </svg>
+        </div>
+        <div class="stripe green grain-container">
+            <svg>
+                <filter id="noise-green">
+                    <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#noise-green)" />
+            </svg>
+        </div>
+        <div class="stripe magenta grain-container">
+            <svg>
+                <filter id="noise-magenta">
+                    <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#noise-magenta)" />
+            </svg>
+        </div>
     </div>
     
     <!-- Content Area -->
-    <main class="yellow-bg with-grain">
+    <main class="grain-container">
+        <svg>
+            <filter id="noise-main">
+                <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noise-main)" />
+        </svg>
         <div class="container">
-            <!-- Type Specimen -->
             <div class="section type-specimen">
                 <h2 class="section-title">Type Specimen</h2>
                 
@@ -537,359 +403,7 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Layout Example -->
-            <div class="section">
-                <h2 class="section-title">Layout Example</h2>
-                <div class="row">
-                    <!-- Column 1 -->
-                    <div class="col col-4 col-md-6 col-sm-12 order-1 order-sm-2">
-                        <div class="card">
-                            <h3 class="card-title">Column 1</h3>
-                            <p>This is the first column in the layout. On mobile, this will be the second row.</p>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <span>1</span>
-                                </div>
-                                <p>Feature description goes here. This explains what the feature does and why it matters.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Column 2 -->
-                    <div class="col col-4 col-md-6 col-sm-12 order-2 order-sm-3">
-                        <div class="card">
-                            <h3 class="card-title">Column 2</h3>
-                            <p>This is the second column in the layout. On mobile, this will be the third row.</p>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <span>2</span>
-                                </div>
-                                <p>Another feature description. The layout system makes it easy to create responsive designs.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Column 3 -->
-                    <div class="col col-4 col-md-12 col-sm-12 order-3 order-sm-1">
-                        <div class="card">
-                            <h3 class="card-title">Column 3</h3>
-                            <p>This is the third column in the layout. On mobile, this will be the first row.</p>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <span>3</span>
-                                </div>
-                                <p>This demonstrates the ordering feature. On desktop, this is the third column, but on mobile it appears first.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Controls -->
-            <div class="row">
-                <div class="col col-6 col-md-12">
-                    <div class="controls-section">
-                        <div class="controls-header">
-                            <h3>Type Scale Controls</h3>
-                        </div>
-                        <div class="controls-content">
-                            <div class="control-group">
-                                <label for="base-font-size">Base Font Size</label>
-                                <input type="range" id="base-font-size" min="12" max="24" step="1">
-                                <span class="control-value" id="base-font-size-value">16px</span>
-                                <span class="control-code">In CSS: --base-font-size: <span id="base-font-code">16px</span>;</span>
-                            </div>
-                            
-                            <div class="control-group">
-                                <label for="scale-ratio">Scale Ratio</label>
-                                <input type="range" id="scale-ratio" min="1.05" max="1.5" step="0.01">
-                                <span class="control-value" id="scale-ratio-value">1.25</span>
-                                <span class="control-code">In CSS: --scale-ratio: <span id="scale-ratio-code">1.25</span>;</span>
-                            </div>
-                            
-                            <div class="control-group">
-                                <label for="line-height">Line Height</label>
-                                <input type="range" id="line-height" min="1" max="2" step="0.05">
-                                <span class="control-value" id="line-height-value">1.5</span>
-                                <span class="control-code">In CSS: --line-height: <span id="line-height-code">1.5</span>;</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col col-6 col-md-12">
-                    <div class="controls-section grain-controls">
-                        <div class="controls-header">
-                            <h3>Grain Controls</h3>
-                        </div>
-                        <div class="controls-content">
-                            <!-- Black Grain -->
-                            <div class="control-group">
-                                <h4>Black Grain</h4>
-                                <div class="grain-preview black-bg with-grain"></div>
-                                <div class="control-row">
-                                    <div class="control-col">
-                                        <label for="black-grain-scale">Scale</label>
-                                        <input type="range" id="black-grain-scale" min="0.1" max="3" step="0.1" value="1">
-                                        <span class="control-value" id="black-grain-scale-value">1</span>
-                                        <span class="control-code">--black-grain-scale: <span id="black-grain-scale-code">1</span>;</span>
-                                    </div>
-                                    <div class="control-col">
-                                        <label for="black-grain-opacity">Opacity</label>
-                                        <input type="range" id="black-grain-opacity" min="0" max="1" step="0.01" value="0.2">
-                                        <span class="control-value" id="black-grain-opacity-value">0.2</span>
-                                        <span class="control-code">--black-grain-opacity: <span id="black-grain-opacity-code">0.2</span>;</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Yellow Grain -->
-                            <div class="control-group">
-                                <h4>Yellow Grain</h4>
-                                <div class="grain-preview yellow-bg with-grain"></div>
-                                <div class="control-row">
-                                    <div class="control-col">
-                                        <label for="yellow-grain-scale">Scale</label>
-                                        <input type="range" id="yellow-grain-scale" min="0.1" max="3" step="0.1" value="1">
-                                        <span class="control-value" id="yellow-grain-scale-value">1</span>
-                                        <span class="control-code">--yellow-grain-scale: <span id="yellow-grain-scale-code">1</span>;</span>
-                                    </div>
-                                    <div class="control-col">
-                                        <label for="yellow-grain-opacity">Opacity</label>
-                                        <input type="range" id="yellow-grain-opacity" min="0" max="1" step="0.01" value="0.1">
-                                        <span class="control-value" id="yellow-grain-opacity-value">0.1</span>
-                                        <span class="control-code">--yellow-grain-opacity: <span id="yellow-grain-opacity-code">0.1</span>;</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Cyan Grain -->
-                            <div class="control-group">
-                                <h4>Cyan Grain</h4>
-                                <div class="grain-preview cyan-bg with-grain"></div>
-                                <div class="control-row">
-                                    <div class="control-col">
-                                        <label for="cyan-grain-scale">Scale</label>
-                                        <input type="range" id="cyan-grain-scale" min="0.1" max="3" step="0.1" value="1">
-                                        <span class="control-value" id="cyan-grain-scale-value">1</span>
-                                        <span class="control-code">--cyan-grain-scale: <span id="cyan-grain-scale-code">1</span>;</span>
-                                    </div>
-                                    <div class="control-col">
-                                        <label for="cyan-grain-opacity">Opacity</label>
-                                        <input type="range" id="cyan-grain-opacity" min="0" max="1" step="0.01" value="0.15">
-                                        <span class="control-value" id="cyan-grain-opacity-value">0.15</span>
-                                        <span class="control-code">--cyan-grain-opacity: <span id="cyan-grain-opacity-code">0.15</span>;</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Green Grain -->
-                            <div class="control-group">
-                                <h4>Green Grain</h4>
-                                <div class="grain-preview green-bg with-grain"></div>
-                                <div class="control-row">
-                                    <div class="control-col">
-                                        <label for="green-grain-scale">Scale</label>
-                                        <input type="range" id="green-grain-scale" min="0.1" max="3" step="0.1" value="1">
-                                        <span class="control-value" id="green-grain-scale-value">1</span>
-                                        <span class="control-code">--green-grain-scale: <span id="green-grain-scale-code">1</span>;</span>
-                                    </div>
-                                    <div class="control-col">
-                                        <label for="green-grain-opacity">Opacity</label>
-                                        <input type="range" id="green-grain-opacity" min="0" max="1" step="0.01" value="0.15">
-                                        <span class="control-value" id="green-grain-opacity-value">0.15</span>
-                                        <span class="control-code">--green-grain-opacity: <span id="green-grain-opacity-code">0.15</span>;</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Magenta Grain -->
-                            <div class="control-group">
-                                <h4>Magenta Grain</h4>
-                                <div class="grain-preview magenta-bg with-grain"></div>
-                                <div class="control-row">
-                                    <div class="control-col">
-                                        <label for="magenta-grain-scale">Scale</label>
-                                        <input type="range" id="magenta-grain-scale" min="0.1" max="3" step="0.1" value="1">
-                                        <span class="control-value" id="magenta-grain-scale-value">1</span>
-                                        <span class="control-code">--magenta-grain-scale: <span id="magenta-grain-scale-code">1</span>;</span>
-                                    </div>
-                                    <div class="control-col">
-                                        <label for="magenta-grain-opacity">Opacity</label>
-                                        <input type="range" id="magenta-grain-opacity" min="0" max="1" step="0.01" value="0.15">
-                                        <span class="control-value" id="magenta-grain-opacity-value">0.15</span>
-                                        <span class="control-code">--magenta-grain-opacity: <span id="magenta-grain-opacity-code">0.15</span>;</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Type scale controls
-            const baseFontSizeInput = document.getElementById('base-font-size');
-            const scaleRatioInput = document.getElementById('scale-ratio');
-            const lineHeightInput = document.getElementById('line-height');
-            
-            const baseFontSizeValue = document.getElementById('base-font-size-value');
-            const scaleRatioValue = document.getElementById('scale-ratio-value');
-            const lineHeightValue = document.getElementById('line-height-value');
-            
-            const baseFontCode = document.getElementById('base-font-code');
-            const scaleRatioCode = document.getElementById('scale-ratio-code');
-            const lineHeightCode = document.getElementById('line-height-code');
-            
-            // Grain controls
-            const grainControls = {
-                black: {
-                    scale: document.getElementById('black-grain-scale'),
-                    opacity: document.getElementById('black-grain-opacity'),
-                    scaleValue: document.getElementById('black-grain-scale-value'),
-                    opacityValue: document.getElementById('black-grain-opacity-value'),
-                    scaleCode: document.getElementById('black-grain-scale-code'),
-                    opacityCode: document.getElementById('black-grain-opacity-code')
-                },
-                yellow: {
-                    scale: document.getElementById('yellow-grain-scale'),
-                    opacity: document.getElementById('yellow-grain-opacity'),
-                    scaleValue: document.getElementById('yellow-grain-scale-value'),
-                    opacityValue: document.getElementById('yellow-grain-opacity-value'),
-                    scaleCode: document.getElementById('yellow-grain-scale-code'),
-                    opacityCode: document.getElementById('yellow-grain-opacity-code')
-                },
-                cyan: {
-                    scale: document.getElementById('cyan-grain-scale'),
-                    opacity: document.getElementById('cyan-grain-opacity'),
-                    scaleValue: document.getElementById('cyan-grain-scale-value'),
-                    opacityValue: document.getElementById('cyan-grain-opacity-value'),
-                    scaleCode: document.getElementById('cyan-grain-scale-code'),
-                    opacityCode: document.getElementById('cyan-grain-opacity-code')
-                },
-                green: {
-                    scale: document.getElementById('green-grain-scale'),
-                    opacity: document.getElementById('green-grain-opacity'),
-                    scaleValue: document.getElementById('green-grain-scale-value'),
-                    opacityValue: document.getElementById('green-grain-opacity-value'),
-                    scaleCode: document.getElementById('green-grain-scale-code'),
-                    opacityCode: document.getElementById('green-grain-opacity-code')
-                },
-                magenta: {
-                    scale: document.getElementById('magenta-grain-scale'),
-                    opacity: document.getElementById('magenta-grain-opacity'),
-                    scaleValue: document.getElementById('magenta-grain-scale-value'),
-                    opacityValue: document.getElementById('magenta-grain-opacity-value'),
-                    scaleCode: document.getElementById('magenta-grain-scale-code'),
-                    opacityCode: document.getElementById('magenta-grain-opacity-code')
-                }
-            };
-            
-            const root = document.documentElement;
-            
-            // Update function for type scale controls
-            function updateTypeScale() {
-                const baseFontSize = baseFontSizeInput.value;
-                const scaleRatio = scaleRatioInput.value;
-                const lineHeight = lineHeightInput.value;
-                
-                // Update CSS variables
-                root.style.setProperty('--base-font-size', `${baseFontSize}px`);
-                root.style.setProperty('--scale-ratio', scaleRatio);
-                root.style.setProperty('--line-height', lineHeight);
-                
-                // Update displayed values
-                baseFontSizeValue.textContent = `${baseFontSize}px`;
-                scaleRatioValue.textContent = scaleRatio;
-                lineHeightValue.textContent = lineHeight;
-                
-                // Update code snippets
-                baseFontCode.textContent = `${baseFontSize}px`;
-                scaleRatioCode.textContent = scaleRatio;
-                lineHeightCode.textContent = lineHeight;
-            }
-            
-            // Function to update grain for a specific color
-            function updateGrainForColor(colorKey) {
-                const control = grainControls[colorKey];
-                const scale = control.scale.value;
-                const opacity = control.opacity.value;
-                
-                // Update displayed values
-                control.scaleValue.textContent = scale;
-                control.opacityValue.textContent = opacity;
-                control.scaleCode.textContent = scale;
-                control.opacityCode.textContent = opacity;
-                
-                // Update CSS variables
-                root.style.setProperty(`--${colorKey}-grain-scale`, scale);
-                root.style.setProperty(`--${colorKey}-grain-opacity`, opacity);
-            }
-            
-            // Function to update all grain
-            function updateAllGrain() {
-                for (const colorKey in grainControls) {
-                    updateGrainForColor(colorKey);
-                }
-            }
-            
-            // Set initial values for type scale
-            baseFontSizeInput.value = 16;
-            scaleRatioInput.value = 1.25;
-            lineHeightInput.value = 1.5;
-            
-            // Add event listeners for type scale
-            baseFontSizeInput.addEventListener('input', updateTypeScale);
-            scaleRatioInput.addEventListener('input', updateTypeScale);
-            lineHeightInput.addEventListener('input', updateTypeScale);
-            
-            // Add event listeners for grain controls
-            for (const colorKey in grainControls) {
-                const control = grainControls[colorKey];
-                control.scale.addEventListener('input', () => updateGrainForColor(colorKey));
-                control.opacity.addEventListener('input', () => updateGrainForColor(colorKey));
-            }
-            
-            // Initialize
-            updateTypeScale();
-            updateAllGrain();
-            
-            // Log current CSS for easy copying
-            function logCSSVariables() {
-                let cssOutput = `:root {\n`;
-                
-                // Typography
-                cssOutput += `  /* Typography */\n`;
-                cssOutput += `  --base-font-size: ${baseFontSizeInput.value}px;\n`;
-                cssOutput += `  --scale-ratio: ${scaleRatioInput.value};\n`;
-                cssOutput += `  --line-height: ${lineHeightInput.value};\n\n`;
-                
-                // Grain settings
-                cssOutput += `  /* Grain */\n`;
-                for (const colorKey in grainControls) {
-                    const control = grainControls[colorKey];
-                    cssOutput += `  --${colorKey}-grain-scale: ${control.scale.value};\n`;
-                    cssOutput += `  --${colorKey}-grain-opacity: ${control.opacity.value};\n`;
-                }
-                
-                cssOutput += `}`;
-                console.log('Current CSS Variables:');
-                console.log(cssOutput);
-            }
-            
-            // Add button to log CSS
-            const controlsHeader = document.querySelector('.controls-header');
-            const logButton = document.createElement('button');
-            logButton.textContent = 'Log CSS to Console';
-            logButton.style.marginLeft = '1rem';
-            logButton.style.padding = '0.25rem 0.5rem';
-            logButton.addEventListener('click', logCSSVariables);
-            controlsHeader.appendChild(logButton);
-        });
-    </script>
 </body>
 </html>
