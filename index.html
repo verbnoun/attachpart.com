@@ -59,6 +59,7 @@
             display: flex;
             flex-wrap: wrap;
             margin: 0 -1rem;
+            align-items: flex-start; /* Align at the top */
         }
 
         .col {
@@ -85,6 +86,11 @@
             .col-md-12 { flex: 0 0 100%; max-width: 100%; }
             .col-md-6 { flex: 0 0 50%; max-width: 50%; }
             .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+            
+            /* Adjust logo size for mobile */
+            .logo {
+                font-size: 20vw; /* Larger on mobile for better visibility */
+            }
         }
 
         @media (max-width: 576px) {
@@ -92,6 +98,13 @@
             .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
         }
 
+        /* Header-specific grain adjustments */
+        header.grain-container svg {
+            opacity: 0.15; /* Lower opacity for header */
+            filter: contrast(110%) brightness(150%); /* Adjusted filters for header */
+            mix-blend-mode: soft-light; /* Better for dark backgrounds */
+        }
+        
         /* SVG Grain Definition */
         .grain-container {
             position: relative;
@@ -106,7 +119,206 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.15;
+            opacity: 0.25;
+            filter: contrast(130%);
+        }
+        
+        /* Grain gradient example */
+        .grain-gradient-example {
+            height: 200px;
+            margin: 30px 0;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--black);
+        }
+        
+        .grain-gradient-example::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, var(--cyan), transparent 10%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+            filter: contrast(170%) brightness(1000%);
+        }
+        
+        /* Edge grain effect for main content */
+        .edge-grain::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, rgba(0,0,0,0.3), rgba(0,0,0,0) 10%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+            filter: contrast(150%) brightness(800%);
+            z-index: 3;
+            pointer-events: none;
+            mix-blend-mode: multiply; /* Makes it darker instead of lighter */
+        }
+        
+        /* Adjust for black background */
+        header.grain-container.edge-grain::before {
+            mix-blend-mode: soft-light;
+        }
+        
+        /* Remove all rounded corners */
+        .color-swatch,
+        .text-example,
+        .box-example,
+        .bordered-box,
+        .grain-gradient-example,
+        pre.code-example {
+            border-radius: 0;
+        }
+        
+        /* Style guide elements */
+        .style-guide {
+            margin-top: 3rem;
+        }
+        
+        .style-guide-title {
+            font-size: var(--text-2xl);
+            margin-bottom: 1.5rem;
+        }
+        
+        .color-swatches {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .color-swatch {
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .color-swatch-black {
+            background-color: var(--black);
+        }
+        
+        .color-swatch-yellow {
+            background-color: var(--yellow);
+            color: var(--black);
+        }
+        
+        .color-swatch-cyan {
+            background-color: var(--cyan);
+            color: var(--black);
+        }
+        
+        .color-swatch-green {
+            background-color: var(--green);
+            color: var(--black);
+        }
+        
+        .color-swatch-magenta {
+            background-color: var(--magenta);
+        }
+        
+        .color-name {
+            font-weight: bold;
+            font-size: var(--text-md);
+            margin-bottom: 0.3rem;
+        }
+        
+        .color-value {
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .text-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .text-example {
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .text-example-title {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .text-example-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .yellow-on-black {
+            background-color: var(--black);
+            color: var(--yellow);
+        }
+        
+        .black-on-yellow {
+            background-color: var(--yellow);
+            color: var(--black);
+        }
+        
+        .box-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .box-example {
+            padding: 1.5rem;
+            background-color: var(--yellow); /* Changed from white to yellow */
+            position: relative;
+        }
+        
+        .box-title {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+        
+        .bordered-box {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: var(--yellow); /* Changed from white to yellow */
+            color: var(--black);
+        }
+        
+        .border-black {
+            border: 2px solid var(--black);
+        }
+        
+        .border-yellow {
+            border: 2px solid var(--yellow);
+        }
+        
+        .border-cyan {
+            border: 2px solid var(--cyan);
+        }
+        
+        .border-green {
+            border: 2px solid var(--green);
+        }
+        
+        .border-magenta {
+            border: 2px solid var(--magenta);
         }
 
         /* Header */
@@ -120,10 +332,14 @@
             font-family: 'Lexend', sans-serif;
             font-weight: 300;
             color: var(--yellow);
-            font-size: var(--text-3xl);
+            font-size: 10vw; /* Responsive font size based on viewport width */
             letter-spacing: 0.05em;
             position: relative;
             z-index: 2;
+            line-height: 1.0; /* Exact 1.0 line height as requested */
+            word-break: break-word;
+            width: 100%;
+            display: block;
         }
 
         .header-content {
@@ -291,7 +507,7 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="grain-container">
+    <header class="grain-container edge-grain">
         <svg>
             <filter id="noise-header">
                 <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -300,17 +516,11 @@
         </svg>
         <div class="container">
             <div class="row">
-                <div class="col col-6 col-md-12">
-                    <h1 class="logo">Attach Part</h1>
+                <div class="col col-8 col-md-12">
+                    <h1 class="logo">Attach<br>Part</h1>
                 </div>
-                <div class="col col-6 col-md-12">
-                    <div class="header-nav">
-                        <a href="#">Home</a>
-                        <a href="#">Products</a>
-                        <a href="#">Services</a>
-                        <a href="#">About</a>
-                        <a href="#">Contact</a>
-                    </div>
+                <div class="col col-4 col-md-12">
+                    <!-- Empty column - Navigation removed as requested -->
                 </div>
             </div>
         </div>
@@ -318,7 +528,7 @@
     
     <!-- Colored Stripes -->
     <div class="stripes">
-        <div class="stripe cyan grain-container">
+        <div class="stripe cyan grain-container edge-grain">
             <svg>
                 <filter id="noise-cyan">
                     <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -326,7 +536,7 @@
                 <rect width="100%" height="100%" filter="url(#noise-cyan)" />
             </svg>
         </div>
-        <div class="stripe green grain-container">
+        <div class="stripe green grain-container edge-grain">
             <svg>
                 <filter id="noise-green">
                     <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -334,7 +544,7 @@
                 <rect width="100%" height="100%" filter="url(#noise-green)" />
             </svg>
         </div>
-        <div class="stripe magenta grain-container">
+        <div class="stripe magenta grain-container edge-grain">
             <svg>
                 <filter id="noise-magenta">
                     <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -345,7 +555,7 @@
     </div>
     
     <!-- Content Area -->
-    <main class="grain-container">
+    <main class="grain-container edge-grain">
         <svg>
             <filter id="noise-main">
                 <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch" />
@@ -400,6 +610,101 @@
                         <p class="text-md">Text MD - The quick brown fox jumps over the lazy dog.</p>
                         <p class="text-sm">Text SM - The quick brown fox jumps over the lazy dog. This is the base font size.</p>
                         <p class="text-xs">Text XS - The quick brown fox jumps over the lazy dog. This is the smallest size.</p>
+                    </div>
+                </div>
+                
+                <!-- Grain Gradient Example -->
+                <h3>Grain Gradient Example</h3>
+                <div class="grain-gradient-example">
+                    <div class="grain-gradient-title">Dark to Light Grain (10% width)</div>
+                </div>
+                <pre class="code-example">.grain-gradient-example {
+    position: relative;
+    background-color: var(--black);
+    overflow: hidden;
+}
+
+.grain-gradient-example::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0) 10%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+    filter: contrast(170%) brightness(900%);
+    mix-blend-mode: multiply;
+}</pre>
+                
+                <!-- Style Guide -->
+                <div class="style-guide">
+                    <h2 class="style-guide-title">Brand Style Guide</h2>
+                    
+                    <!-- Color Swatches -->
+                    <h3>Colors</h3>
+                    <div class="color-swatches">
+                        <div class="color-swatch color-swatch-black">
+                            <div class="color-name">Black</div>
+                            <div class="color-value">RGB(15, 15, 15)</div>
+                        </div>
+                        <div class="color-swatch color-swatch-yellow">
+                            <div class="color-name">Yellow</div>
+                            <div class="color-value">RGB(255, 252, 204)</div>
+                        </div>
+                        <div class="color-swatch color-swatch-cyan">
+                            <div class="color-name">Cyan</div>
+                            <div class="color-value">RGB(78, 211, 255)</div>
+                        </div>
+                        <div class="color-swatch color-swatch-green">
+                            <div class="color-name">Green</div>
+                            <div class="color-value">RGB(78, 201, 47)</div>
+                        </div>
+                        <div class="color-swatch color-swatch-magenta">
+                            <div class="color-name">Magenta</div>
+                            <div class="color-value">RGB(255, 20, 149)</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Text Examples -->
+                    <h3>Typography Examples</h3>
+                    <div class="text-examples">
+                        <div class="text-example yellow-on-black edge-grain">
+                            <h4 class="text-example-title">Yellow on Black</h4>
+                            <div class="text-example-content">
+                                <p>This is an example of yellow text on a black background with grain effect. Use this for headers and high-contrast UI elements.</p>
+                            </div>
+                        </div>
+                        <div class="text-example black-on-yellow edge-grain">
+                            <h4 class="text-example-title">Black on Yellow</h4>
+                            <div class="text-example-content">
+                                <p>This is an example of black text on a yellow background with grain effect. Use this for content areas and body text.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Box Examples -->
+                    <h3>Border Examples</h3>
+                    <div class="box-examples">
+                        <div class="box-example">
+                            <h4 class="box-title">Box Borders</h4>
+                            <div class="bordered-box border-black">
+                                Black Border
+                            </div>
+                            <div class="bordered-box border-yellow">
+                                Yellow Border
+                            </div>
+                            <div class="bordered-box border-cyan">
+                                Cyan Border
+                            </div>
+                            <div class="bordered-box border-green">
+                                Green Border
+                            </div>
+                            <div class="bordered-box border-magenta">
+                                Magenta Border
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
