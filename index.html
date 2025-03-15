@@ -324,8 +324,14 @@
         /* Header */
         header {
             background-color: var(--black);
-            padding: 2rem 0;
             position: relative;
+            /* Remove fixed padding to allow dynamic spacing */
+        }
+
+        /* Adding space before the logo */
+        .header-top-space {
+            height: 10vw; /* Dynamic space matching logo font size */
+            width: 100%;
         }
 
         .logo {
@@ -346,6 +352,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 2rem 0; /* Move padding here from header */
         }
 
         .header-nav {
@@ -364,6 +371,18 @@
 
         .header-nav a:hover {
             opacity: 1;
+        }
+
+        /* Reduced bottom space after logo */
+        .header-bottom-space {
+            height: 5vw; /* Half line height (0.5 of logo's line) */
+        }
+
+        /* Yellow lines */
+        .yellow-line {
+            height: 30px;
+            background-color: var(--yellow);
+            width: 100%;
         }
 
         /* Stripes */
@@ -503,6 +522,17 @@
         .font-bold {
             font-weight: 700;
         }
+
+        /* Responsive adjustments for spacing */
+        @media (max-width: 768px) {
+            .header-top-space {
+                height: 20vw; /* Match mobile logo font size */
+            }
+            
+            .header-bottom-space {
+                height: 10vw; /* Half of mobile logo height */
+            }
+        }
     </style>
 </head>
 <body>
@@ -514,6 +544,8 @@
             </filter>
             <rect width="100%" height="100%" filter="url(#noise-header)" />
         </svg>
+        <!-- Adding top space before logo -->
+        <div class="header-top-space"></div>
         <div class="container">
             <div class="row">
                 <div class="col col-8 col-md-12">
@@ -524,7 +556,13 @@
                 </div>
             </div>
         </div>
+        <!-- Adding bottom space after logo -->
+        <div class="header-bottom-space"></div>
     </header>
+    
+    <!-- Yellow lines -->
+    <div class="yellow-line"></div>
+    <div class="yellow-line"></div>
     
     <!-- Colored Stripes -->
     <div class="stripes">
