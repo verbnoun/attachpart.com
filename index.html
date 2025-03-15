@@ -33,11 +33,20 @@
             --text-3xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
             
             /* Grain variables */
-            --black-grain: 0.05;
-            --yellow-grain: 0.10;
-            --cyan-grain: 0.15;
-            --green-grain: 0.12;
-            --magenta-grain: 0.08;
+            --black-grain-freq: 0.5;
+            --black-grain-opacity: 0.3;
+            
+            --yellow-grain-freq: 0.5;
+            --yellow-grain-opacity: 0.3;
+            
+            --cyan-grain-freq: 0.5;
+            --cyan-grain-opacity: 0.3;
+            
+            --green-grain-freq: 0.5;
+            --green-grain-opacity: 0.3;
+            
+            --magenta-grain-freq: 0.5;
+            --magenta-grain-opacity: 0.3;
         }
 
         * {
@@ -121,29 +130,27 @@
             .order-sm-6 { order: 6; }
         }
 
-        /* Grain effect with CSS */
-        .grain-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            pointer-events: none;
-            opacity: var(--grain-opacity, 0.1);
-            mix-blend-mode: multiply;
-            z-index: 1;
-        }
-
-        /* Header with grain */
+        /* Header */
         header {
             background-color: var(--black);
             padding: 2rem 0;
             position: relative;
         }
 
-        header .grain-overlay {
-            --grain-opacity: var(--black-grain);
+        .grain-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grain-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            z-index: 1;
         }
 
         .logo {
@@ -158,6 +165,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+            z-index: 2;
         }
 
         .header-nav {
@@ -176,7 +185,7 @@
             opacity: 1;
         }
 
-        /* Stripes with grain */
+        /* Stripes */
         .stripes {
             display: flex;
             flex-direction: column;
@@ -193,24 +202,12 @@
             background-color: var(--cyan);
         }
 
-        .cyan .grain-overlay {
-            --grain-opacity: var(--cyan-grain);
-        }
-
         .green {
             background-color: var(--green);
         }
 
-        .green .grain-overlay {
-            --grain-opacity: var(--green-grain);
-        }
-
         .magenta {
             background-color: var(--magenta);
-        }
-
-        .magenta .grain-overlay {
-            --grain-opacity: var(--magenta-grain);
         }
 
         /* Content Area */
@@ -219,10 +216,6 @@
             color: var(--black);
             padding: 2rem 0;
             position: relative;
-        }
-
-        main .grain-overlay {
-            --grain-opacity: var(--yellow-grain);
         }
 
         .section {
@@ -386,6 +379,18 @@
             margin-bottom: 0;
         }
 
+        .control-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .control-col {
+            flex: 1;
+            min-width: 120px;
+        }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
@@ -417,14 +422,41 @@
         .grain-controls {
             margin-top: 2rem;
         }
+        
+        .grain-preview {
+            height: 50px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .grain-color-black {
+            background-color: var(--black);
+        }
+        
+        .grain-color-yellow {
+            background-color: var(--yellow);
+        }
+        
+        .grain-color-cyan {
+            background-color: var(--cyan);
+        }
+        
+        .grain-color-green {
+            background-color: var(--green);
+        }
+        
+        .grain-color-magenta {
+            background-color: var(--magenta);
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="grain-overlay"></div>
+    <header class="grain-container" id="header-container">
+        <canvas class="grain-canvas" id="header-grain"></canvas>
         <div class="container">
-            <div class="row">
+            <div class="row header-content">
                 <div class="col col-6 col-md-12">
                     <h1 class="logo">Attach Part</h1>
                 </div>
@@ -443,20 +475,20 @@
     
     <!-- Colored Stripes -->
     <div class="stripes">
-        <div class="stripe cyan">
-            <div class="grain-overlay"></div>
+        <div class="stripe cyan grain-container" id="cyan-container">
+            <canvas class="grain-canvas" id="cyan-grain"></canvas>
         </div>
-        <div class="stripe green">
-            <div class="grain-overlay"></div>
+        <div class="stripe green grain-container" id="green-container">
+            <canvas class="grain-canvas" id="green-grain"></canvas>
         </div>
-        <div class="stripe magenta">
-            <div class="grain-overlay"></div>
+        <div class="stripe magenta grain-container" id="magenta-container">
+            <canvas class="grain-canvas" id="magenta-grain"></canvas>
         </div>
     </div>
     
     <!-- Content Area -->
-    <main>
-        <div class="grain-overlay"></div>
+    <main class="grain-container" id="main-container">
+        <canvas class="grain-canvas" id="main-grain"></canvas>
         <div class="container">
             <!-- Type Specimen -->
             <div class="section type-specimen">
@@ -596,39 +628,114 @@
                             <h3>Grain Controls</h3>
                         </div>
                         <div class="controls-content">
+                            <!-- Black Grain -->
                             <div class="control-group">
-                                <label for="black-grain">Black Grain</label>
-                                <input type="range" id="black-grain" min="0" max="0.3" step="0.01" value="0.05">
-                                <span class="control-value" id="black-grain-value">0.05</span>
-                                <span class="control-code">In CSS: --black-grain: <span id="black-grain-code">0.05</span>;</span>
+                                <h4>Black Grain</h4>
+                                <div class="grain-preview grain-color-black" id="black-preview">
+                                    <canvas class="grain-canvas" id="black-preview-grain"></canvas>
+                                </div>
+                                <div class="control-row">
+                                    <div class="control-col">
+                                        <label for="black-grain-freq">Frequency</label>
+                                        <input type="range" id="black-grain-freq" min="0" max="1" step="0.01" value="0.5">
+                                        <span class="control-value" id="black-grain-freq-value">0.5</span>
+                                        <span class="control-code">--black-grain-freq: <span id="black-grain-freq-code">0.5</span>;</span>
+                                    </div>
+                                    <div class="control-col">
+                                        <label for="black-grain-opacity">Opacity</label>
+                                        <input type="range" id="black-grain-opacity" min="0" max="1" step="0.01" value="0.3">
+                                        <span class="control-value" id="black-grain-opacity-value">0.3</span>
+                                        <span class="control-code">--black-grain-opacity: <span id="black-grain-opacity-code">0.3</span>;</span>
+                                    </div>
+                                </div>
                             </div>
                             
+                            <!-- Yellow Grain -->
                             <div class="control-group">
-                                <label for="yellow-grain">Yellow Grain</label>
-                                <input type="range" id="yellow-grain" min="0" max="0.3" step="0.01" value="0.10">
-                                <span class="control-value" id="yellow-grain-value">0.10</span>
-                                <span class="control-code">In CSS: --yellow-grain: <span id="yellow-grain-code">0.10</span>;</span>
+                                <h4>Yellow Grain</h4>
+                                <div class="grain-preview grain-color-yellow" id="yellow-preview">
+                                    <canvas class="grain-canvas" id="yellow-preview-grain"></canvas>
+                                </div>
+                                <div class="control-row">
+                                    <div class="control-col">
+                                        <label for="yellow-grain-freq">Frequency</label>
+                                        <input type="range" id="yellow-grain-freq" min="0" max="1" step="0.01" value="0.5">
+                                        <span class="control-value" id="yellow-grain-freq-value">0.5</span>
+                                        <span class="control-code">--yellow-grain-freq: <span id="yellow-grain-freq-code">0.5</span>;</span>
+                                    </div>
+                                    <div class="control-col">
+                                        <label for="yellow-grain-opacity">Opacity</label>
+                                        <input type="range" id="yellow-grain-opacity" min="0" max="1" step="0.01" value="0.3">
+                                        <span class="control-value" id="yellow-grain-opacity-value">0.3</span>
+                                        <span class="control-code">--yellow-grain-opacity: <span id="yellow-grain-opacity-code">0.3</span>;</span>
+                                    </div>
+                                </div>
                             </div>
                             
+                            <!-- Cyan Grain -->
                             <div class="control-group">
-                                <label for="cyan-grain">Cyan Grain</label>
-                                <input type="range" id="cyan-grain" min="0" max="0.3" step="0.01" value="0.15">
-                                <span class="control-value" id="cyan-grain-value">0.15</span>
-                                <span class="control-code">In CSS: --cyan-grain: <span id="cyan-grain-code">0.15</span>;</span>
+                                <h4>Cyan Grain</h4>
+                                <div class="grain-preview grain-color-cyan" id="cyan-preview">
+                                    <canvas class="grain-canvas" id="cyan-preview-grain"></canvas>
+                                </div>
+                                <div class="control-row">
+                                    <div class="control-col">
+                                        <label for="cyan-grain-freq">Frequency</label>
+                                        <input type="range" id="cyan-grain-freq" min="0" max="1" step="0.01" value="0.5">
+                                        <span class="control-value" id="cyan-grain-freq-value">0.5</span>
+                                        <span class="control-code">--cyan-grain-freq: <span id="cyan-grain-freq-code">0.5</span>;</span>
+                                    </div>
+                                    <div class="control-col">
+                                        <label for="cyan-grain-opacity">Opacity</label>
+                                        <input type="range" id="cyan-grain-opacity" min="0" max="1" step="0.01" value="0.3">
+                                        <span class="control-value" id="cyan-grain-opacity-value">0.3</span>
+                                        <span class="control-code">--cyan-grain-opacity: <span id="cyan-grain-opacity-code">0.3</span>;</span>
+                                    </div>
+                                </div>
                             </div>
                             
+                            <!-- Green Grain -->
                             <div class="control-group">
-                                <label for="green-grain">Green Grain</label>
-                                <input type="range" id="green-grain" min="0" max="0.3" step="0.01" value="0.12">
-                                <span class="control-value" id="green-grain-value">0.12</span>
-                                <span class="control-code">In CSS: --green-grain: <span id="green-grain-code">0.12</span>;</span>
+                                <h4>Green Grain</h4>
+                                <div class="grain-preview grain-color-green" id="green-preview">
+                                    <canvas class="grain-canvas" id="green-preview-grain"></canvas>
+                                </div>
+                                <div class="control-row">
+                                    <div class="control-col">
+                                        <label for="green-grain-freq">Frequency</label>
+                                        <input type="range" id="green-grain-freq" min="0" max="1" step="0.01" value="0.5">
+                                        <span class="control-value" id="green-grain-freq-value">0.5</span>
+                                        <span class="control-code">--green-grain-freq: <span id="green-grain-freq-code">0.5</span>;</span>
+                                    </div>
+                                    <div class="control-col">
+                                        <label for="green-grain-opacity">Opacity</label>
+                                        <input type="range" id="green-grain-opacity" min="0" max="1" step="0.01" value="0.3">
+                                        <span class="control-value" id="green-grain-opacity-value">0.3</span>
+                                        <span class="control-code">--green-grain-opacity: <span id="green-grain-opacity-code">0.3</span>;</span>
+                                    </div>
+                                </div>
                             </div>
                             
+                            <!-- Magenta Grain -->
                             <div class="control-group">
-                                <label for="magenta-grain">Magenta Grain</label>
-                                <input type="range" id="magenta-grain" min="0" max="0.3" step="0.01" value="0.08">
-                                <span class="control-value" id="magenta-grain-value">0.08</span>
-                                <span class="control-code">In CSS: --magenta-grain: <span id="magenta-grain-code">0.08</span>;</span>
+                                <h4>Magenta Grain</h4>
+                                <div class="grain-preview grain-color-magenta" id="magenta-preview">
+                                    <canvas class="grain-canvas" id="magenta-preview-grain"></canvas>
+                                </div>
+                                <div class="control-row">
+                                    <div class="control-col">
+                                        <label for="magenta-grain-freq">Frequency</label>
+                                        <input type="range" id="magenta-grain-freq" min="0" max="1" step="0.01" value="0.5">
+                                        <span class="control-value" id="magenta-grain-freq-value">0.5</span>
+                                        <span class="control-code">--magenta-grain-freq: <span id="magenta-grain-freq-code">0.5</span>;</span>
+                                    </div>
+                                    <div class="control-col">
+                                        <label for="magenta-grain-opacity">Opacity</label>
+                                        <input type="range" id="magenta-grain-opacity" min="0" max="1" step="0.01" value="0.3">
+                                        <span class="control-value" id="magenta-grain-opacity-value">0.3</span>
+                                        <span class="control-code">--magenta-grain-opacity: <span id="magenta-grain-opacity-code">0.3</span>;</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -653,23 +760,68 @@
             const lineHeightCode = document.getElementById('line-height-code');
             
             // Grain controls
-            const blackGrainInput = document.getElementById('black-grain');
-            const yellowGrainInput = document.getElementById('yellow-grain');
-            const cyanGrainInput = document.getElementById('cyan-grain');
-            const greenGrainInput = document.getElementById('green-grain');
-            const magentaGrainInput = document.getElementById('magenta-grain');
-            
-            const blackGrainValue = document.getElementById('black-grain-value');
-            const yellowGrainValue = document.getElementById('yellow-grain-value');
-            const cyanGrainValue = document.getElementById('cyan-grain-value');
-            const greenGrainValue = document.getElementById('green-grain-value');
-            const magentaGrainValue = document.getElementById('magenta-grain-value');
-            
-            const blackGrainCode = document.getElementById('black-grain-code');
-            const yellowGrainCode = document.getElementById('yellow-grain-code');
-            const cyanGrainCode = document.getElementById('cyan-grain-code');
-            const greenGrainCode = document.getElementById('green-grain-code');
-            const magentaGrainCode = document.getElementById('magenta-grain-code');
+            const grainControls = {
+                black: {
+                    freq: document.getElementById('black-grain-freq'),
+                    opacity: document.getElementById('black-grain-opacity'),
+                    freqValue: document.getElementById('black-grain-freq-value'),
+                    opacityValue: document.getElementById('black-grain-opacity-value'),
+                    freqCode: document.getElementById('black-grain-freq-code'),
+                    opacityCode: document.getElementById('black-grain-opacity-code'),
+                    canvas: document.getElementById('header-grain'),
+                    previewCanvas: document.getElementById('black-preview-grain'),
+                    container: document.getElementById('header-container'),
+                    previewContainer: document.getElementById('black-preview')
+                },
+                yellow: {
+                    freq: document.getElementById('yellow-grain-freq'),
+                    opacity: document.getElementById('yellow-grain-opacity'),
+                    freqValue: document.getElementById('yellow-grain-freq-value'),
+                    opacityValue: document.getElementById('yellow-grain-opacity-value'),
+                    freqCode: document.getElementById('yellow-grain-freq-code'),
+                    opacityCode: document.getElementById('yellow-grain-opacity-code'),
+                    canvas: document.getElementById('main-grain'),
+                    previewCanvas: document.getElementById('yellow-preview-grain'),
+                    container: document.getElementById('main-container'),
+                    previewContainer: document.getElementById('yellow-preview')
+                },
+                cyan: {
+                    freq: document.getElementById('cyan-grain-freq'),
+                    opacity: document.getElementById('cyan-grain-opacity'),
+                    freqValue: document.getElementById('cyan-grain-freq-value'),
+                    opacityValue: document.getElementById('cyan-grain-opacity-value'),
+                    freqCode: document.getElementById('cyan-grain-freq-code'),
+                    opacityCode: document.getElementById('cyan-grain-opacity-code'),
+                    canvas: document.getElementById('cyan-grain'),
+                    previewCanvas: document.getElementById('cyan-preview-grain'),
+                    container: document.getElementById('cyan-container'),
+                    previewContainer: document.getElementById('cyan-preview')
+                },
+                green: {
+                    freq: document.getElementById('green-grain-freq'),
+                    opacity: document.getElementById('green-grain-opacity'),
+                    freqValue: document.getElementById('green-grain-freq-value'),
+                    opacityValue: document.getElementById('green-grain-opacity-value'),
+                    freqCode: document.getElementById('green-grain-freq-code'),
+                    opacityCode: document.getElementById('green-grain-opacity-code'),
+                    canvas: document.getElementById('green-grain'),
+                    previewCanvas: document.getElementById('green-preview-grain'),
+                    container: document.getElementById('green-container'),
+                    previewContainer: document.getElementById('green-preview')
+                },
+                magenta: {
+                    freq: document.getElementById('magenta-grain-freq'),
+                    opacity: document.getElementById('magenta-grain-opacity'),
+                    freqValue: document.getElementById('magenta-grain-freq-value'),
+                    opacityValue: document.getElementById('magenta-grain-opacity-value'),
+                    freqCode: document.getElementById('magenta-grain-freq-code'),
+                    opacityCode: document.getElementById('magenta-grain-opacity-code'),
+                    canvas: document.getElementById('magenta-grain'),
+                    previewCanvas: document.getElementById('magenta-preview-grain'),
+                    container: document.getElementById('magenta-container'),
+                    previewContainer: document.getElementById('magenta-preview')
+                }
+            };
             
             const root = document.documentElement;
             
@@ -695,34 +847,64 @@
                 lineHeightCode.textContent = lineHeight;
             }
             
-            // Update function for grain controls
-            function updateGrain() {
-                const blackGrain = blackGrainInput.value;
-                const yellowGrain = yellowGrainInput.value;
-                const cyanGrain = cyanGrainInput.value;
-                const greenGrain = greenGrainInput.value;
-                const magentaGrain = magentaGrainInput.value;
+            // Function to generate grain on a canvas
+            function generateGrain(canvas, container, frequency, opacity) {
+                if (!canvas || !container) return;
                 
-                // Update CSS variables
-                root.style.setProperty('--black-grain', blackGrain);
-                root.style.setProperty('--yellow-grain', yellowGrain);
-                root.style.setProperty('--cyan-grain', cyanGrain);
-                root.style.setProperty('--green-grain', greenGrain);
-                root.style.setProperty('--magenta-grain', magentaGrain);
+                // Set canvas dimensions
+                canvas.width = container.offsetWidth;
+                canvas.height = container.offsetHeight;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Calculate spacing based on frequency
+                // Frequency 1 = checkerboard (1px spacing)
+                // Frequency 0 = 500px spacing
+                const maxSpacing = 500;
+                const spacing = Math.max(1, Math.floor(maxSpacing * (1 - frequency)));
+                
+                // Draw grain
+                ctx.fillStyle = 'black';
+                ctx.globalAlpha = opacity;
+                
+                for (let y = 0; y < canvas.height; y += spacing) {
+                    for (let x = 0; x < canvas.width; x += spacing) {
+                        // Randomize a bit to avoid perfect grid
+                        if (Math.random() > 0.5 || frequency === 1) {
+                            ctx.fillRect(x, y, 1, 1);
+                        }
+                    }
+                }
+            }
+            
+            // Function to update grain for a specific color
+            function updateGrainForColor(colorKey) {
+                const control = grainControls[colorKey];
+                const freq = control.freq.value;
+                const opacity = control.opacity.value;
                 
                 // Update displayed values
-                blackGrainValue.textContent = blackGrain;
-                yellowGrainValue.textContent = yellowGrain;
-                cyanGrainValue.textContent = cyanGrain;
-                greenGrainValue.textContent = greenGrain;
-                magentaGrainValue.textContent = magentaGrain;
+                control.freqValue.textContent = freq;
+                control.opacityValue.textContent = opacity;
+                control.freqCode.textContent = freq;
+                control.opacityCode.textContent = opacity;
                 
-                // Update code snippets
-                blackGrainCode.textContent = blackGrain;
-                yellowGrainCode.textContent = yellowGrain;
-                cyanGrainCode.textContent = cyanGrain;
-                greenGrainCode.textContent = greenGrain;
-                magentaGrainCode.textContent = magentaGrain;
+                // Generate grain on the main canvas and preview canvas
+                generateGrain(control.canvas, control.container, freq, opacity);
+                generateGrain(control.previewCanvas, control.previewContainer, freq, opacity);
+            }
+            
+            // Function to update all grain
+            function updateAllGrain() {
+                for (const colorKey in grainControls) {
+                    updateGrainForColor(colorKey);
+                }
+            }
+            
+            // Function to handle window resize
+            function handleResize() {
+                updateAllGrain();
             }
             
             // Set initial values for type scale
@@ -735,16 +917,51 @@
             scaleRatioInput.addEventListener('input', updateTypeScale);
             lineHeightInput.addEventListener('input', updateTypeScale);
             
-            // Add event listeners for grain
-            blackGrainInput.addEventListener('input', updateGrain);
-            yellowGrainInput.addEventListener('input', updateGrain);
-            cyanGrainInput.addEventListener('input', updateGrain);
-            greenGrainInput.addEventListener('input', updateGrain);
-            magentaGrainInput.addEventListener('input', updateGrain);
+            // Add event listeners for grain controls
+            for (const colorKey in grainControls) {
+                const control = grainControls[colorKey];
+                control.freq.addEventListener('input', () => updateGrainForColor(colorKey));
+                control.opacity.addEventListener('input', () => updateGrainForColor(colorKey));
+            }
+            
+            // Add window resize listener
+            window.addEventListener('resize', handleResize);
             
             // Initialize
             updateTypeScale();
-            updateGrain();
+            updateAllGrain();
+            
+            // Log current CSS for easy copying
+            function logCSSVariables() {
+                let cssOutput = `:root {\n`;
+                
+                // Typography
+                cssOutput += `  /* Typography */\n`;
+                cssOutput += `  --base-font-size: ${baseFontSizeInput.value}px;\n`;
+                cssOutput += `  --scale-ratio: ${scaleRatioInput.value};\n`;
+                cssOutput += `  --line-height: ${lineHeightInput.value};\n\n`;
+                
+                // Grain settings
+                cssOutput += `  /* Grain */\n`;
+                for (const colorKey in grainControls) {
+                    const control = grainControls[colorKey];
+                    cssOutput += `  --${colorKey}-grain-freq: ${control.freq.value};\n`;
+                    cssOutput += `  --${colorKey}-grain-opacity: ${control.opacity.value};\n`;
+                }
+                
+                cssOutput += `}`;
+                console.log('Current CSS Variables:');
+                console.log(cssOutput);
+            }
+            
+            // Add button to log CSS
+            const controlsHeader = document.querySelector('.controls-header');
+            const logButton = document.createElement('button');
+            logButton.textContent = 'Log CSS to Console';
+            logButton.style.marginLeft = '1rem';
+            logButton.style.padding = '0.25rem 0.5rem';
+            logButton.addEventListener('click', logCSSVariables);
+            controlsHeader.appendChild(logButton);
         });
     </script>
 </body>
