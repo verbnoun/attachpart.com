@@ -31,6 +31,13 @@
             --text-xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
             --text-2xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
             --text-3xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
+            
+            /* Grain variables */
+            --black-grain: 0.05;
+            --yellow-grain: 0.10;
+            --cyan-grain: 0.15;
+            --green-grain: 0.12;
+            --magenta-grain: 0.08;
         }
 
         * {
@@ -44,13 +51,99 @@
             color: var(--black);
             background-color: var(--yellow);
             line-height: var(--line-height);
+            overflow-x: hidden;
         }
 
-        /* Header */
+        /* Layout system */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -1rem;
+        }
+
+        .col {
+            padding: 0 1rem;
+            flex: 1 0 0%;
+        }
+
+        /* Column sizing classes */
+        .col-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+        .col-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+        .col-3 { flex: 0 0 25%; max-width: 25%; }
+        .col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+        .col-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+        .col-6 { flex: 0 0 50%; max-width: 50%; }
+        .col-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+        .col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+        .col-9 { flex: 0 0 75%; max-width: 75%; }
+        .col-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+        .col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+        .col-12 { flex: 0 0 100%; max-width: 100%; }
+
+        /* Column ordering classes */
+        .order-1 { order: 1; }
+        .order-2 { order: 2; }
+        .order-3 { order: 3; }
+        .order-4 { order: 4; }
+        .order-5 { order: 5; }
+        .order-6 { order: 6; }
+
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+            .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+            .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+            .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+            
+            .order-md-1 { order: 1; }
+            .order-md-2 { order: 2; }
+            .order-md-3 { order: 3; }
+            .order-md-4 { order: 4; }
+            .order-md-5 { order: 5; }
+            .order-md-6 { order: 6; }
+        }
+
+        @media (max-width: 576px) {
+            .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
+            .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
+            
+            .order-sm-1 { order: 1; }
+            .order-sm-2 { order: 2; }
+            .order-sm-3 { order: 3; }
+            .order-sm-4 { order: 4; }
+            .order-sm-5 { order: 5; }
+            .order-sm-6 { order: 6; }
+        }
+
+        /* Grain effect with CSS */
+        .grain-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            opacity: var(--grain-opacity, 0.1);
+            mix-blend-mode: multiply;
+            z-index: 1;
+        }
+
+        /* Header with grain */
         header {
             background-color: var(--black);
-            padding: 2rem;
-            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        header .grain-overlay {
+            --grain-opacity: var(--black-grain);
         }
 
         .logo {
@@ -61,40 +154,102 @@
             letter-spacing: 0.05em;
         }
 
-        /* Stripes */
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .header-nav a {
+            color: var(--yellow);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .header-nav a:hover {
+            opacity: 1;
+        }
+
+        /* Stripes with grain */
         .stripes {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
 
         .stripe {
             height: 30px;
             width: 100%;
+            position: relative;
         }
 
         .cyan {
             background-color: var(--cyan);
         }
 
+        .cyan .grain-overlay {
+            --grain-opacity: var(--cyan-grain);
+        }
+
         .green {
             background-color: var(--green);
+        }
+
+        .green .grain-overlay {
+            --grain-opacity: var(--green-grain);
         }
 
         .magenta {
             background-color: var(--magenta);
         }
 
+        .magenta .grain-overlay {
+            --grain-opacity: var(--magenta-grain);
+        }
+
         /* Content Area */
         main {
             background-color: var(--yellow);
             color: var(--black);
-            padding: 2rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        main .grain-overlay {
+            --grain-opacity: var(--yellow-grain);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            font-size: var(--text-2xl);
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: var(--text-lg);
+            margin-bottom: 1rem;
         }
 
         /* Type Specimen */
         .type-specimen {
-            max-width: 800px;
-            margin: 0 auto;
+            margin-bottom: 3rem;
         }
 
         .type-specimen h2 {
@@ -137,6 +292,27 @@
             padding: 1rem;
             border: 1px solid rgba(15, 15, 15, 0.2);
             border-radius: 4px;
+        }
+
+        /* Feature showcase */
+        .feature-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon span {
+            color: var(--yellow);
+            font-size: 24px;
         }
 
         /* Typography Classes */
@@ -185,19 +361,29 @@
         }
 
         /* Type scale controls */
-        .type-controls {
+        .controls-section {
             margin-top: 3rem;
-            padding: 1.5rem;
             background-color: rgba(15, 15, 15, 0.05);
             border-radius: 8px;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .controls-header {
+            background-color: rgba(15, 15, 15, 0.1);
+            padding: 1rem 1.5rem;
         }
 
-        .type-controls h3 {
-            margin-bottom: 1rem;
+        .controls-content {
+            padding: 1.5rem;
         }
 
         .control-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
         }
 
         label {
@@ -213,99 +399,239 @@
         .control-value {
             font-family: monospace;
             font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.25rem;
         }
 
-        @media (max-width: 768px) {
-            .weight-examples {
-                grid-template-columns: 1fr;
-            }
+        .control-code {
+            display: block;
+            background-color: rgba(15, 15, 15, 0.05);
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Grain controls */
+        .grain-controls {
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <h1 class="logo">Attach Part</h1>
+        <div class="grain-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col col-6 col-md-12">
+                    <h1 class="logo">Attach Part</h1>
+                </div>
+                <div class="col col-6 col-md-12">
+                    <div class="header-nav">
+                        <a href="#">Home</a>
+                        <a href="#">Products</a>
+                        <a href="#">Services</a>
+                        <a href="#">About</a>
+                        <a href="#">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
     
     <!-- Colored Stripes -->
     <div class="stripes">
-        <div class="stripe cyan"></div>
-        <div class="stripe green"></div>
-        <div class="stripe magenta"></div>
+        <div class="stripe cyan">
+            <div class="grain-overlay"></div>
+        </div>
+        <div class="stripe green">
+            <div class="grain-overlay"></div>
+        </div>
+        <div class="stripe magenta">
+            <div class="grain-overlay"></div>
+        </div>
     </div>
     
     <!-- Content Area -->
     <main>
-        <div class="type-specimen">
-            <h2>Type Specimen</h2>
-            
-            <div class="font-example">
-                <h3>Lexend Light (300)</h3>
-                <p class="font-name">Logo Font</p>
-                <div class="size-example">
-                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-3xl">Attach Part</p>
-                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-2xl">Attach Part</p>
-                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-xl">Attach Part</p>
-                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-lg">Attach Part</p>
-                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-md">Attach Part</p>
-                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-sm">Attach Part</p>
-                    <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-xs">Attach Part</p>
+        <div class="grain-overlay"></div>
+        <div class="container">
+            <!-- Type Specimen -->
+            <div class="section type-specimen">
+                <h2 class="section-title">Type Specimen</h2>
+                
+                <div class="font-example">
+                    <h3>Lexend Light (300)</h3>
+                    <p class="font-name">Logo Font</p>
+                    <div class="size-example">
+                        <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-3xl">Attach Part</p>
+                        <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-2xl">Attach Part</p>
+                        <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-xl">Attach Part</p>
+                        <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-lg">Attach Part</p>
+                        <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-md">Attach Part</p>
+                        <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-sm">Attach Part</p>
+                        <p style="font-family: 'Lexend', sans-serif; font-weight: 300;" class="text-xs">Attach Part</p>
+                    </div>
+                </div>
+                
+                <div class="font-example">
+                    <h3>Noto Sans JP</h3>
+                    <p class="font-name">Body Font</p>
+                    <div class="weight-examples">
+                        <div class="weight-example">
+                            <p class="font-light">Light (300)</p>
+                            <p class="font-light">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                        </div>
+                        <div class="weight-example">
+                            <p class="font-regular">Regular (400)</p>
+                            <p class="font-regular">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                        </div>
+                        <div class="weight-example">
+                            <p class="font-medium">Medium (500)</p>
+                            <p class="font-medium">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                        </div>
+                        <div class="weight-example">
+                            <p class="font-bold">Bold (700)</p>
+                            <p class="font-bold">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="size-example">
+                        <p class="text-3xl">Text 3XL - The quick brown fox.</p>
+                        <p class="text-2xl">Text 2XL - The quick brown fox.</p>
+                        <p class="text-xl">Text XL - The quick brown fox jumps over the lazy dog.</p>
+                        <p class="text-lg">Text LG - The quick brown fox jumps over the lazy dog.</p>
+                        <p class="text-md">Text MD - The quick brown fox jumps over the lazy dog.</p>
+                        <p class="text-sm">Text SM - The quick brown fox jumps over the lazy dog. This is the base font size.</p>
+                        <p class="text-xs">Text XS - The quick brown fox jumps over the lazy dog. This is the smallest size.</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="font-example">
-                <h3>Noto Sans JP</h3>
-                <p class="font-name">Body Font</p>
-                <div class="weight-examples">
-                    <div class="weight-example">
-                        <p class="font-light">Light (300)</p>
-                        <p class="font-light">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+            <!-- Layout Example -->
+            <div class="section">
+                <h2 class="section-title">Layout Example</h2>
+                <div class="row">
+                    <!-- Column 1 -->
+                    <div class="col col-4 col-md-6 col-sm-12 order-1 order-sm-2">
+                        <div class="card">
+                            <h3 class="card-title">Column 1</h3>
+                            <p>This is the first column in the layout. On mobile, this will be the second row.</p>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <span>1</span>
+                                </div>
+                                <p>Feature description goes here. This explains what the feature does and why it matters.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="weight-example">
-                        <p class="font-regular">Regular (400)</p>
-                        <p class="font-regular">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                    
+                    <!-- Column 2 -->
+                    <div class="col col-4 col-md-6 col-sm-12 order-2 order-sm-3">
+                        <div class="card">
+                            <h3 class="card-title">Column 2</h3>
+                            <p>This is the second column in the layout. On mobile, this will be the third row.</p>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <span>2</span>
+                                </div>
+                                <p>Another feature description. The layout system makes it easy to create responsive designs.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="weight-example">
-                        <p class="font-medium">Medium (500)</p>
-                        <p class="font-medium">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
+                    
+                    <!-- Column 3 -->
+                    <div class="col col-4 col-md-12 col-sm-12 order-3 order-sm-1">
+                        <div class="card">
+                            <h3 class="card-title">Column 3</h3>
+                            <p>This is the third column in the layout. On mobile, this will be the first row.</p>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <span>3</span>
+                                </div>
+                                <p>This demonstrates the ordering feature. On desktop, this is the third column, but on mobile it appears first.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="weight-example">
-                        <p class="font-bold">Bold (700)</p>
-                        <p class="font-bold">The quick brown fox jumps over the lazy dog. 英字の前後に日本語 を入れてみます。</p>
-                    </div>
-                </div>
-                
-                <div class="size-example">
-                    <p class="text-3xl">Text 3XL - The quick brown fox.</p>
-                    <p class="text-2xl">Text 2XL - The quick brown fox.</p>
-                    <p class="text-xl">Text XL - The quick brown fox jumps over the lazy dog.</p>
-                    <p class="text-lg">Text LG - The quick brown fox jumps over the lazy dog.</p>
-                    <p class="text-md">Text MD - The quick brown fox jumps over the lazy dog.</p>
-                    <p class="text-sm">Text SM - The quick brown fox jumps over the lazy dog. This is the base font size.</p>
-                    <p class="text-xs">Text XS - The quick brown fox jumps over the lazy dog. This is the smallest size.</p>
                 </div>
             </div>
             
-            <div class="type-controls">
-                <h3>Type Scale Controls</h3>
-                
-                <div class="control-group">
-                    <label for="base-font-size">Base Font Size</label>
-                    <input type="range" id="base-font-size" min="12" max="24" step="1">
-                    <span class="control-value" id="base-font-size-value">16px</span>
+            <!-- Controls -->
+            <div class="row">
+                <div class="col col-6 col-md-12">
+                    <div class="controls-section">
+                        <div class="controls-header">
+                            <h3>Type Scale Controls</h3>
+                        </div>
+                        <div class="controls-content">
+                            <div class="control-group">
+                                <label for="base-font-size">Base Font Size</label>
+                                <input type="range" id="base-font-size" min="12" max="24" step="1">
+                                <span class="control-value" id="base-font-size-value">16px</span>
+                                <span class="control-code">In CSS: --base-font-size: <span id="base-font-code">16px</span>;</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="scale-ratio">Scale Ratio</label>
+                                <input type="range" id="scale-ratio" min="1.05" max="1.5" step="0.01">
+                                <span class="control-value" id="scale-ratio-value">1.25</span>
+                                <span class="control-code">In CSS: --scale-ratio: <span id="scale-ratio-code">1.25</span>;</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="line-height">Line Height</label>
+                                <input type="range" id="line-height" min="1" max="2" step="0.05">
+                                <span class="control-value" id="line-height-value">1.5</span>
+                                <span class="control-code">In CSS: --line-height: <span id="line-height-code">1.5</span>;</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="control-group">
-                    <label for="scale-ratio">Scale Ratio</label>
-                    <input type="range" id="scale-ratio" min="1.05" max="1.5" step="0.01">
-                    <span class="control-value" id="scale-ratio-value">1.25</span>
-                </div>
-                
-                <div class="control-group">
-                    <label for="line-height">Line Height</label>
-                    <input type="range" id="line-height" min="1" max="2" step="0.05">
-                    <span class="control-value" id="line-height-value">1.5</span>
+                <div class="col col-6 col-md-12">
+                    <div class="controls-section grain-controls">
+                        <div class="controls-header">
+                            <h3>Grain Controls</h3>
+                        </div>
+                        <div class="controls-content">
+                            <div class="control-group">
+                                <label for="black-grain">Black Grain</label>
+                                <input type="range" id="black-grain" min="0" max="0.3" step="0.01" value="0.05">
+                                <span class="control-value" id="black-grain-value">0.05</span>
+                                <span class="control-code">In CSS: --black-grain: <span id="black-grain-code">0.05</span>;</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="yellow-grain">Yellow Grain</label>
+                                <input type="range" id="yellow-grain" min="0" max="0.3" step="0.01" value="0.10">
+                                <span class="control-value" id="yellow-grain-value">0.10</span>
+                                <span class="control-code">In CSS: --yellow-grain: <span id="yellow-grain-code">0.10</span>;</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="cyan-grain">Cyan Grain</label>
+                                <input type="range" id="cyan-grain" min="0" max="0.3" step="0.01" value="0.15">
+                                <span class="control-value" id="cyan-grain-value">0.15</span>
+                                <span class="control-code">In CSS: --cyan-grain: <span id="cyan-grain-code">0.15</span>;</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="green-grain">Green Grain</label>
+                                <input type="range" id="green-grain" min="0" max="0.3" step="0.01" value="0.12">
+                                <span class="control-value" id="green-grain-value">0.12</span>
+                                <span class="control-code">In CSS: --green-grain: <span id="green-grain-code">0.12</span>;</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="magenta-grain">Magenta Grain</label>
+                                <input type="range" id="magenta-grain" min="0" max="0.3" step="0.01" value="0.08">
+                                <span class="control-value" id="magenta-grain-value">0.08</span>
+                                <span class="control-code">In CSS: --magenta-grain: <span id="magenta-grain-code">0.08</span>;</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -313,6 +639,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Type scale controls
             const baseFontSizeInput = document.getElementById('base-font-size');
             const scaleRatioInput = document.getElementById('scale-ratio');
             const lineHeightInput = document.getElementById('line-height');
@@ -321,9 +648,32 @@
             const scaleRatioValue = document.getElementById('scale-ratio-value');
             const lineHeightValue = document.getElementById('line-height-value');
             
+            const baseFontCode = document.getElementById('base-font-code');
+            const scaleRatioCode = document.getElementById('scale-ratio-code');
+            const lineHeightCode = document.getElementById('line-height-code');
+            
+            // Grain controls
+            const blackGrainInput = document.getElementById('black-grain');
+            const yellowGrainInput = document.getElementById('yellow-grain');
+            const cyanGrainInput = document.getElementById('cyan-grain');
+            const greenGrainInput = document.getElementById('green-grain');
+            const magentaGrainInput = document.getElementById('magenta-grain');
+            
+            const blackGrainValue = document.getElementById('black-grain-value');
+            const yellowGrainValue = document.getElementById('yellow-grain-value');
+            const cyanGrainValue = document.getElementById('cyan-grain-value');
+            const greenGrainValue = document.getElementById('green-grain-value');
+            const magentaGrainValue = document.getElementById('magenta-grain-value');
+            
+            const blackGrainCode = document.getElementById('black-grain-code');
+            const yellowGrainCode = document.getElementById('yellow-grain-code');
+            const cyanGrainCode = document.getElementById('cyan-grain-code');
+            const greenGrainCode = document.getElementById('green-grain-code');
+            const magentaGrainCode = document.getElementById('magenta-grain-code');
+            
             const root = document.documentElement;
             
-            // Update function for all controls
+            // Update function for type scale controls
             function updateTypeScale() {
                 const baseFontSize = baseFontSizeInput.value;
                 const scaleRatio = scaleRatioInput.value;
@@ -338,20 +688,63 @@
                 baseFontSizeValue.textContent = `${baseFontSize}px`;
                 scaleRatioValue.textContent = scaleRatio;
                 lineHeightValue.textContent = lineHeight;
+                
+                // Update code snippets
+                baseFontCode.textContent = `${baseFontSize}px`;
+                scaleRatioCode.textContent = scaleRatio;
+                lineHeightCode.textContent = lineHeight;
             }
             
-            // Set initial values
+            // Update function for grain controls
+            function updateGrain() {
+                const blackGrain = blackGrainInput.value;
+                const yellowGrain = yellowGrainInput.value;
+                const cyanGrain = cyanGrainInput.value;
+                const greenGrain = greenGrainInput.value;
+                const magentaGrain = magentaGrainInput.value;
+                
+                // Update CSS variables
+                root.style.setProperty('--black-grain', blackGrain);
+                root.style.setProperty('--yellow-grain', yellowGrain);
+                root.style.setProperty('--cyan-grain', cyanGrain);
+                root.style.setProperty('--green-grain', greenGrain);
+                root.style.setProperty('--magenta-grain', magentaGrain);
+                
+                // Update displayed values
+                blackGrainValue.textContent = blackGrain;
+                yellowGrainValue.textContent = yellowGrain;
+                cyanGrainValue.textContent = cyanGrain;
+                greenGrainValue.textContent = greenGrain;
+                magentaGrainValue.textContent = magentaGrain;
+                
+                // Update code snippets
+                blackGrainCode.textContent = blackGrain;
+                yellowGrainCode.textContent = yellowGrain;
+                cyanGrainCode.textContent = cyanGrain;
+                greenGrainCode.textContent = greenGrain;
+                magentaGrainCode.textContent = magentaGrain;
+            }
+            
+            // Set initial values for type scale
             baseFontSizeInput.value = 16;
             scaleRatioInput.value = 1.25;
             lineHeightInput.value = 1.5;
             
-            // Add event listeners
+            // Add event listeners for type scale
             baseFontSizeInput.addEventListener('input', updateTypeScale);
             scaleRatioInput.addEventListener('input', updateTypeScale);
             lineHeightInput.addEventListener('input', updateTypeScale);
             
+            // Add event listeners for grain
+            blackGrainInput.addEventListener('input', updateGrain);
+            yellowGrainInput.addEventListener('input', updateGrain);
+            cyanGrainInput.addEventListener('input', updateGrain);
+            greenGrainInput.addEventListener('input', updateGrain);
+            magentaGrainInput.addEventListener('input', updateGrain);
+            
             // Initialize
             updateTypeScale();
+            updateGrain();
         });
     </script>
 </body>
