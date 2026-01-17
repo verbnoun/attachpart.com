@@ -160,6 +160,29 @@ body {
   height: auto;
 }
 
+/* Sprite Animation */
+.sprite-player {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1;
+}
+
+.sprite-player img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  /* No transition - instant swap to prevent flicker */
+}
+
+.sprite-player img.active {
+  opacity: 1;
+}
+
 .product h2 {
   font-size: 3.5rem;
   font-weight: 400;
