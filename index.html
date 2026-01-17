@@ -1,518 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attach Part</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --black: rgb(15, 15, 15);
-            --yellow: rgb(255, 252, 204);
-            --cyan: rgb(78, 211, 255);
-            --green: rgb(78, 201, 47);
-            --magenta: rgb(255, 20, 149);
-            
-            /* Type scale variables */
-            --base-font-size: 16px;
-            --scale-ratio: 1.25;
-            --line-height: 1.5;
-            
-            /* Calculate type scale */
-            --text-xs: calc(var(--base-font-size) / var(--scale-ratio));
-            --text-sm: var(--base-font-size);
-            --text-md: calc(var(--base-font-size) * var(--scale-ratio));
-            --text-lg: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio));
-            --text-xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
-            --text-2xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
-            --text-3xl: calc(var(--base-font-size) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio) * var(--scale-ratio));
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-            color: var(--black);
-            background-color: var(--yellow);
-            line-height: var(--line-height);
-            overflow-x: hidden;
-        }
-
-        /* Layout system */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0 -1rem;
-            align-items: flex-start; /* Align at the top */
-        }
-
-        .col {
-            padding: 0 1rem;
-            flex: 1 0 0%;
-        }
-
-        /* Column sizing classes */
-        .col-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
-        .col-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
-        .col-3 { flex: 0 0 25%; max-width: 25%; }
-        .col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-        .col-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
-        .col-6 { flex: 0 0 50%; max-width: 50%; }
-        .col-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
-        .col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
-        .col-9 { flex: 0 0 75%; max-width: 75%; }
-        .col-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
-        .col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
-        .col-12 { flex: 0 0 100%; max-width: 100%; }
-
-        /* Responsive breakpoints */
-        @media (max-width: 768px) {
-            .col-md-12 { flex: 0 0 100%; max-width: 100%; }
-            .col-md-6 { flex: 0 0 50%; max-width: 50%; }
-            .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-            
-            /* Adjust logo size for mobile */
-            .logo {
-                font-size: 20vw; /* Larger on mobile for better visibility */
-            }
-        }
-
-        @media (max-width: 576px) {
-            .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
-            .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
-        }
-        
-        /* Remove all rounded corners */
-        .color-swatch,
-        .text-example,
-        .box-example,
-        .bordered-box,
-        pre.code-example {
-            border-radius: 0;
-        }
-        
-        /* Style guide elements */
-        .style-guide {
-            margin-top: 3rem;
-        }
-        
-        .style-guide-title {
-            font-size: var(--text-2xl);
-            margin-bottom: 1.5rem;
-        }
-        
-        .color-swatches {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .color-swatch {
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 1rem;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .color-swatch-black {
-            background-color: var(--black);
-        }
-        
-        .color-swatch-yellow {
-            background-color: var(--yellow);
-            color: var(--black);
-        }
-        
-        .color-swatch-cyan {
-            background-color: var(--cyan);
-            color: var(--black);
-        }
-        
-        .color-swatch-green {
-            background-color: var(--green);
-            color: var(--black);
-        }
-        
-        .color-swatch-magenta {
-            background-color: var(--magenta);
-        }
-        
-        .color-name {
-            font-weight: bold;
-            font-size: var(--text-md);
-            margin-bottom: 0.3rem;
-        }
-        
-        .color-value {
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-        
-        .text-examples {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .text-example {
-            padding: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .text-example-title {
-            font-weight: bold;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .text-example-content {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .yellow-on-black {
-            background-color: var(--black);
-            color: var(--yellow);
-        }
-        
-        .black-on-yellow {
-            background-color: var(--yellow);
-            color: var(--black);
-        }
-        
-        .box-examples {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .box-example {
-            padding: 1.5rem;
-            background-color: var(--yellow); /* Changed from white to yellow */
-            position: relative;
-        }
-        
-        .box-title {
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: var(--black);
-        }
-        
-        .bordered-box {
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background-color: var(--yellow); /* Changed from white to yellow */
-            color: var(--black);
-        }
-        
-        .border-black {
-            border: 2px solid var(--black);
-        }
-        
-        .border-yellow {
-            border: 2px solid var(--yellow);
-        }
-        
-        .border-cyan {
-            border: 2px solid var(--cyan);
-        }
-        
-        .border-green {
-            border: 2px solid var(--green);
-        }
-        
-        .border-magenta {
-            border: 2px solid var(--magenta);
-        }
-
-        /* Header */
-        header {
-            background-color: var(--black);
-            padding-top: 10vw; /* 1x dynamic line height */
-            position: relative;
-        }
-
-        .logo-container {
-            padding-bottom: calc(0.5 * 10vw); /* 0.5x dynamic line height */
-        }
-
-        .logo {
-            font-family: 'Lexend', sans-serif;
-            font-weight: 300;
-            color: var(--yellow);
-            font-size: 10vw; /* Responsive font size based on viewport width */
-            letter-spacing: 0.05em;
-            position: relative;
-            z-index: 2;
-            line-height: 1.0; /* Exact 1.0 line height as requested */
-            word-break: break-word;
-            width: 100%;
-            display: block;
-        }
-        
-        /* Yellow lines */
-        .yellow-line {
-            height: 30px;
-            width: 100%;
-            background-color: transparent; /* Transparent background */
-            border-top: 2px solid var(--yellow); /* 2px yellow top border */
-            position: relative;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 1.5rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-nav a {
-            color: var(--yellow);
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-
-        .header-nav a:hover {
-            opacity: 1;
-        }
-
-        /* Stripes */
-        .stripes {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .stripe {
-            height: 30px;
-            width: 100%;
-            position: relative;
-        }
-
-        .cyan {
-            background-color: var(--cyan);
-        }
-
-        .green {
-            background-color: var(--green);
-        }
-
-        .magenta {
-            background-color: var(--magenta);
-        }
-
-        /* Main content area */
-        main {
-            background-color: var(--yellow);
-            color: var(--black);
-            padding: 2rem 0;
-            position: relative;
-        }
-        
-        .section {
-            margin-bottom: 3rem;
-        }
-        
-        .section-title {
-            margin-bottom: 1.5rem;
-            font-size: var(--h2-size);
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Type Specimen */
-        .type-specimen {
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .type-specimen h2 {
-            font-size: var(--text-2xl);
-            margin-bottom: 1.5rem;
-        }
-
-        .type-specimen h3 {
-            font-size: var(--text-xl);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .type-specimen p {
-            font-size: var(--text-sm);
-            margin-bottom: 1rem;
-        }
-
-        .font-example {
-            margin-bottom: 2rem;
-        }
-
-        .font-name {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .size-example {
-            margin-bottom: 1.5rem;
-        }
-
-        .weight-examples {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .weight-example {
-            padding: 1rem;
-            border: 1px solid rgba(15, 15, 15, 0.2);
-            border-radius: 4px;
-        }
-
-        /* Typography system with fixed type scale */
-        :root {
-            /* Fixed type scale values */
-            --h1-size: 2.5rem;
-            --h2-size: 2rem;
-            --h3-size: 1.5rem;
-            --h4-size: 1.25rem;
-            --p-size: 1rem;
-            --small-size: 0.875rem;
-        }
-        
-        /* Typography Classes */
-        h1, .h1 {
-            font-size: var(--h1-size);
-            margin-bottom: 0.5em;
-        }
-        
-        h2, .h2 {
-            font-size: var(--h2-size);
-            margin-bottom: 0.5em;
-        }
-        
-        h3, .h3 {
-            font-size: var(--h3-size);
-            margin-bottom: 0.5em;
-        }
-        
-        h4, .h4 {
-            font-size: var(--h4-size);
-            margin-bottom: 0.5em;
-        }
-        
-        p, .p {
-            font-size: var(--p-size);
-            margin-bottom: 1em;
-        }
-        
-        small, .small {
-            font-size: var(--small-size);
-        }
-        
-        .font-light {
-            font-weight: 300;
-        }
-        
-        .font-regular {
-            font-weight: 400;
-        }
-        
-        .font-medium {
-            font-weight: 500;
-        }
-        
-        .font-bold {
-            font-weight: 700;
-        }
-        
-        /* Code example */
-        pre.code-example {
-            padding: 1rem;
-            background-color: var(--black);
-            color: var(--yellow);
-            overflow-x: auto;
-            font-family: monospace;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attach Part</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-       
-        <div class="container">
-            <div class="row logo-container">
-                <div class="col col-8 col-md-12">
-                    <h1 class="logo">Attach<br>Part</h1>
-                </div>
-                <div class="col col-4 col-md-12">
-                    <!-- Empty column -->
-                </div>
-            </div>
-        </div>
-        
-        <!-- Yellow lines within header -->
-        <div class="yellow-line"></div>
-        <div class="yellow-line"></div>
-    </header>
-    
-    <!-- Colored Stripes -->
-    <div class="stripes">
-        <div class="stripe cyan">
-            
-        </div>
-        <div class="stripe green">
-            
-        </div>
-        <div class="stripe magenta">
-            
-        </div>
-    </div>
-    
-    <!-- Content Area -->
-    <main>
-        
-        <div class="container">
-          <div class="section">
-            <h2 class="section-title">Standby ...</h2>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <span class="corner-symbol corner-top-left">♄</span>
+      <span class="corner-symbol corner-top-right">♃</span>
+      <img src="images/hero.png" alt="Bartleby MIDI controller">
+      <h1 class="hero-title">Attach Part</h1>
+    </section>
+
+    <!-- Products -->
+    <section class="products">
+
+      <article class="product product-bartleby">
+        <h2>Bartleby</h2>
+        <p class="product-tagline">Two octave MIDI2.0 MPE USB controller</p>
+        <div class="product-content">
+          <ul class="product-features">
+            <li>Per Key:</li>
+            <li>• Pressure</li>
+            <li>• Pitch Bend</li>
+            <li>Octave ↑↓</li>
+            <li>Belt Loops</li>
+            <li>16 CC knobs</li>
+            <li>OLED labels</li>
+            <li>Instant Config</li>
+            <li>USB MIDI2.0</li>
+          </ul>
+          <div class="product-image">
+            <img src="images/bartleby-diagram.png" alt="Bartleby diagram">
           </div>
-          <div class="section">
-            <a href="mailto:contact@attachpart.com">Contact</a>
-          </div>  
-    </main>
+        </div>
+      </article>
+
+      <article class="product product-candide">
+        <h2>Candide</h2>
+        <p class="product-tagline">Polyphonic MIDI2.0 subtractive synthesizer cartridge</p>
+        <div class="product-content">
+          <ul class="product-features">
+            <li>2 Oscillators</li>
+            <li>6 Polyphonic Voices</li>
+            <li>LFO</li>
+            <li>Modulation Envelope</li>
+            <li>Low Pass Filter</li>
+            <li>Reverb</li>
+            <li>Instant Config</li>
+            <li>USB MIDI2.0</li>
+          </ul>
+          <div class="product-image">
+            <img src="images/candide-diagram.png" alt="Candide diagram">
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-left">
+        <form class="newsletter-form accent-box" action="https://buttondown.com/api/emails/embed-subscribe/AttachPart" method="post">
+          <input type="email" name="email" placeholder="ニュースレター登録 Newsletter Signup" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="footer-right">
+        <a href="https://www.instagram.com/attachpart/" class="link-accent">@attachpart</a>
+        <a href="mailto:contact@attachpart.com" class="link-accent">contact@attachpart.com</a>
+        <p class="text-accent">©Attach Part 2026</p>
+      </div>
+    </footer>
+
+    <!-- Bottom Corner Symbols -->
+    <span class="corner-symbol corner-bottom-left">☉</span>
+    <span class="corner-symbol corner-bottom-right">☽</span>
+
+  </div>
+
 </body>
 </html>
