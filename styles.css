@@ -54,24 +54,8 @@
   border: var(--border-accent);
 }
 
-/* Vertical stack with borders between items (not top/bottom) */
-.border-stack > * + * {
-  border-top: var(--border-accent);
-}
-
-/* Horizontal row with borders between items (not left/right) */
-.border-row > * + * {
-  border-left: var(--border-accent);
-}
-
-/* Utility: underlined link */
-.underline {
-  text-decoration: underline;
-}
-
 /* Text color utilities */
 .text-accent { color: var(--color-accent); }
-.text-muted { color: var(--color-muted); }
 
 * {
   margin: 0;
@@ -98,7 +82,7 @@ body {
 /* Hero */
 .hero {
   position: relative;
-  margin-bottom: var(--gap);
+  margin-bottom: 0;
 }
 
 .hero img {
@@ -119,11 +103,38 @@ body {
   text-shadow: 0 0 4px #000, 0 0 10px #000, 0 0 8px #000;
 }
 
+/* Intro */
+.intro {
+  padding: 0 var(--margin-interior) var(--gap) var(--margin-interior);
+  border-bottom: var(--border-accent);
+}
+
+.intro h2 {
+  font-family: var(--font-logo);
+  font-weight: 400;
+  font-size: 3.5rem;
+  color: var(--color-accent);
+  margin-top: 0.5em;
+  margin-bottom: 0.25rem;
+}
+
+.intro-taglines {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+}
+
+.intro .tagline {
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
 /* Products Grid */
 .products {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--gap);
+  gap: var(--gap) 5rem;
   padding: var(--gap) var(--margin-interior);
 }
 
@@ -137,10 +148,20 @@ body {
   display: block;
 }
 
+.product:nth-child(2) {
+  border-left: var(--border-accent);
+  padding-left: 2.5rem;
+  margin-left: -2.5rem;
+  margin-top: calc(-1 * var(--gap));
+  padding-top: var(--gap);
+  margin-bottom: calc(-1 * var(--gap));
+  padding-bottom: var(--gap);
+}
+
 .product-content {
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .product-features {
@@ -187,7 +208,7 @@ body {
   font-size: 3.5rem;
   font-weight: 400;
   color: var(--color-accent);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .product-bartleby h2 {
@@ -198,9 +219,70 @@ body {
   font-family: var(--font-candide);
 }
 
+/* Console - two column on desktop, stacked on mobile */
+.product-console {
+  grid-column: 1 / -1;
+  padding-top: var(--gap);
+  margin-top: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  max-width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.product-console::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -16.667%;
+  width: 133.333%;
+  border-top: var(--border-accent);
+}
+
+.product-console .console-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-console h2 {
+  font-family: var(--font-logo);
+  font-feature-settings: "ss01" 1;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+
+.product-console .product-image {
+  display: flex;
+  align-items: flex-start;
+}
+
+.product-console .product-image img {
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .product-console {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .product-console .product-image img {
+    max-height: none;
+  }
+}
+
 .product-tagline {
+  font-size: 1.25rem;
   font-weight: 400;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .product-features li {
@@ -235,6 +317,35 @@ footer {
 
 .footer-right > * + * {
   border-top: var(--border-accent);
+}
+
+/* Contact rows */
+a.contact-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.contact-address {
+  color: var(--color-accent);
+  justify-self: start;
+}
+
+a.contact-row:hover .contact-address {
+  text-decoration: underline;
+}
+
+.contact-arrow {
+  color: var(--color-accent);
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.contact-label {
+  color: var(--color-accent);
+  justify-self: end;
 }
 
 /* Newsletter form - accent box style */
@@ -272,16 +383,6 @@ footer {
 
 .newsletter-form button:hover {
   opacity: 0.9;
-}
-
-/* Link utilities */
-a.link-accent {
-  color: var(--color-accent);
-  text-decoration: none;
-}
-
-a.link-accent:hover {
-  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
