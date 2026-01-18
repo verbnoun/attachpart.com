@@ -91,6 +91,7 @@ body {
   display: block;
 }
 
+
 .hero-title {
   position: absolute;
   top: 1rem;
@@ -130,6 +131,17 @@ body {
   line-height: 1.4;
 }
 
+@media (max-width: 768px) {
+  .intro h2 {
+    font-size: 2.5rem;
+  }
+
+  .intro-taglines {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 /* Products Grid */
 .products {
   display: grid;
@@ -142,10 +154,31 @@ body {
   .products {
     grid-template-columns: 1fr;
   }
+
+  /* Border between Bartleby and Candide on mobile */
+  .product:nth-child(2) {
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+    padding-top: var(--gap);
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .product:nth-child(2)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-top: var(--border-accent);
+  }
 }
 
 .product {
   display: block;
+  position: relative;
 }
 
 .product:nth-child(2) {
@@ -274,6 +307,11 @@ body {
     max-width: 100%;
   }
 
+  .product-console::before {
+    left: 0;
+    width: 100%;
+  }
+
   .product-console .product-image img {
     max-height: none;
   }
@@ -390,12 +428,28 @@ a.contact-row:hover .contact-address {
     grid-template-columns: 1fr;
   }
 
+  .footer-left {
+    padding: 0.75rem var(--margin-interior);
+  }
+
   .footer-right {
     border-left: none;
-    border-top: var(--border-muted);
+    border-top: var(--border-accent);
     padding-left: 0;
-    padding-top: var(--gap);
-    margin-top: var(--gap);
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .footer-right > * {
+    padding: 0.75rem var(--margin-interior);
+  }
+
+  .newsletter-form input[type="email"] {
+    font-size: 0.75rem;
+  }
+
+  .newsletter-form input[type="email"]::placeholder {
+    font-size: 0.75rem;
   }
 }
 
@@ -408,24 +462,24 @@ a.contact-row:hover .contact-address {
   z-index: 100;
 }
 
-/* Top corners - inside hero, aligned with interior margin */
+/* Top corners - flush with hero image corners */
 .hero .corner-top-left {
-  top: var(--margin-interior);
-  left: var(--margin-interior);
+  top: 0.25rem;
+  left: 0.25rem;
 }
 
 .hero .corner-top-right {
-  top: var(--margin-interior);
-  right: var(--margin-interior);
+  top: 0.25rem;
+  right: 0.25rem;
 }
 
-/* Bottom corners - aligned with interior margin */
+/* Bottom corners - aligned with content margin */
 .container > .corner-bottom-left {
-  bottom: var(--margin-interior);
-  left: var(--margin-interior);
+  bottom: 0.25rem;
+  left: calc(var(--margin-interior) + 0.25rem);
 }
 
 .container > .corner-bottom-right {
-  bottom: var(--margin-interior);
-  right: var(--margin-interior);
+  bottom: 0.25rem;
+  right: calc(var(--margin-interior) + 0.25rem);
 }
