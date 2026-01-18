@@ -81,6 +81,11 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+  transition: opacity 0.25s ease-out;
+}
+
+body.flash::before {
+  opacity: 0;
 }
 
 /* Layout */

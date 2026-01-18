@@ -108,13 +108,22 @@ class NoiseBackground {
     `;
     document.body.prepend(this.canvas);
 
+    // Color palettes for corner clicks
+    this.palettes = {
+      normal: ['#6B5344', '#8B7355', '#9E8B7D', '#56a2c4'],
+      saturn: ['#ff0000', '#cc0000', '#0000ff', '#0000cc'],   // Red + Blue
+      jupiter: ['#ffff00', '#cccc00', '#00ff00', '#00cc00'],  // Yellow + Green
+      sun: ['#ff6600', '#ff3300', '#00ffff', '#00cccc'],      // Orange + Cyan
+      moon: ['#ff00ff', '#cc00cc', '#ffff00', '#cccc00']      // Magenta + Yellow
+    };
+
     // Settings
     this.jitterAmount = 0.47;
     this.scrollSensitivity = 5.0;
     this.settleSpeed = 0.38;
     this.blueTop = 10;
     this.blueBottom = 32;
-    this.colors = ['#6B5344', '#8B7355', '#9E8B7D', '#56a2c4'];
+    this.residueAmount = 0.10;
 
     // State
     this.baseImageData = null;
@@ -122,7 +131,11 @@ class NoiseBackground {
     this.scrollVelocity = 0;
     this.lastScrollY = 0;
     this.isJittering = false;
-    this.rgbColors = this.colors.map(this.hexToRgb);
+    this.flashVelocity = 0;
+
+    // Color animation state
+    this.currentColors = this.palettes.normal.map(this.hexToRgb);
+    this.targetColors = this.palettes.normal.map(this.hexToRgb);
 
     this.init();
   }
@@ -133,6 +146,18 @@ class NoiseBackground {
       g: parseInt(hex.slice(3, 5), 16),
       b: parseInt(hex.slice(5, 7), 16)
     };
+  }
+
+  lerpColor(a, b, t) {
+    return {
+      r: Math.round(a.r + (b.r - a.r) * t),
+      g: Math.round(a.g + (b.g - a.g) * t),
+      b: Math.round(a.b + (b.b - a.b) * t)
+    };
+  }
+
+  blendPalettes(paletteA, paletteB, t) {
+    return paletteA.map((colorA, i) => this.lerpColor(colorA, paletteB[i], t));
   }
 
   getBlueAmount() {
@@ -153,13 +178,13 @@ class NoiseBackground {
       const rand = Math.random();
       let color;
       if (rand < 0.35) {
-        color = this.rgbColors[0];
+        color = this.currentColors[0];
       } else if (rand < 0.65) {
-        color = this.rgbColors[1];
+        color = this.currentColors[1];
       } else if (rand < blueThreshold) {
-        color = this.rgbColors[2];
+        color = this.currentColors[2];
       } else {
-        color = this.rgbColors[3];
+        color = this.currentColors[3];
       }
       data[i] = color.r;
       data[i + 1] = color.g;
@@ -185,13 +210,13 @@ class NoiseBackground {
         const rand = Math.random();
         let color;
         if (rand < 0.35) {
-          color = this.rgbColors[0];
+          color = this.currentColors[0];
         } else if (rand < 0.65) {
-          color = this.rgbColors[1];
+          color = this.currentColors[1];
         } else if (rand < blueThreshold) {
-          color = this.rgbColors[2];
+          color = this.currentColors[2];
         } else {
-          color = this.rgbColors[3];
+          color = this.currentColors[3];
         }
         data[i] = color.r;
         data[i + 1] = color.g;
@@ -213,19 +238,54 @@ class NoiseBackground {
     const velocityDecay = 1 - this.settleSpeed;
     this.scrollVelocity = this.scrollVelocity * velocityDecay + deltaScroll * this.scrollSensitivity * 0.1;
 
-    const jitterIntensity = Math.min(this.scrollVelocity * this.jitterAmount, 0.5);
+    // Flash velocity decays faster
+    this.flashVelocity = this.flashVelocity * 0.85;
 
-    if (jitterIntensity > 0.001 || this.scrollVelocity > 0.1) {
+    const totalVelocity = this.scrollVelocity + this.flashVelocity;
+    const jitterIntensity = Math.min(totalVelocity * this.jitterAmount, 0.5);
+
+    if (jitterIntensity > 0.001 || totalVelocity > 0.1) {
       this.applyJitter(jitterIntensity);
       this.isJittering = true;
     } else if (this.isJittering) {
       this.applyJitter(0);
-      if (this.scrollVelocity < 0.01) {
+      if (totalVelocity < 0.01) {
         this.isJittering = false;
       }
     }
 
     requestAnimationFrame(() => this.animate());
+  }
+
+  triggerFlash(cornerName) {
+    const palette = this.palettes[cornerName] || this.palettes.normal;
+    const paletteRgb = palette.map(h => this.hexToRgb(h));
+    const normalRgb = this.palettes.normal.map(h => this.hexToRgb(h));
+
+    // Set colors to flash palette immediately
+    this.currentColors = paletteRgb.map(c => ({...c}));
+    this.targetColors = paletteRgb.map(c => ({...c}));
+
+    // Add vignette flash class
+    document.body.classList.add('flash');
+
+    // Trigger jitter burst
+    this.flashVelocity = 8;
+
+    // Animate back to residue blend after delay
+    setTimeout(() => {
+      // Set colors to residue blend
+      const residueColors = this.blendPalettes(normalRgb, paletteRgb, this.residueAmount);
+      this.currentColors = residueColors.map(c => ({...c}));
+      this.targetColors = residueColors.map(c => ({...c}));
+
+      // Regenerate base noise with residue colors
+      this.generateBaseNoise();
+
+      document.body.classList.remove('flash');
+      // Jitter burst to show the transition
+      this.flashVelocity = 4;
+    }, 500);
   }
 
   init() {
@@ -239,6 +299,23 @@ class NoiseBackground {
       if (Math.abs(window.scrollY - lastScrollForBlue) > 50) {
         lastScrollForBlue = window.scrollY;
         this.generateBaseNoise();
+      }
+    });
+
+    // Corner click listeners
+    document.querySelectorAll('.corner-symbol').forEach(el => {
+      // Map corner position to palette name
+      const cornerMap = {
+        'corner-top-left': 'saturn',
+        'corner-top-right': 'jupiter',
+        'corner-bottom-left': 'sun',
+        'corner-bottom-right': 'moon'
+      };
+      const cornerClass = [...el.classList].find(c => c.startsWith('corner-') && c !== 'corner-symbol');
+      const paletteName = cornerMap[cornerClass];
+      if (paletteName) {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => this.triggerFlash(paletteName));
       }
     });
   }
