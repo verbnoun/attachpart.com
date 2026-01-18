@@ -66,7 +66,7 @@
 body {
   font-family: var(--font-body);
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: #8B7355;
   line-height: 1.5;
 }
 
@@ -77,6 +77,7 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 1rem;
+  background: var(--color-bg);
 }
 
 /* Hero */
@@ -482,4 +483,178 @@ a.contact-row:hover .contact-address {
 .container > .corner-bottom-right {
   bottom: 0.25rem;
   right: calc(var(--margin-interior) + 0.25rem);
+}
+
+/* Navigation Tabs - Manila Folder Style */
+.tabs-wrapper {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-top: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  padding: 0 var(--margin-interior);
+  position: relative;
+}
+
+
+.tab {
+  font-family: var(--font-bartleby);
+  font-size: 1.125rem;
+  padding: 0.75rem 0;
+  width: 11rem;
+  text-decoration: none;
+  color: var(--color-accent);
+  text-align: center;
+  position: relative;
+  background: transparent;
+  border: none;
+  margin-right: -2.5rem;
+  isolation: isolate;
+}
+
+.tab:first-child {
+  margin-left: 25px;
+}
+
+/* Stacking order, vertical position, and colors: cascade outward from active tab */
+/* Position: active=0, 1 back=-6px, 2 back=-12px, 3 back=-18px (matches 4 page layers) */
+/* Colors: front=#fff8d4, 1 back=#f0e8c8, 2 back=#e8dfc0, 3 back=#e0d7b8 */
+
+/* Home active: Home > Products > Company > Newsletter */
+.page-home .tab:nth-child(1) { z-index: 100; transform: translateY(0); }
+.page-home .tab:nth-child(1)::before { background: #fff8d4; }
+.page-home .tab:nth-child(2) { z-index: 99; transform: translateY(-6px); }
+.page-home .tab:nth-child(2)::before { background: #f0e8c8; }
+.page-home .tab:nth-child(3) { z-index: 98; transform: translateY(-12px); }
+.page-home .tab:nth-child(3)::before { background: #e8dfc0; }
+.page-home .tab:nth-child(4) { z-index: 97; transform: translateY(-18px); }
+.page-home .tab:nth-child(4)::before { background: #e0d7b8; }
+
+/* Products active: Products > Home=Company > Newsletter */
+.page-products .tab:nth-child(2) { z-index: 100; transform: translateY(0); }
+.page-products .tab:nth-child(2)::before { background: #fff8d4; }
+.page-products .tab:nth-child(1) { z-index: 99; transform: translateY(-6px); }
+.page-products .tab:nth-child(1)::before { background: #f0e8c8; }
+.page-products .tab:nth-child(3) { z-index: 99; transform: translateY(-6px); }
+.page-products .tab:nth-child(3)::before { background: #f0e8c8; }
+.page-products .tab:nth-child(4) { z-index: 98; transform: translateY(-12px); }
+.page-products .tab:nth-child(4)::before { background: #e8dfc0; }
+
+/* Company active: Company > Products=Newsletter > Home */
+.page-company .tab:nth-child(3) { z-index: 100; transform: translateY(0); }
+.page-company .tab:nth-child(3)::before { background: #fff8d4; }
+.page-company .tab:nth-child(2) { z-index: 99; transform: translateY(-6px); }
+.page-company .tab:nth-child(2)::before { background: #f0e8c8; }
+.page-company .tab:nth-child(4) { z-index: 99; transform: translateY(-6px); }
+.page-company .tab:nth-child(4)::before { background: #f0e8c8; }
+.page-company .tab:nth-child(1) { z-index: 98; transform: translateY(-12px); }
+.page-company .tab:nth-child(1)::before { background: #e8dfc0; }
+
+/* Newsletter active: Newsletter > Company > Products > Home */
+.page-newsletter .tab:nth-child(4) { z-index: 100; transform: translateY(0); }
+.page-newsletter .tab:nth-child(4)::before { background: #fff8d4; }
+.page-newsletter .tab:nth-child(3) { z-index: 99; transform: translateY(-6px); }
+.page-newsletter .tab:nth-child(3)::before { background: #f0e8c8; }
+.page-newsletter .tab:nth-child(2) { z-index: 98; transform: translateY(-12px); }
+.page-newsletter .tab:nth-child(2)::before { background: #e8dfc0; }
+.page-newsletter .tab:nth-child(1) { z-index: 97; transform: translateY(-18px); }
+.page-newsletter .tab:nth-child(1)::before { background: #e0d7b8; }
+
+/* SVG tab shape - trapezoid with smooth curves at all corners */
+.tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #e8dfc0;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+
+.tab:hover::before {
+  background: #f0e8cc;
+}
+
+/* Gradient shadow overlay */
+.tab::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+
+/* Left shadow gradient (tab is covered from left) - matches ~63° diagonal */
+.tab.shadow-left::after {
+  background: linear-gradient(63deg, rgba(0,0,0,0.25) 0px, transparent 40px);
+}
+
+/* Right shadow gradient (tab is covered from right) - matches ~117° diagonal */
+.tab.shadow-right::after {
+  background: linear-gradient(117deg, transparent calc(100% - 40px), rgba(0,0,0,0.25) 100%);
+}
+
+.tab.active {
+  color: var(--color-text);
+}
+
+/* Page wrapper */
+.page-wrapper {
+  position: relative;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* Page depth SVG - 4 stacked page tops */
+.page-depth {
+  display: flex;
+  max-width: var(--max-width);
+  margin: -18px auto 0; /* pull up to meet tabs */
+  height: 24px; /* 4 layers x 6px each */
+}
+
+.page-depth-left {
+  width: 24px;
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='16' y='0' width='8' height='6' fill='%23e0d7b8'/%3E%3Cpath d='M16,0 Q12,0 12,4 L12,6 L16,6 Z' fill='%23e0d7b8'/%3E%3Crect x='12' y='6' width='12' height='6' fill='%23e8dfc0'/%3E%3Cpath d='M12,6 Q8,6 8,10 L8,12 L12,12 Z' fill='%23e8dfc0'/%3E%3Crect x='8' y='12' width='16' height='6' fill='%23f0e8c8'/%3E%3Cpath d='M8,12 Q4,12 4,16 L4,18 L8,18 Z' fill='%23f0e8c8'/%3E%3Crect x='4' y='18' width='20' height='6' fill='%23fff8d4'/%3E%3Cpath d='M4,18 Q0,18 0,22 L0,24 L4,24 Z' fill='%23fff8d4'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+}
+
+.page-depth-middle {
+  flex-grow: 1;
+  background: linear-gradient(to bottom,
+    #e0d7b8 0px, #e0d7b8 6px,
+    #e8dfc0 6px, #e8dfc0 12px,
+    #f0e8c8 12px, #f0e8c8 18px,
+    #fff8d4 18px, #fff8d4 24px
+  );
+}
+
+.page-depth-right {
+  width: 24px;
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='0' y='0' width='8' height='6' fill='%23e0d7b8'/%3E%3Cpath d='M8,0 Q12,0 12,4 L12,6 L8,6 Z' fill='%23e0d7b8'/%3E%3Crect x='0' y='6' width='12' height='6' fill='%23e8dfc0'/%3E%3Cpath d='M12,6 Q16,6 16,10 L16,12 L12,12 Z' fill='%23e8dfc0'/%3E%3Crect x='0' y='12' width='16' height='6' fill='%23f0e8c8'/%3E%3Cpath d='M16,12 Q20,12 20,16 L20,18 L16,18 Z' fill='%23f0e8c8'/%3E%3Crect x='0' y='18' width='20' height='6' fill='%23fff8d4'/%3E%3Cpath d='M20,18 Q24,18 24,22 L24,24 L20,24 Z' fill='%23fff8d4'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+}
+
+
+/* Page Header */
+.page-header {
+  padding: var(--gap) var(--margin-interior);
+  border-bottom: var(--border-accent);
+}
+
+.page-header h1 {
+  font-family: var(--font-logo);
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: var(--color-accent);
 }

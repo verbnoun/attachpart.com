@@ -3,8 +3,11 @@
 <head>
   {% include head.html %}
 </head>
-<body>
+<body class="{% if page.url == '/' %}page-home{% elsif page.url contains '/products' %}page-products{% elsif page.url contains '/company' %}page-company{% elsif page.url contains '/newsletter' %}page-newsletter{% endif %}">
+{% include nav.html %}
+<div class="page-wrapper">
 {{ content }}
+</div>
 <script src="/sprite.js"></script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <a href="/" class="tab {% if page.url == '/' %}active{% endif %}">Home</a>
+    <a href="/products/" class="tab {% if page.url contains '/products' %}active{% endif %}">Products</a>
+    <a href="/company/" class="tab {% if page.url contains '/company' %}active{% endif %}">Company</a>
+    <a href="/newsletter/" class="tab {% if page.url contains '/newsletter' %}active{% endif %}">Newsletter</a>
+  </div>
+</div>
+<div class="page-depth">
+  <div class="page-depth-left"></div>
+  <div class="page-depth-middle"></div>
+  <div class="page-depth-right"></div>
+</div>
