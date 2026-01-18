@@ -88,3 +88,163 @@ document.addEventListener('DOMContentLoaded', () => {
     new SpritePlayer(el);
   });
 });
+
+// ============================================
+// Noise Scroll Background
+// ============================================
+class NoiseBackground {
+  constructor() {
+    this.canvas = document.createElement('canvas');
+    this.ctx = this.canvas.getContext('2d');
+
+    this.canvas.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+    `;
+    document.body.prepend(this.canvas);
+
+    // Settings
+    this.jitterAmount = 0.47;
+    this.scrollSensitivity = 5.0;
+    this.settleSpeed = 0.38;
+    this.blueTop = 10;
+    this.blueBottom = 32;
+    this.colors = ['#6B5344', '#8B7355', '#9E8B7D', '#56a2c4'];
+
+    // State
+    this.baseImageData = null;
+    this.currentImageData = null;
+    this.scrollVelocity = 0;
+    this.lastScrollY = 0;
+    this.isJittering = false;
+    this.rgbColors = this.colors.map(this.hexToRgb);
+
+    this.init();
+  }
+
+  hexToRgb(hex) {
+    return {
+      r: parseInt(hex.slice(1, 3), 16),
+      g: parseInt(hex.slice(3, 5), 16),
+      b: parseInt(hex.slice(5, 7), 16)
+    };
+  }
+
+  getBlueAmount() {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollProgress = scrollHeight > 0 ? window.scrollY / scrollHeight : 0;
+    return this.blueTop + (this.blueBottom - this.blueTop) * scrollProgress;
+  }
+
+  generateBaseNoise() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+
+    this.baseImageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
+    const data = this.baseImageData.data;
+    const blueThreshold = 1 - (this.getBlueAmount() / 100);
+
+    for (let i = 0; i < data.length; i += 4) {
+      const rand = Math.random();
+      let color;
+      if (rand < 0.35) {
+        color = this.rgbColors[0];
+      } else if (rand < 0.65) {
+        color = this.rgbColors[1];
+      } else if (rand < blueThreshold) {
+        color = this.rgbColors[2];
+      } else {
+        color = this.rgbColors[3];
+      }
+      data[i] = color.r;
+      data[i + 1] = color.g;
+      data[i + 2] = color.b;
+      data[i + 3] = 255;
+    }
+
+    this.currentImageData = new ImageData(
+      new Uint8ClampedArray(this.baseImageData.data),
+      this.canvas.width,
+      this.canvas.height
+    );
+    this.ctx.putImageData(this.currentImageData, 0, 0);
+  }
+
+  applyJitter(intensity) {
+    const data = this.currentImageData.data;
+    const baseData = this.baseImageData.data;
+    const blueThreshold = 1 - (this.getBlueAmount() / 100);
+
+    for (let i = 0; i < data.length; i += 4) {
+      if (Math.random() < intensity) {
+        const rand = Math.random();
+        let color;
+        if (rand < 0.35) {
+          color = this.rgbColors[0];
+        } else if (rand < 0.65) {
+          color = this.rgbColors[1];
+        } else if (rand < blueThreshold) {
+          color = this.rgbColors[2];
+        } else {
+          color = this.rgbColors[3];
+        }
+        data[i] = color.r;
+        data[i + 1] = color.g;
+        data[i + 2] = color.b;
+      } else if (Math.random() < this.settleSpeed * 0.5) {
+        data[i] = baseData[i];
+        data[i + 1] = baseData[i + 1];
+        data[i + 2] = baseData[i + 2];
+      }
+    }
+    this.ctx.putImageData(this.currentImageData, 0, 0);
+  }
+
+  animate() {
+    const currentScrollY = window.scrollY;
+    const deltaScroll = Math.abs(currentScrollY - this.lastScrollY);
+    this.lastScrollY = currentScrollY;
+
+    const velocityDecay = 1 - this.settleSpeed;
+    this.scrollVelocity = this.scrollVelocity * velocityDecay + deltaScroll * this.scrollSensitivity * 0.1;
+
+    const jitterIntensity = Math.min(this.scrollVelocity * this.jitterAmount, 0.5);
+
+    if (jitterIntensity > 0.001 || this.scrollVelocity > 0.1) {
+      this.applyJitter(jitterIntensity);
+      this.isJittering = true;
+    } else if (this.isJittering) {
+      this.applyJitter(0);
+      if (this.scrollVelocity < 0.01) {
+        this.isJittering = false;
+      }
+    }
+
+    requestAnimationFrame(() => this.animate());
+  }
+
+  init() {
+    this.generateBaseNoise();
+    this.animate();
+
+    window.addEventListener('resize', () => this.generateBaseNoise());
+
+    let lastScrollForBlue = 0;
+    window.addEventListener('scroll', () => {
+      if (Math.abs(window.scrollY - lastScrollForBlue) > 50) {
+        lastScrollForBlue = window.scrollY;
+        this.generateBaseNoise();
+      }
+    });
+  }
+}
+
+// Initialize noise background
+document.addEventListener('DOMContentLoaded', () => {
+  new NoiseBackground();
+});

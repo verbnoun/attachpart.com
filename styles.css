@@ -70,31 +70,53 @@ body {
   line-height: 1.5;
 }
 
+/* Vignette overlay - in CSS for instant paint, no flash */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+}
+
 /* Layout */
 .container {
   position: relative;
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 3rem 1rem 0;
   background: var(--color-bg);
+}
+
+/* Non-home pages get min viewport height */
+body:not(.page-home) .container {
+  min-height: calc(100vh - 80px);
 }
 
 /* Hero */
 .hero {
   position: relative;
   margin-bottom: 0;
+  z-index: 1;
 }
 
-.hero img {
+.hero img:not(.tape) {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 10px;
 }
-
 
 .hero-title {
   position: absolute;
+  z-index: 2;
   top: 1rem;
   left: 1rem;
   font-family: var(--font-logo);
@@ -103,6 +125,21 @@ body {
   font-feature-settings: "ss01" 1;
   color: var(--color-bg);
   text-shadow: 0 0 4px #000, 0 0 10px #000, 0 0 8px #000;
+}
+
+/* Tape - skeuomorphic tape strips */
+.tape {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tape-top {
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: auto;
 }
 
 /* Intro */
@@ -454,33 +491,32 @@ a.contact-row:hover .contact-address {
   }
 }
 
-/* Corner Symbols */
+/* Corner Symbols - positioned at page corners */
 .corner-symbol {
   position: absolute;
   font-family: 'Unifont', monospace;
   font-size: 1rem;
-  color: var(--color-accent);
-  z-index: 100;
+  color: #d8d0a8; /* slightly darker than page bg #fff8d4 */
+  z-index: 50;
 }
 
-/* Top corners - flush with hero image corners */
-.hero .corner-top-left {
-  top: 0.25rem;
-  left: 0.25rem;
+.page-wrapper .corner-top-left {
+  top: 0.75rem;
+  left: calc(var(--margin-interior) + 0.25rem);
 }
 
-.hero .corner-top-right {
-  top: 0.25rem;
-  right: 0.25rem;
+.page-wrapper .corner-top-right {
+  top: 0.75rem;
+  right: calc(var(--margin-interior) + 0.25rem);
 }
 
 /* Bottom corners - aligned with content margin */
-.container > .corner-bottom-left {
+.page-wrapper .corner-bottom-left {
   bottom: 0.25rem;
   left: calc(var(--margin-interior) + 0.25rem);
 }
 
-.container > .corner-bottom-right {
+.page-wrapper .corner-bottom-right {
   bottom: 0.25rem;
   right: calc(var(--margin-interior) + 0.25rem);
 }
@@ -612,6 +648,7 @@ a.contact-row:hover .contact-address {
   position: relative;
   max-width: var(--max-width);
   margin: 0 auto;
+  background: var(--color-bg);
 }
 
 /* Page tops - semantic layers matching tabs, positioned per active page */
@@ -619,7 +656,7 @@ a.contact-row:hover .contact-address {
   position: relative;
   max-width: var(--max-width);
   margin: -18px auto 0;
-  height: 24px;
+  height: 34px; /* fits front page-top: top 18px + height 16px */
 }
 
 .page-top {
