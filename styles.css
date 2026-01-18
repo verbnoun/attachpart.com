@@ -789,6 +789,17 @@ body:has(.tab:nth-child(2):not(.active):hover) .page-top-products { transform: t
 body:has(.tab:nth-child(3):not(.active):hover) .page-top-company { transform: translateY(-4px); }
 body:has(.tab:nth-child(4):not(.active):hover) .page-top-newsletter { transform: translateY(-4px); }
 
+/* Mobile tabs */
+@media (max-width: 660px) {
+  .tab {
+    font-size: 0.75rem;
+    margin-right: -2.5rem;
+  }
+
+  .tab:last-child {
+    margin-right: 0;
+  }
+}
 
 /* Page Header */
 .page-header {
