@@ -614,7 +614,7 @@ a.contact-row:hover .contact-address {
   margin: 0 auto;
 }
 
-/* Page tops - 4 separate layers that can be individually animated */
+/* Page tops - semantic layers matching tabs, positioned per active page */
 .page-tops {
   position: relative;
   max-width: var(--max-width);
@@ -628,12 +628,6 @@ a.contact-row:hover .contact-address {
   height: 16px;
   transition: transform 0.15s ease;
 }
-
-/* Layer positions and widths: 4=back (narrowest), 1=front (full width) */
-.page-top-4 { top: 0; z-index: 1; left: 12px; right: 12px; }
-.page-top-3 { top: 6px; z-index: 2; left: 8px; right: 8px; }
-.page-top-2 { top: 12px; z-index: 3; left: 4px; right: 4px; }
-.page-top-1 { top: 18px; z-index: 4; left: 0; right: 0; }
 
 .page-top-left {
   width: 4px;
@@ -649,52 +643,109 @@ a.contact-row:hover .contact-address {
   flex-shrink: 0;
 }
 
-/* Layer 4 - back (darkest) #e0d7b8 */
-.page-top-4 .page-top-left {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E");
-}
-.page-top-4 .page-top-middle { background: #e0d7b8; }
-.page-top-4 .page-top-right {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E");
-}
+/* SVG templates for corners - colors set via CSS filter or per-page rules */
+/* Using depth-based colors: front=#fff8d4, 1back=#f0e8c8, 2back=#e8dfc0, 3back=#e0d7b8 */
 
-/* Layer 3 - #e8dfc0 */
-.page-top-3 .page-top-left {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E");
-}
-.page-top-3 .page-top-middle { background: #e8dfc0; }
-.page-top-3 .page-top-right {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E");
-}
+/* Home active: Home=front, Products=1back, Company=2back, Newsletter=3back */
+.page-home .page-top-home { top: 18px; z-index: 4; left: 0; right: 0; }
+.page-home .page-top-products { top: 12px; z-index: 3; left: 4px; right: 4px; }
+.page-home .page-top-company { top: 6px; z-index: 2; left: 8px; right: 8px; }
+.page-home .page-top-newsletter { top: 0; z-index: 1; left: 12px; right: 12px; }
 
-/* Layer 2 - #f0e8c8 */
-.page-top-2 .page-top-left {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E");
-}
-.page-top-2 .page-top-middle { background: #f0e8c8; }
-.page-top-2 .page-top-right {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E");
-}
+.page-home .page-top-home .page-top-middle { background: #fff8d4; }
+.page-home .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
+.page-home .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
 
-/* Layer 1 - front (lightest) #fff8d4 */
-.page-top-1 .page-top-left {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E");
-}
-.page-top-1 .page-top-middle { background: #fff8d4; }
-.page-top-1 .page-top-right {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E");
-}
+.page-home .page-top-products .page-top-middle { background: #f0e8c8; }
+.page-home .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+.page-home .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
 
-/* Hover effects - lift tab and its corresponding page-top */
-/* Front page (tab 1) never moves. Only rear pages lift on hover. */
-.tab:nth-child(n+2):hover {
+.page-home .page-top-company .page-top-middle { background: #e8dfc0; }
+.page-home .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+.page-home .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+
+.page-home .page-top-newsletter .page-top-middle { background: #e0d7b8; }
+.page-home .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
+.page-home .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
+
+/* Products active: Products=front, Home=1back, Company=1back, Newsletter=2back */
+.page-products .page-top-products { top: 18px; z-index: 4; left: 0; right: 0; }
+.page-products .page-top-home { top: 12px; z-index: 3; left: 4px; right: 4px; }
+.page-products .page-top-company { top: 12px; z-index: 3; left: 4px; right: 4px; }
+.page-products .page-top-newsletter { top: 6px; z-index: 2; left: 8px; right: 8px; }
+
+.page-products .page-top-products .page-top-middle { background: #fff8d4; }
+.page-products .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
+.page-products .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
+
+.page-products .page-top-home .page-top-middle { background: #f0e8c8; }
+.page-products .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+.page-products .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+
+.page-products .page-top-company .page-top-middle { background: #f0e8c8; }
+.page-products .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+.page-products .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+
+.page-products .page-top-newsletter .page-top-middle { background: #e8dfc0; }
+.page-products .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+.page-products .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+
+/* Company active: Company=front, Products=1back, Newsletter=1back, Home=2back */
+.page-company .page-top-company { top: 18px; z-index: 4; left: 0; right: 0; }
+.page-company .page-top-products { top: 12px; z-index: 3; left: 4px; right: 4px; }
+.page-company .page-top-newsletter { top: 12px; z-index: 3; left: 4px; right: 4px; }
+.page-company .page-top-home { top: 6px; z-index: 2; left: 8px; right: 8px; }
+
+.page-company .page-top-company .page-top-middle { background: #fff8d4; }
+.page-company .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
+.page-company .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
+
+.page-company .page-top-products .page-top-middle { background: #f0e8c8; }
+.page-company .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+.page-company .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+
+.page-company .page-top-newsletter .page-top-middle { background: #f0e8c8; }
+.page-company .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+.page-company .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+
+.page-company .page-top-home .page-top-middle { background: #e8dfc0; }
+.page-company .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+.page-company .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+
+/* Newsletter active: Newsletter=front, Company=1back, Products=2back, Home=3back */
+.page-newsletter .page-top-newsletter { top: 18px; z-index: 4; left: 0; right: 0; }
+.page-newsletter .page-top-company { top: 12px; z-index: 3; left: 4px; right: 4px; }
+.page-newsletter .page-top-products { top: 6px; z-index: 2; left: 8px; right: 8px; }
+.page-newsletter .page-top-home { top: 0; z-index: 1; left: 12px; right: 12px; }
+
+.page-newsletter .page-top-newsletter .page-top-middle { background: #fff8d4; }
+.page-newsletter .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
+.page-newsletter .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
+
+.page-newsletter .page-top-company .page-top-middle { background: #f0e8c8; }
+.page-newsletter .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+.page-newsletter .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
+
+.page-newsletter .page-top-products .page-top-middle { background: #e8dfc0; }
+.page-newsletter .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+.page-newsletter .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
+
+.page-newsletter .page-top-home .page-top-middle { background: #e0d7b8; }
+.page-newsletter .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
+.page-newsletter .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
+
+/* Hover effects - lift non-active tab and its corresponding page-top */
+/* Small delay on tab to sync with :has() selector evaluation for page-top */
+.tab:not(.active):hover {
   margin-top: -4px;
   margin-bottom: 4px;
+  transition-delay: 0.02s;
 }
 
-body:has(.tab:nth-child(2):hover) .page-top-2 { transform: translateY(-4px); }
-body:has(.tab:nth-child(3):hover) .page-top-3 { transform: translateY(-4px); }
-body:has(.tab:nth-child(4):hover) .page-top-4 { transform: translateY(-4px); }
+body:has(.tab:nth-child(1):not(.active):hover) .page-top-home { transform: translateY(-4px); }
+body:has(.tab:nth-child(2):not(.active):hover) .page-top-products { transform: translateY(-4px); }
+body:has(.tab:nth-child(3):not(.active):hover) .page-top-company { transform: translateY(-4px); }
+body:has(.tab:nth-child(4):not(.active):hover) .page-top-newsletter { transform: translateY(-4px); }
 
 
 /* Page Header */
