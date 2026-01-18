@@ -1,0 +1,13 @@
+title: Attach Part
+description: Cartridge Synthesis System
+url: "https://attachpart.com"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - node_modules
+  - vendor
