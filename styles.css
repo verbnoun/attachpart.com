@@ -332,6 +332,10 @@ body:not(.page-home) .container {
 }
 
 @media (max-width: 768px) {
+  .intro {
+    padding-bottom: 4.5rem;
+  }
+
   .intro h2 {
     font-size: 2.5rem;
   }
@@ -353,6 +357,7 @@ body:not(.page-home) .container {
 @media (max-width: 768px) {
   .products {
     grid-template-columns: 1fr;
+    gap: 4.5rem;
   }
 
   /* Border between Bartleby and Candide on mobile */
@@ -360,7 +365,7 @@ body:not(.page-home) .container {
     border-left: none;
     padding-left: 0;
     margin-left: 0;
-    padding-top: var(--gap);
+    padding-top: 4.5rem;
     margin-top: 0;
     margin-bottom: 0;
     padding-bottom: 0;
@@ -505,6 +510,7 @@ body:not(.page-home) .container {
   .product-console {
     grid-template-columns: 1fr;
     max-width: 100%;
+    padding-top: 4.5rem;
   }
 
   .product-console::before {
