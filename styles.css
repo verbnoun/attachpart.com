@@ -227,6 +227,22 @@ body:not(.page-home) .container {
   transform: translateX(-50%) translateY(-50%) rotate(1.5deg);
 }
 
+/* Mobile tape sizing */
+@media (max-width: 768px) {
+  .tape {
+    width: 38px;
+  }
+
+  .taped-image {
+    padding-top: 10px;
+  }
+
+  .taped-image .tape-top {
+    top: 10px;
+    width: 38px;
+  }
+}
+
 /* Console tape - uses same taped-image styling */
 
 /* Product and console images styling */
