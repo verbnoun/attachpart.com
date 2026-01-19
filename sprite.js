@@ -325,3 +325,78 @@ class NoiseBackground {
 document.addEventListener('DOMContentLoaded', () => {
   new NoiseBackground();
 });
+
+// ============================================
+// Rainbow Noise Overlay
+// ============================================
+class RainbowNoise {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.resize();
+    this.animate();
+    window.addEventListener('resize', () => this.resize());
+  }
+
+  resize() {
+    const wrapper = this.canvas.parentElement;
+    this.canvas.width = wrapper.offsetWidth;
+    this.canvas.height = wrapper.offsetHeight;
+  }
+
+  generateNoise() {
+    const imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
+    const data = imageData.data;
+
+    // Rainbow colors (desaturated ~20% toward gray)
+    const colors = [
+      [217, 51, 51],   // red
+      [217, 140, 51],  // orange
+      [217, 217, 51],  // yellow
+      [51, 217, 51],   // green
+      [51, 51, 217],   // blue
+      [147, 51, 217]   // violet
+    ];
+
+    for (let i = 0; i < data.length; i += 4) {
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      data[i] = color[0];
+      data[i + 1] = color[1];
+      data[i + 2] = color[2];
+      data[i + 3] = Math.random() * 120; // Semi-transparent
+    }
+
+    this.ctx.putImageData(imageData, 0, 0);
+  }
+
+  animate() {
+    this.generateNoise();
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+// Initialize rainbow noise
+document.addEventListener('DOMContentLoaded', () => {
+  const rainbowNoiseCanvas = document.querySelector('.hero-rainbow-noise');
+  if (rainbowNoiseCanvas) {
+    new RainbowNoise(rainbowNoiseCanvas);
+  }
+});
+
+// Random tape selection for all tape elements
+document.addEventListener('DOMContentLoaded', () => {
+  const tapes = document.querySelectorAll('.tape');
+  const tapeImages = ['tape1.png', 'tape2.png', 'tape3.png', 'tape4.png'];
+
+  tapes.forEach(tape => {
+    const randomTape = tapeImages[Math.floor(Math.random() * tapeImages.length)];
+    tape.src = `images/${randomTape}`;
+  });
+
+  // Random tilt for product images (0.1-0.3 degrees either way)
+  const productImages = document.querySelectorAll('.product-image img:not(.tape)');
+  productImages.forEach(img => {
+    const tilt = (Math.random() * 0.2 + 0.1) * (Math.random() < 0.5 ? 1 : -1);
+    img.style.transform = `rotate(${tilt}deg)`;
+  });
+});

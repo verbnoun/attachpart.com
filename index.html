@@ -8,9 +8,29 @@ description: Attach Part makes Bartleby & Candide. They are an MPE synthesizer w
 
     <!-- Hero -->
     <section class="hero">
-      <img src="images/tape1.png" alt="" class="tape tape-top">
+      <img src="images/tape1.png" alt="" class="tape tape-top tape-left">
+      <img src="images/tape1.png" alt="" class="tape tape-top tape-right">
       <img src="images/hero.png" alt="Bartleby MIDI controller">
+      <div class="hero-highlight-wrapper">
+        <div class="hero-rainbow"></div>
+        <canvas class="hero-rainbow-noise"></canvas>
+        <img src="images/herohighlight.png" alt="" class="hero-highlight">
+      </div>
       <h1 class="hero-title">Attach Part</h1>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="newsletter-row">
+      <div class="newsletter-blurb">
+        <p lang="ja">ニュースレターに登録して、私たちの活動を見守ってください</p>
+        <p>Signing up for the newsletter lets us know you're interested in following our progress.</p>
+      </div>
+      <div class="newsletter-form-wrapper">
+        <form class="newsletter-form accent-box" action="https://buttondown.com/api/emails/embed-subscribe/AttachPart" method="post">
+          <input type="email" name="email" placeholder="ニュースレター登録 … Newsletter Signup" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
     </section>
 
     <!-- Intro -->
@@ -40,7 +60,10 @@ description: Attach Part makes Bartleby & Candide. They are an MPE synthesizer w
             <li>USB MIDI2.0</li>
           </ul>
           <div class="product-image">
-            <img src="images/bartleby-square.png" alt="Bartleby diagram">
+            <div class="taped-image">
+              <img src="images/tape1.png" alt="" class="tape tape-top">
+              <img src="images/bartlebygrid.jpg" alt="Bartleby diagram">
+            </div>
           </div>
         </div>
       </article>
@@ -60,7 +83,10 @@ description: Attach Part makes Bartleby & Candide. They are an MPE synthesizer w
             <li>USB MIDI2.0</li>
           </ul>
           <div class="product-image">
-            <img src="images/candide-square.png" alt="Candide diagram">
+            <div class="taped-image">
+              <img src="images/tape1.png" alt="" class="tape tape-top">
+              <img src="images/candidegrid.jpg" alt="Candide diagram">
+            </div>
           </div>
         </div>
       </article>
@@ -72,7 +98,10 @@ description: Attach Part makes Bartleby & Candide. They are an MPE synthesizer w
           <p class="product-tagline">Browser-based configuration tool. Connect via USB to assign Bartleby knobs, edit OLED labels, and create Candide patches</p>
         </div>
         <div class="product-image">
-          <img src="images/apconsole.png" alt="Attach Part Console interface">
+          <div class="taped-image">
+            <img src="images/tape1.png" alt="" class="tape tape-top">
+            <img src="images/consolegrid.jpg" alt="Attach Part Console interface">
+          </div>
         </div>
       </article>
 
