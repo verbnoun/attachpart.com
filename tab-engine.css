@@ -11,6 +11,7 @@
   margin: 0 auto;
   padding-top: 100px;
   padding-right: 36px;
+  overflow-x: clip;
 }
 
 /* Individual page - positioned absolutely within stack */
