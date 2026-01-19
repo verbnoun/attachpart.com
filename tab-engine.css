@@ -1,0 +1,94 @@
+/**
+ * Tab Engine CSS
+ * All classes prefixed with 'te-' to avoid conflicts with existing styles
+ */
+
+/* Page stack wrapper - needs room at top for rear pages */
+.te-page-stack {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 100px;
+  padding-right: 36px;
+}
+
+/* Individual page - positioned absolutely within stack */
+.te-page {
+  position: absolute;
+  left: 0;
+  right: 36px;
+  top: 100px;
+  bottom: 0;
+  border-radius: 8px;
+  transform-origin: bottom right;
+  transition: transform 0.15s ease;
+}
+
+/* Tab attached to each page */
+.te-tab {
+  position: absolute;
+  top: -39px;
+  width: 160px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #000000;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* SVG tab shape - trapezoid with bottom rect for seamless connection to page */
+.te-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--te-tab-color, #fff8d4);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 37' preserveAspectRatio='none'%3E%3Cpath d='M0,37 L0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L92,0 Q99,0 102,6 L109,26 Q112,32 120,32 L120,37 Z' fill='black'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 37' preserveAspectRatio='none'%3E%3Cpath d='M0,37 L0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L92,0 Q99,0 102,6 L109,26 Q112,32 120,32 L120,37 Z' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+}
+
+/* Container inside each page - hidden unless page is active */
+.te-page .te-container {
+  display: none;
+  padding: 3rem 1rem;
+}
+
+/* Show container only on active page */
+.te-page:has(.te-tab.te-active) .te-container {
+  display: block;
+}
+
+/* Active page flows normally to determine stack height */
+.te-page:has(.te-tab.te-active) {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  right: auto;
+  left: auto;
+}
+
+/* Main content area */
+.te-container {
+  position: relative;
+}
+
+/* Mobile responsive */
+@media (max-width: 660px) {
+  .te-tab {
+    font-size: 0.875rem;
+  }
+
+  .te-page-stack {
+    padding-right: 24px;
+  }
+
+  .te-page {
+    right: 24px;
+  }
+}

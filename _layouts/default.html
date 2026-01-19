@@ -3,15 +3,50 @@
 <head>
   {% include head.html %}
 </head>
-<body class="{% if page.url == '/' %}page-home{% elsif page.url contains '/products' %}page-products{% elsif page.url contains '/company' %}page-company{% elsif page.url contains '/newsletter' %}page-newsletter{% endif %}">
-{% include nav.html %}
-<div class="page-wrapper">
-<span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
-<span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
-{{ content }}
-<span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
-<span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
+<body>
+<div class="te-page-stack">
+  <div class="te-page te-page-home">
+    <a href="/" class="te-tab">Home</a>
+    <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
+    <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
+    <div class="te-container">
+      {% if page.url == '/' %}{{ content }}{% endif %}
+    </div>
+    <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
+    <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
+  </div>
+  <div class="te-page te-page-products">
+    <a href="/products/" class="te-tab">Products</a>
+    <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
+    <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
+    <div class="te-container">
+      {% if page.url contains '/products' %}{{ content }}{% endif %}
+    </div>
+    <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
+    <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
+  </div>
+  <div class="te-page te-page-company">
+    <a href="/company/" class="te-tab">Company</a>
+    <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
+    <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
+    <div class="te-container">
+      {% if page.url contains '/company' %}{{ content }}{% endif %}
+    </div>
+    <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
+    <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
+  </div>
+  <div class="te-page te-page-newsletter">
+    <a href="/newsletter/" class="te-tab">Newsletter</a>
+    <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
+    <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
+    <div class="te-container">
+      {% if page.url contains '/newsletter' %}{{ content }}{% endif %}
+    </div>
+    <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
+    <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
+  </div>
 </div>
 <script src="/sprite.js"></script>
+<script src="/tab-engine.js"></script>
 </body>
 </html>

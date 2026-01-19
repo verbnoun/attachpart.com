@@ -9,3 +9,21 @@
 <link rel="manifest" href="/favicon/site.webmanifest">
 <meta name="theme-color" content="#56a2c4">
 <link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/tab-engine.css">
+{% if page.url == '/' %}
+<link rel="prefetch" href="/products/">
+<link rel="prefetch" href="/company/">
+<link rel="prefetch" href="/newsletter/">
+{% elsif page.url contains '/products' %}
+<link rel="prefetch" href="/">
+<link rel="prefetch" href="/company/">
+<link rel="prefetch" href="/newsletter/">
+{% elsif page.url contains '/company' %}
+<link rel="prefetch" href="/">
+<link rel="prefetch" href="/products/">
+<link rel="prefetch" href="/newsletter/">
+{% elsif page.url contains '/newsletter' %}
+<link rel="prefetch" href="/">
+<link rel="prefetch" href="/products/">
+<link rel="prefetch" href="/company/">
+{% endif %}

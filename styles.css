@@ -63,10 +63,13 @@
   box-sizing: border-box;
 }
 
+html {
+  background: #000;
+}
+
 body {
   font-family: var(--font-body);
   color: var(--color-text);
-  background-color: #8B7355;
   line-height: 1.5;
 }
 
@@ -76,8 +79,8 @@ body::before {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100dvw;
+  height: 100dvh;
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
@@ -95,7 +98,6 @@ body.flash::before {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 3rem 1rem 0;
-  background: var(--color-bg);
 }
 
 /* Non-home pages get min viewport height */
@@ -668,300 +670,25 @@ a.contact-row:hover .contact-address {
   z-index: 50;
 }
 
-.page-wrapper .corner-top-left {
+.te-page .corner-top-left {
   top: 0.75rem;
   left: calc(var(--margin-interior) + 0.25rem);
 }
 
-.page-wrapper .corner-top-right {
+.te-page .corner-top-right {
   top: 0.75rem;
   right: calc(var(--margin-interior) + 0.25rem);
 }
 
 /* Bottom corners - aligned with content margin */
-.page-wrapper .corner-bottom-left {
+.te-page .corner-bottom-left {
   bottom: 0.25rem;
   left: calc(var(--margin-interior) + 0.25rem);
 }
 
-.page-wrapper .corner-bottom-right {
+.te-page .corner-bottom-right {
   bottom: 0.25rem;
   right: calc(var(--margin-interior) + 0.25rem);
-}
-
-/* Navigation Tabs - Manila Folder Style */
-.tabs-wrapper {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding-top: 1.5rem;
-}
-
-.tabs {
-  display: flex;
-  padding: 0 var(--margin-interior);
-  position: relative;
-}
-
-
-.tab {
-  font-family: var(--font-bartleby);
-  font-size: 1.125rem;
-  padding: 0.75rem 0;
-  width: 11rem;
-  text-decoration: none;
-  color: var(--color-accent);
-  text-align: center;
-  position: relative;
-  background: transparent;
-  border: none;
-  margin-right: -2.5rem;
-  isolation: isolate;
-  transition: transform 0.15s ease, margin 0.15s ease;
-}
-
-.tab:first-child {
-  margin-left: 25px;
-}
-
-/* Stacking order, vertical position, and colors: cascade outward from active tab */
-/* Position: active=0, 1 back=-6px, 2 back=-12px, 3 back=-18px (matches 4 page layers) */
-/* Colors: front=#fff8d4, 1 back=#f0e8c8, 2 back=#e8dfc0, 3 back=#e0d7b8 */
-
-/* Home active: Home > Products > Company > Newsletter */
-.page-home .tab:nth-child(1) { z-index: 100; transform: translateY(0); }
-.page-home .tab:nth-child(1)::before { background: #fff8d4; }
-.page-home .tab:nth-child(2) { z-index: 99; transform: translateY(-6px); }
-.page-home .tab:nth-child(2)::before { background: #f0e8c8; }
-.page-home .tab:nth-child(3) { z-index: 98; transform: translateY(-12px); }
-.page-home .tab:nth-child(3)::before { background: #e8dfc0; }
-.page-home .tab:nth-child(4) { z-index: 97; transform: translateY(-18px); }
-.page-home .tab:nth-child(4)::before { background: #e0d7b8; }
-
-/* Products active: Products > Home=Company > Newsletter */
-.page-products .tab:nth-child(2) { z-index: 100; transform: translateY(0); }
-.page-products .tab:nth-child(2)::before { background: #fff8d4; }
-.page-products .tab:nth-child(1) { z-index: 99; transform: translateY(-6px); }
-.page-products .tab:nth-child(1)::before { background: #f0e8c8; }
-.page-products .tab:nth-child(3) { z-index: 99; transform: translateY(-6px); }
-.page-products .tab:nth-child(3)::before { background: #f0e8c8; }
-.page-products .tab:nth-child(4) { z-index: 98; transform: translateY(-12px); }
-.page-products .tab:nth-child(4)::before { background: #e8dfc0; }
-
-/* Company active: Company > Products=Newsletter > Home */
-.page-company .tab:nth-child(3) { z-index: 100; transform: translateY(0); }
-.page-company .tab:nth-child(3)::before { background: #fff8d4; }
-.page-company .tab:nth-child(2) { z-index: 99; transform: translateY(-6px); }
-.page-company .tab:nth-child(2)::before { background: #f0e8c8; }
-.page-company .tab:nth-child(4) { z-index: 99; transform: translateY(-6px); }
-.page-company .tab:nth-child(4)::before { background: #f0e8c8; }
-.page-company .tab:nth-child(1) { z-index: 98; transform: translateY(-12px); }
-.page-company .tab:nth-child(1)::before { background: #e8dfc0; }
-
-/* Newsletter active: Newsletter > Company > Products > Home */
-.page-newsletter .tab:nth-child(4) { z-index: 100; transform: translateY(0); }
-.page-newsletter .tab:nth-child(4)::before { background: #fff8d4; }
-.page-newsletter .tab:nth-child(3) { z-index: 99; transform: translateY(-6px); }
-.page-newsletter .tab:nth-child(3)::before { background: #f0e8c8; }
-.page-newsletter .tab:nth-child(2) { z-index: 98; transform: translateY(-12px); }
-.page-newsletter .tab:nth-child(2)::before { background: #e8dfc0; }
-.page-newsletter .tab:nth-child(1) { z-index: 97; transform: translateY(-18px); }
-.page-newsletter .tab:nth-child(1)::before { background: #e0d7b8; }
-
-/* SVG tab shape - trapezoid with smooth curves at all corners */
-.tab::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: #e8dfc0;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
-  mask-size: 100% 100%;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 100%;
-}
-
-.tab:hover::before {
-  background: #f0e8cc;
-}
-
-/* Gradient shadow overlay */
-.tab::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
-  mask-size: 100% 100%;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 32' preserveAspectRatio='none'%3E%3Cpath d='M0,32 Q8,32 11,26 L18,6 Q21,0 28,0 L72,0 Q79,0 82,6 L89,26 Q92,32 100,32 Z' fill='black'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 100%;
-}
-
-/* Left shadow gradient (tab is covered from left) - matches ~63° diagonal */
-.tab.shadow-left::after {
-  background: linear-gradient(63deg, rgba(0,0,0,0.25) 0px, transparent 40px);
-}
-
-/* Right shadow gradient (tab is covered from right) - matches ~117° diagonal */
-.tab.shadow-right::after {
-  background: linear-gradient(117deg, transparent calc(100% - 40px), rgba(0,0,0,0.25) 100%);
-}
-
-.tab.active {
-  color: var(--color-text);
-}
-
-/* Page wrapper */
-.page-wrapper {
-  position: relative;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  background: var(--color-bg);
-}
-
-/* Page tops - semantic layers matching tabs, positioned per active page */
-.page-tops {
-  position: relative;
-  max-width: var(--max-width);
-  margin: -18px auto 0;
-  height: 34px; /* fits front page-top: top 18px + height 16px */
-}
-
-.page-top {
-  position: absolute;
-  display: flex;
-  height: 16px;
-  transition: transform 0.15s ease;
-}
-
-.page-top-left {
-  width: 4px;
-  flex-shrink: 0;
-}
-
-.page-top-middle {
-  flex-grow: 1;
-}
-
-.page-top-right {
-  width: 4px;
-  flex-shrink: 0;
-}
-
-/* SVG templates for corners - colors set via CSS filter or per-page rules */
-/* Using depth-based colors: front=#fff8d4, 1back=#f0e8c8, 2back=#e8dfc0, 3back=#e0d7b8 */
-
-/* Home active: Home=front, Products=1back, Company=2back, Newsletter=3back */
-.page-home .page-top-home { top: 18px; z-index: 4; left: 0; right: 0; }
-.page-home .page-top-products { top: 12px; z-index: 3; left: 4px; right: 4px; }
-.page-home .page-top-company { top: 6px; z-index: 2; left: 8px; right: 8px; }
-.page-home .page-top-newsletter { top: 0; z-index: 1; left: 12px; right: 12px; }
-
-.page-home .page-top-home .page-top-middle { background: #fff8d4; }
-.page-home .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-.page-home .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-
-.page-home .page-top-products .page-top-middle { background: #f0e8c8; }
-.page-home .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-.page-home .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-
-.page-home .page-top-company .page-top-middle { background: #e8dfc0; }
-.page-home .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-.page-home .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-
-.page-home .page-top-newsletter .page-top-middle { background: #e0d7b8; }
-.page-home .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
-.page-home .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
-
-/* Products active: Products=front, Home=1back, Company=1back, Newsletter=2back */
-.page-products .page-top-products { top: 18px; z-index: 4; left: 0; right: 0; }
-.page-products .page-top-home { top: 12px; z-index: 3; left: 4px; right: 4px; }
-.page-products .page-top-company { top: 12px; z-index: 3; left: 4px; right: 4px; }
-.page-products .page-top-newsletter { top: 6px; z-index: 2; left: 8px; right: 8px; }
-
-.page-products .page-top-products .page-top-middle { background: #fff8d4; }
-.page-products .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-.page-products .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-
-.page-products .page-top-home .page-top-middle { background: #f0e8c8; }
-.page-products .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-.page-products .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-
-.page-products .page-top-company .page-top-middle { background: #f0e8c8; }
-.page-products .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-.page-products .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-
-.page-products .page-top-newsletter .page-top-middle { background: #e8dfc0; }
-.page-products .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-.page-products .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-
-/* Company active: Company=front, Products=1back, Newsletter=1back, Home=2back */
-.page-company .page-top-company { top: 18px; z-index: 4; left: 0; right: 0; }
-.page-company .page-top-products { top: 12px; z-index: 3; left: 4px; right: 4px; }
-.page-company .page-top-newsletter { top: 12px; z-index: 3; left: 4px; right: 4px; }
-.page-company .page-top-home { top: 6px; z-index: 2; left: 8px; right: 8px; }
-
-.page-company .page-top-company .page-top-middle { background: #fff8d4; }
-.page-company .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-.page-company .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-
-.page-company .page-top-products .page-top-middle { background: #f0e8c8; }
-.page-company .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-.page-company .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-
-.page-company .page-top-newsletter .page-top-middle { background: #f0e8c8; }
-.page-company .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-.page-company .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-
-.page-company .page-top-home .page-top-middle { background: #e8dfc0; }
-.page-company .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-.page-company .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-
-/* Newsletter active: Newsletter=front, Company=1back, Products=2back, Home=3back */
-.page-newsletter .page-top-newsletter { top: 18px; z-index: 4; left: 0; right: 0; }
-.page-newsletter .page-top-company { top: 12px; z-index: 3; left: 4px; right: 4px; }
-.page-newsletter .page-top-products { top: 6px; z-index: 2; left: 8px; right: 8px; }
-.page-newsletter .page-top-home { top: 0; z-index: 1; left: 12px; right: 12px; }
-
-.page-newsletter .page-top-newsletter .page-top-middle { background: #fff8d4; }
-.page-newsletter .page-top-newsletter .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-.page-newsletter .page-top-newsletter .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23fff8d4'/%3E%3C/svg%3E"); }
-
-.page-newsletter .page-top-company .page-top-middle { background: #f0e8c8; }
-.page-newsletter .page-top-company .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-.page-newsletter .page-top-company .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23f0e8c8'/%3E%3C/svg%3E"); }
-
-.page-newsletter .page-top-products .page-top-middle { background: #e8dfc0; }
-.page-newsletter .page-top-products .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-.page-newsletter .page-top-products .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e8dfc0'/%3E%3C/svg%3E"); }
-
-.page-newsletter .page-top-home .page-top-middle { background: #e0d7b8; }
-.page-newsletter .page-top-home .page-top-left { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M4,0 L4,16 L0,16 L0,4 Q0,0 4,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
-.page-newsletter .page-top-home .page-top-right { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='16' viewBox='0 0 4 16'%3E%3Cpath d='M0,0 L0,16 L4,16 L4,4 Q4,0 0,0 Z' fill='%23e0d7b8'/%3E%3C/svg%3E"); }
-
-/* Hover effects - lift non-active tab and its corresponding page-top */
-/* Small delay on tab to sync with :has() selector evaluation for page-top */
-.tab:not(.active):hover {
-  margin-top: -4px;
-  margin-bottom: 4px;
-  transition-delay: 0.02s;
-}
-
-body:has(.tab:nth-child(1):not(.active):hover) .page-top-home { transform: translateY(-4px); }
-body:has(.tab:nth-child(2):not(.active):hover) .page-top-products { transform: translateY(-4px); }
-body:has(.tab:nth-child(3):not(.active):hover) .page-top-company { transform: translateY(-4px); }
-body:has(.tab:nth-child(4):not(.active):hover) .page-top-newsletter { transform: translateY(-4px); }
-
-/* Mobile tabs */
-@media (max-width: 660px) {
-  .tab {
-    font-size: 0.75rem;
-    margin-right: -2.5rem;
-  }
-
-  .tab:last-child {
-    margin-right: 0;
-  }
 }
 
 /* Page Header */
@@ -975,14 +702,4 @@ body:has(.tab:nth-child(4):not(.active):hover) .page-top-newsletter { transform:
   font-size: 3.5rem;
   font-weight: 400;
   color: var(--color-accent);
-}
-
-/* Temporarily hide non-Home tabs and page-tops */
-.tab:nth-child(2),
-.tab:nth-child(3),
-.tab:nth-child(4),
-.page-top-products,
-.page-top-company,
-.page-top-newsletter {
-  display: none;
 }
