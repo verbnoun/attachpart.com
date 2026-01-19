@@ -10,6 +10,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 100px;
+  padding-left: 36px;
   padding-right: 36px;
   overflow-x: clip;
 }
@@ -17,7 +18,7 @@
 /* Individual page - positioned absolutely within stack */
 .te-page {
   position: absolute;
-  left: 0;
+  left: 36px;
   right: 36px;
   top: 100px;
   bottom: 0;
