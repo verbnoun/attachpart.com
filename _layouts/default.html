@@ -4,6 +4,13 @@
   {% include head.html %}
 </head>
 <body>
+<!-- SVG Filters -->
+<svg style="position: absolute; width: 0; height: 0;">
+  <filter id="deboss-noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 <div class="te-page-stack">
   <div class="te-page te-page-home">
     <a href="/" class="te-tab">Home</a>

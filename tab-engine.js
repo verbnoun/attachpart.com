@@ -104,6 +104,7 @@
 
   function setupHoverAnimations(depths, activePage) {
     const pages = document.querySelectorAll('.te-page');
+    const activeIndex = getPageIndex(activePage);
 
     pages.forEach(pageEl => {
       const pageMatch = pageEl.className.match(/te-page-(\w+)/);
@@ -113,11 +114,26 @@
       if (pageName === activePage) return;
 
       const depth = depths[pageName];
+      const pageIndex = getPageIndex(pageName);
+      const isLeftOfActive = pageIndex < activeIndex;
+
+      // Set transform origin based on position relative to active page
+      if (isLeftOfActive) {
+        pageEl.style.transformOrigin = 'bottom left';
+      } else {
+        pageEl.style.transformOrigin = 'bottom right';
+      }
 
       pageEl.addEventListener('mouseenter', () => {
         const depthOffsets = getDepthOffsets();
         const offset = depthOffsets[depth] || depthOffsets[depthOffsets.length - 1];
-        pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px) rotate(1deg)`;
+        if (isLeftOfActive) {
+          // Left tabs: shift up and tilt left (negative rotation)
+          pageEl.style.transform = `translate(${offset.x}px, ${offset.y - 3}px) rotate(-0.5deg)`;
+        } else {
+          // Right tabs: current behavior
+          pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px) rotate(0.5deg)`;
+        }
       });
 
       pageEl.addEventListener('mouseleave', () => {

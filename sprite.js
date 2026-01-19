@@ -292,6 +292,9 @@ class NoiseBackground {
     this.generateBaseNoise();
     this.animate();
 
+    // Jitter on load
+    this.flashVelocity = 6;
+
     window.addEventListener('resize', () => this.generateBaseNoise());
 
     let lastScrollForBlue = 0;
