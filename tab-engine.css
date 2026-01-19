@@ -29,9 +29,6 @@
 /* Tab attached to each page */
 .te-tab {
   position: absolute;
-  top: -39px;
-  width: 160px;
-  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,10 +83,10 @@
   }
 
   .te-page-stack {
-    padding-right: 24px;
+    padding-right: 8px;
   }
 
   .te-page {
-    right: 24px;
+    right: 8px;
   }
 }

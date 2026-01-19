@@ -26,11 +26,14 @@
   ];
 
   function getDepthOffsets() {
+    const isMobile = window.matchMedia(MOBILE_QUERY).matches;
+    const depthX = isMobile ? 2 : CONFIG.depthOffsetX;
+    const depthY = isMobile ? CONFIG.depthOffsetY + 15 : CONFIG.depthOffsetY;
     return [
       { x: 0, y: 0 },
-      { x: CONFIG.depthOffsetX, y: -CONFIG.depthOffsetY },
-      { x: CONFIG.depthOffsetX * 2, y: -CONFIG.depthOffsetY * 2 },
-      { x: CONFIG.depthOffsetX * 3, y: -CONFIG.depthOffsetY * 3 },
+      { x: depthX, y: -depthY },
+      { x: depthX * 2, y: -depthY * 2 },
+      { x: depthX * 3, y: -depthY * 3 },
     ];
   }
 
@@ -125,6 +128,7 @@
       }
 
       pageEl.addEventListener('mouseenter', () => {
+        if (window.matchMedia(MOBILE_QUERY).matches) return;
         const depthOffsets = getDepthOffsets();
         const offset = depthOffsets[depth] || depthOffsets[depthOffsets.length - 1];
         if (isLeftOfActive) {
@@ -137,6 +141,7 @@
       });
 
       pageEl.addEventListener('mouseleave', () => {
+        if (window.matchMedia(MOBILE_QUERY).matches) return;
         const depthOffsets = getDepthOffsets();
         const offset = depthOffsets[depth] || depthOffsets[depthOffsets.length - 1];
         pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
@@ -144,22 +149,28 @@
     });
   }
 
-  function setUniformTabWidths() {
+  const MOBILE_QUERY = '(max-width: 660px)';
+
+  function setTabDimensions() {
+    const isMobile = window.matchMedia(MOBILE_QUERY).matches;
     const tabs = document.querySelectorAll('.te-tab');
-    let maxWidth = 0;
+
+    // Tab dimensions (mobile is 120/160 = 0.75 scale)
+    const width = isMobile ? 120 : 160;
+    const height = isMobile ? 34 : 45;
+    const top = isMobile ? -29 : -39;
 
     tabs.forEach(tab => {
-      const width = tab.scrollWidth;
-      if (width > maxWidth) maxWidth = width;
-    });
-
-    const uniformWidth = maxWidth + 40;
-    tabs.forEach(tab => {
-      tab.style.width = uniformWidth + 'px';
+      tab.style.width = width + 'px';
+      tab.style.height = height + 'px';
+      tab.style.top = top + 'px';
     });
   }
 
   function positionTabs() {
+    const isMobile = window.matchMedia(MOBILE_QUERY).matches;
+    const tabOffset = isMobile ? 78 : CONFIG.tabOffset;
+    const tabBase = isMobile ? 20 : TAB_BASE;
     const pages = document.querySelectorAll('.te-page');
 
     pages.forEach(pageEl => {
@@ -171,7 +182,7 @@
       const tab = pageEl.querySelector('.te-tab');
 
       if (tab && pageIndex !== -1) {
-        const leftPos = TAB_BASE + pageIndex * CONFIG.tabOffset;
+        const leftPos = tabBase + pageIndex * tabOffset;
         tab.style.left = leftPos + 'px';
       }
     });
@@ -183,7 +194,7 @@
 
     applyDepths(depths, activePage);
     setupHoverAnimations(depths, activePage);
-    setUniformTabWidths();
+    setTabDimensions();
     positionTabs();
   }
 
@@ -192,4 +203,13 @@
   } else {
     init();
   }
+
+  // Re-run tab setup when crossing breakpoint
+  window.matchMedia(MOBILE_QUERY).addEventListener('change', () => {
+    const activePage = getActivePage();
+    const depths = calculateDepths(activePage);
+    applyDepths(depths, activePage);
+    setTabDimensions();
+    positionTabs();
+  });
 })();
