@@ -1104,23 +1104,63 @@ a.contact-row:hover .contact-address {
     padding-right: 4px;
   }
 
-  /* Blue lines: full width (2px from edge) */
-  .intro {
-    border-bottom: var(--border-accent);
+  /* Products grid: remove gap, control spacing manually */
+  .products {
+    padding-top: 2rem;
+    padding-bottom: 0;
+    gap: 0;
   }
 
+  /* ===========================================
+     Mobile Blue Lines - Standardized
+     - All lines span full width (4px from page edge)
+     - 2rem spacing above and below each line
+     =========================================== */
+
+  /* Newsletter row bottom line */
+  .newsletter-row {
+    padding-bottom: 2rem;
+  }
   .newsletter-row::after {
     left: 0;
     width: 100%;
   }
 
+  /* Intro bottom line */
+  .intro {
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: var(--border-accent);
+  }
+
+  /* Candide top line - remove desktop border-left, use horizontal line */
+  .product:nth-child(2) {
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    padding-top: 2rem;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .product:nth-child(2)::before {
+    left: -4px;
+    right: -4px;
+  }
+
+  /* Console top line */
+  .product-console {
+    margin-top: 0;
+    padding-top: 2rem;
+  }
   .product-console::before {
     left: 0;
     width: 100%;
   }
 
-  /* Footer: full width blue line */
+  /* Footer top line */
   footer {
+    margin-top: 2rem;
     border-top: var(--border-accent);
   }
 }
