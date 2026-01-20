@@ -1,5 +1,5 @@
 // Timeline layout: position range articles based on single-month anchors
-// with collision detection and spacing adjustment
+// with content-based spacing adjustment
 
 function layoutTimeline() {
   const columns = document.querySelector('.timeline-columns');
@@ -12,7 +12,7 @@ function layoutTimeline() {
   const rightArticles = Array.from(rightCol.querySelectorAll('article'));
   const leftArticles = Array.from(leftCol.querySelectorAll('article'));
 
-  const GAP = 24; // minimum gap between articles in pixels
+  const GAP = 0; // no additional JS spacing - rely on CSS margins
 
   // Reset any previous inline styles
   rightArticles.forEach(a => a.style.marginBottom = '');
@@ -69,6 +69,7 @@ function layoutTimeline() {
       anchors.push({
         value: date.value,
         y: rect.top - colRect.top,
+        bottom: rect.bottom - colRect.top,
         index: index,
         article: article
       });
@@ -79,8 +80,58 @@ function layoutTimeline() {
     return anchors;
   }
 
+  // Prepare left article data with heights
+  const leftData = leftArticles.map(article => {
+    const time = article.querySelector('time');
+    const range = time ? parseRange(time.textContent) : null;
+    return {
+      article,
+      range,
+      midValue: range ? (range.start.value + range.end.value) / 2 : 0,
+      height: article.offsetHeight
+    };
+  }).filter(d => d.range !== null);
+
+  // Sort left articles by date (newest first)
+  leftData.sort((a, b) => b.midValue - a.midValue);
+
+  // Get initial anchors
+  let anchors = buildAnchors();
+
+  // For each gap between anchors, calculate how much space the content needs
+  // and add margin to expand gaps that are too small
+  for (let i = 0; i < anchors.length - 1; i++) {
+    const upperAnchor = anchors[i];     // newer, higher on page (lower Y)
+    const lowerAnchor = anchors[i + 1]; // older, lower on page (higher Y)
+
+    // Find all left articles whose midValue falls in this gap
+    const articlesInGap = leftData.filter(d =>
+      d.midValue <= upperAnchor.value && d.midValue >= lowerAnchor.value
+    );
+
+    if (articlesInGap.length === 0) continue;
+
+    // Calculate total height needed for these articles (just heights, CSS handles margins)
+    const totalHeightNeeded = articlesInGap.reduce((sum, d) => sum + d.height, 0);
+
+    // Current available space in this gap
+    // Use the bottom of upper anchor's article to top of lower anchor's article
+    const currentSpace = lowerAnchor.y - upperAnchor.bottom;
+
+    // If we need more space, add margin to the upper anchor's article
+    if (totalHeightNeeded > currentSpace) {
+      const extraNeeded = totalHeightNeeded - currentSpace;
+      const article = rightArticles[upperAnchor.index];
+      const currentMargin = parseFloat(article.style.marginBottom) || 0;
+      article.style.marginBottom = (currentMargin + extraNeeded) + 'px';
+    }
+  }
+
+  // Rebuild anchors after margin adjustments
+  anchors = buildAnchors();
+
   // Interpolate Y position for any date value
-  function getYForValue(value, anchors) {
+  function getYForValue(value) {
     if (anchors.length === 0) return 0;
     if (anchors.length === 1) return anchors[0].y;
 
@@ -108,104 +159,30 @@ function layoutTimeline() {
     return 0;
   }
 
-  // Prepare left article data
-  const leftData = leftArticles.map(article => {
-    const time = article.querySelector('time');
-    const range = time ? parseRange(time.textContent) : null;
-    return {
-      article,
-      range,
-      midValue: range ? (range.start.value + range.end.value) / 2 : 0,
-      height: article.offsetHeight
-    };
-  }).filter(d => d.range !== null);
-
-  // Sort left articles by date (newest first)
-  leftData.sort((a, b) => b.midValue - a.midValue);
-
-  // Iteratively adjust spacing until no overlaps
-  let iterations = 0;
-  const maxIterations = 10;
-
-  while (iterations < maxIterations) {
-    iterations++;
-
-    const anchors = buildAnchors();
-
-    // Calculate positions for left articles
-    let needsAdjustment = false;
-    let prevBottom = 0;
-
-    leftData.forEach((data, i) => {
-      const idealY = getYForValue(data.midValue, anchors);
-      // Ensure we don't overlap with previous article
-      const actualY = Math.max(idealY, prevBottom);
-      data.y = actualY;
-      data.idealY = idealY;
-      prevBottom = actualY + data.height + GAP;
-
-      // Check if we had to push this article down
-      if (actualY > idealY + 1) {
-        needsAdjustment = true;
-        data.pushAmount = actualY - idealY;
-      } else {
-        data.pushAmount = 0;
-      }
-    });
-
-    if (!needsAdjustment) break;
-
-    // Find which right column articles need extra margin
-    // to create space for pushed left articles
-    leftData.forEach(data => {
-      if (data.pushAmount <= 0) return;
-
-      // Find the right column article that's just before this date
-      const anchors = buildAnchors();
-      let targetAnchorIndex = -1;
-
-      for (let i = 0; i < anchors.length - 1; i++) {
-        if (data.midValue <= anchors[i].value && data.midValue >= anchors[i + 1].value) {
-          targetAnchorIndex = anchors[i].index;
-          break;
-        }
-      }
-
-      if (targetAnchorIndex >= 0 && targetAnchorIndex < rightArticles.length) {
-        const article = rightArticles[targetAnchorIndex];
-        const currentMargin = parseFloat(article.style.marginBottom) || 0;
-        article.style.marginBottom = (currentMargin + data.pushAmount) + 'px';
-      }
-    });
-  }
-
-  // Final positioning pass
+  // Position left column articles
   leftCol.style.position = 'relative';
-  const finalAnchors = buildAnchors();
 
-  // Re-measure heights now that layout has stabilized
-  // First, temporarily position articles to measure their true heights
+  // Set absolute positioning and measure true heights
   leftData.forEach(data => {
     data.article.style.position = 'absolute';
     data.article.style.left = '0';
     data.article.style.right = '0';
-    data.article.style.top = '0'; // temporary
+    data.article.style.top = '0';
   });
 
-  // Force reflow and measure
+  // Re-measure heights after positioning
   leftData.forEach(data => {
     data.height = data.article.offsetHeight;
   });
 
-  // Now position properly
+  // Final positioning with collision detection
   let prevBottom = 0;
 
   leftData.forEach(data => {
-    const idealY = getYForValue(data.midValue, finalAnchors);
+    const idealY = getYForValue(data.midValue);
     const actualY = Math.max(idealY, prevBottom);
 
     data.article.style.top = actualY + 'px';
-
     prevBottom = actualY + data.height + GAP;
   });
 
