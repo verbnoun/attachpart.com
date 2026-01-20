@@ -12,7 +12,7 @@
   const CONFIG = {
     tabOffset: 127,
     depthOffsetX: 8,
-    depthOffsetY: 7,
+    depthOffsetY: 9,
     cornerRadius: 6
   };
 
@@ -133,10 +133,10 @@
         const offset = depthOffsets[depth] || depthOffsets[depthOffsets.length - 1];
         if (isLeftOfActive) {
           // Left tabs: shift up and tilt left (negative rotation)
-          pageEl.style.transform = `translate(${offset.x}px, ${offset.y - 3}px) rotate(-0.5deg)`;
+          pageEl.style.transform = `translate(${offset.x}px, ${offset.y - 3}px) rotate(-0.25deg)`;
         } else {
           // Right tabs: current behavior
-          pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px) rotate(0.5deg)`;
+          pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px) rotate(0.25deg)`;
         }
       });
 
@@ -149,7 +149,7 @@
     });
   }
 
-  const MOBILE_QUERY = '(max-width: 660px)';
+  const MOBILE_QUERY = '(max-width: 768px)';
 
   function setTabDimensions() {
     const isMobile = window.matchMedia(MOBILE_QUERY).matches;
@@ -169,8 +169,8 @@
 
   function positionTabs() {
     const isMobile = window.matchMedia(MOBILE_QUERY).matches;
-    const tabOffset = isMobile ? 78 : CONFIG.tabOffset;
-    const tabBase = isMobile ? 20 : TAB_BASE;
+    const tabOffset = isMobile ? 68 : CONFIG.tabOffset;
+    const tabBase = isMobile ? 8 : TAB_BASE;
     const pages = document.querySelectorAll('.te-page');
 
     pages.forEach(pageEl => {

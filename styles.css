@@ -409,6 +409,35 @@ body.flash::before {
     margin: 0 auto;
   }
 
+  /* Timeline mobile: stack columns, ranges first */
+  .timeline-columns {
+    flex-direction: column;
+  }
+
+  .timeline-columns::before {
+    display: none; /* hide center line */
+  }
+
+  .timeline-columns > .col {
+    position: static !important;
+    min-height: auto !important;
+  }
+
+  .timeline-columns > .col article {
+    position: static !important;
+    top: auto !important;
+  }
+
+  .timeline-columns > .col:first-child time {
+    text-align: left; /* reset right-align on mobile */
+  }
+
+  /* Hide connectors on mobile */
+  .timeline-columns > .col:last-child article::before,
+  .timeline-columns > .col:last-child article::after {
+    display: none;
+  }
+
   .timeline-line {
     left: var(--margin-interior);
   }
@@ -1041,4 +1070,57 @@ a.contact-row:hover .contact-address {
   font-size: 3.5rem;
   font-weight: 400;
   color: var(--color-accent);
+}
+
+/* ===========================================
+   Mobile Layout - Tab Engine Alignment
+   - Full width zone: 4px from page edge
+   - Text zone: 8px from page edge (4px inset)
+   =========================================== */
+@media (max-width: 768px) {
+  /* Remove container padding - let te-container handle it */
+  .container {
+    padding: 0;
+  }
+
+  /* Logo: left-aligned, 8px from edge (4px te-container + 4px margin) */
+  .site-logo {
+    text-align: left;
+    margin: 0 0 1rem 4px;
+  }
+
+  /* Hero: full width (2px from edge via te-container) */
+  .hero {
+    margin: 0;
+  }
+
+  /* Text content: 4px inset from full-width zone (8px from page edge) */
+  .intro,
+  .prose,
+  .products,
+  .newsletter-row,
+  .page-header {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  /* Blue lines: full width (2px from edge) */
+  .intro {
+    border-bottom: var(--border-accent);
+  }
+
+  .newsletter-row::after {
+    left: 0;
+    width: 100%;
+  }
+
+  .product-console::before {
+    left: 0;
+    width: 100%;
+  }
+
+  /* Footer: full width blue line */
+  footer {
+    border-top: var(--border-accent);
+  }
 }
