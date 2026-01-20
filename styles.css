@@ -39,6 +39,11 @@
   --gap: 2rem;
   --margin-interior: 2rem;
 
+  /* Spacing tokens for block system */
+  --space-block: 2rem;      /* vertical space between blocks */
+  --space-heading: 0.5rem;  /* space below headings */
+  --space-line: 2rem;       /* space above/below blue line dividers */
+
   --border-accent: 1px solid var(--color-accent);
   --border-muted: 1px solid var(--color-muted);
 }
@@ -52,6 +57,44 @@
 /* Box with accent border - for form fields, cards, etc */
 .accent-box {
   border: var(--border-accent);
+}
+
+/* ===========================================
+   Block System
+   - Consistent spacing for content blocks
+   - Headings have no top margin, consistent bottom
+   =========================================== */
+
+/* Base block styles applied to all content sections */
+.block,
+.intro,
+.products,
+.product,
+.newsletter-row,
+.about-section,
+.page-header,
+.prose {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Headings in content blocks - no top margin */
+.intro h2,
+.product h2,
+.product h3,
+.about-section h2,
+.page-header h1,
+.prose h2,
+.prose h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-heading);
+}
+
+/* Blue line divider utility */
+.divider {
+  border: none;
+  border-top: var(--border-accent);
+  margin: var(--space-line) 0;
 }
 
 /* Text color utilities */
@@ -1106,7 +1149,7 @@ a.contact-row:hover .contact-address {
 
   /* Products grid: remove gap, control spacing manually */
   .products {
-    padding-top: 2rem;
+    padding-top: var(--space-block);
     padding-bottom: 0;
     gap: 0;
   }
@@ -1114,12 +1157,12 @@ a.contact-row:hover .contact-address {
   /* ===========================================
      Mobile Blue Lines - Standardized
      - All lines span full width (4px from page edge)
-     - 2rem spacing above and below each line
+     - Consistent spacing using --space-line token
      =========================================== */
 
   /* Newsletter row bottom line */
   .newsletter-row {
-    padding-bottom: 2rem;
+    padding-bottom: var(--space-line);
   }
   .newsletter-row::after {
     left: 0;
@@ -1128,8 +1171,8 @@ a.contact-row:hover .contact-address {
 
   /* Intro bottom line */
   .intro {
-    padding-bottom: 2rem;
-    margin-bottom: 2rem;
+    padding-bottom: var(--space-line);
+    margin-bottom: var(--space-line);
     border-bottom: var(--border-accent);
   }
 
@@ -1139,7 +1182,7 @@ a.contact-row:hover .contact-address {
     padding-left: 0;
     margin-left: 0;
     margin-top: 0;
-    padding-top: 2rem;
+    padding-top: var(--space-line);
     margin-bottom: 0;
     padding-bottom: 0;
   }
@@ -1151,7 +1194,7 @@ a.contact-row:hover .contact-address {
   /* Console top line */
   .product-console {
     margin-top: 0;
-    padding-top: 2rem;
+    padding-top: var(--space-line);
   }
   .product-console::before {
     left: 0;
@@ -1160,7 +1203,7 @@ a.contact-row:hover .contact-address {
 
   /* Footer top line */
   footer {
-    margin-top: 2rem;
+    margin-top: var(--space-line);
     border-top: var(--border-accent);
   }
 }
