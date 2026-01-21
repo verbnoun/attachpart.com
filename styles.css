@@ -139,6 +139,21 @@ h3 {
   font-size: 1.5rem;
 }
 
+/* Lists - blue bullets aligned with text */
+ul {
+  list-style: disc;
+  padding-left: 1.25em;
+  margin-left: 0;
+}
+
+ul li {
+  padding-left: 0.25em;
+}
+
+ul li::marker {
+  color: var(--color-accent);
+}
+
 /* Vignette overlay - in CSS for instant paint, no flash */
 body::before {
   content: '';
@@ -173,13 +188,6 @@ body.flash::before {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--gap);
-}
-
-@media (max-width: 768px) {
-  .narrow-row {
-    max-width: 100%;
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Prose - long-form text content */
@@ -313,20 +321,6 @@ body.flash::before {
   margin-bottom: 0.5em;
 }
 
-@media (max-width: 768px) {
-  .bilingual {
-    grid-template-columns: 1fr;
-  }
-
-  .bilingual > .lang-jp {
-    order: 2;
-  }
-
-  .bilingual > .lang-en {
-    order: 1;
-  }
-}
-
 /* ===========================================
    About Section - 2 column intro
    =========================================== */
@@ -392,7 +386,7 @@ body.flash::before {
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 2px;
+  width: 1px;
   background: var(--color-accent);
   transform: translateX(-50%);
 }
@@ -442,7 +436,7 @@ body.flash::before {
   top: 0;
   right: calc(-1 * var(--gap) / 2);
   left: calc(-1 * var(--margin-interior));
-  height: 2px;
+  height: 1px;
   background: var(--color-accent);
 }
 
@@ -450,10 +444,10 @@ body.flash::before {
 .timeline-columns > .col:first-child article::after {
   content: '';
   position: absolute;
-  top: 1px;
+  top: 0.5px;
   right: calc(-1 * var(--gap) / 2);
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background: var(--color-accent);
   border-radius: 50%;
   transform: translate(50%, -50%);
@@ -471,7 +465,7 @@ body.flash::before {
   top: 0;
   left: calc(-1 * var(--gap) / 2);
   right: calc(-1 * var(--margin-interior));
-  height: 2px;
+  height: 1px;
   background: var(--color-accent);
 }
 
@@ -479,95 +473,13 @@ body.flash::before {
 .timeline-columns > .col:last-child article::after {
   content: '';
   position: absolute;
-  top: 1px;
+  top: 0.5px;
   left: calc(-1 * var(--gap) / 2);
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background: var(--color-accent);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-}
-
-@media (max-width: 768px) {
-  .about-section {
-    grid-template-columns: 1fr;
-  }
-
-  .about-image .taped-image {
-    max-width: 75%;
-    margin: 0 auto;
-  }
-
-  /* Timeline mobile: stack columns, ranges first */
-  .timeline-columns {
-    flex-direction: column;
-  }
-
-  .timeline-columns::before {
-    display: none; /* hide center line */
-  }
-
-  .timeline-columns > .col {
-    position: static !important;
-    min-height: auto !important;
-  }
-
-  .timeline-columns > .col article {
-    position: static !important;
-    top: auto !important;
-  }
-
-  .timeline-columns > .col:first-child time {
-    text-align: left; /* reset right-align on mobile */
-  }
-
-  /* Hide connectors on mobile */
-  .timeline-columns > .col:first-child article::before,
-  .timeline-columns > .col:first-child article::after,
-  .timeline-columns > .col:last-child article::before,
-  .timeline-columns > .col:last-child article::after {
-    display: none;
-  }
-
-  /* Timeline images on mobile: keep float but smaller */
-  .timeline-columns > .col article .entry-image {
-    width: 35%;
-    max-width: 120px;
-    margin: 0.25rem 0.75rem 0.5rem 0;
-  }
-
-  .timeline-line {
-    left: var(--margin-interior);
-  }
-
-  .timeline-entries {
-    grid-template-columns: 1fr;
-  }
-
-  .timeline-entry {
-    padding-left: var(--gap);
-    padding-right: 0;
-    text-align: left;
-  }
-
-  .timeline-entry.timeline-left,
-  .timeline-entry.timeline-right {
-    grid-column: 1;
-  }
-
-  .timeline-entry.timeline-left {
-    text-align: left;
-  }
-
-  .timeline-entry.timeline-left .taped-image,
-  .timeline-entry.timeline-left .timeline-content p {
-    margin-left: 0;
-  }
-
-  .timeline-entry::before {
-    left: calc(-1rem - 5px);
-    right: auto;
-  }
 }
 
 /* Non-home pages get min viewport height */
@@ -695,22 +607,6 @@ body:not(.page-home) .container {
   transform: translateX(-50%) translateY(-50%) rotate(1.5deg);
 }
 
-/* Mobile tape sizing */
-@media (max-width: 768px) {
-  .tape {
-    width: 38px;
-  }
-
-  .taped-image {
-    padding-top: 10px;
-  }
-
-  .taped-image .tape-top {
-    top: 10px;
-    width: 38px;
-  }
-}
-
 /* Console tape - uses same taped-image styling */
 
 /* Product and console images styling */
@@ -758,20 +654,6 @@ body:not(.page-home) .container {
   justify-content: center;
 }
 
-@media (max-width: 768px) {
-  .newsletter-row {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    padding: 1.5rem var(--margin-interior);
-    gap: 1rem;
-  }
-
-  .newsletter-row::after {
-    left: 0;
-    width: 100%;
-  }
-}
-
 /* Intro */
 .intro {
   padding: 0 var(--margin-interior) var(--gap) var(--margin-interior);
@@ -799,54 +681,12 @@ body:not(.page-home) .container {
   line-height: 1.4;
 }
 
-@media (max-width: 768px) {
-  .intro {
-    padding-bottom: 4.5rem;
-  }
-
-  .intro h2 {
-    font-size: 2.5rem;
-  }
-
-  .intro-taglines {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-}
-
 /* Products Grid */
 .products {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--gap) 5rem;
   padding: var(--gap) var(--margin-interior);
-}
-
-@media (max-width: 768px) {
-  .products {
-    grid-template-columns: 1fr;
-    gap: 4.5rem;
-  }
-
-  /* Border between Bartleby and Candide on mobile */
-  .product:nth-child(2) {
-    border-left: none;
-    padding-left: 0;
-    margin-left: 0;
-    padding-top: 4.5rem;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .product:nth-child(2)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    border-top: var(--border-accent);
-  }
 }
 
 .product {
@@ -974,23 +814,6 @@ body:not(.page-home) .container {
   object-fit: contain;
 }
 
-@media (max-width: 768px) {
-  .product-console {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    padding-top: 4.5rem;
-  }
-
-  .product-console::before {
-    left: 0;
-    width: 100%;
-  }
-
-  .product-console .product-image img {
-    max-height: none;
-  }
-}
-
 .product-tagline {
   font-size: 1.25rem;
   font-weight: 400;
@@ -1097,36 +920,6 @@ a.contact-row:hover .contact-address {
   opacity: 0.9;
 }
 
-@media (max-width: 768px) {
-  footer {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-left {
-    padding: 0.75rem var(--margin-interior);
-  }
-
-  .footer-right {
-    border-left: none;
-    border-top: var(--border-accent);
-    padding-left: 0;
-    padding-top: 0;
-    margin-top: 0;
-  }
-
-  .footer-right > * {
-    padding: 0.75rem var(--margin-interior);
-  }
-
-  .newsletter-form input[type="email"] {
-    font-size: 0.75rem;
-  }
-
-  .newsletter-form input[type="email"]::placeholder {
-    font-size: 0.75rem;
-  }
-}
-
 /* Corner Symbols - positioned at page corners */
 .corner-symbol {
   position: absolute;
@@ -1160,39 +953,46 @@ a.contact-row:hover .contact-address {
 /* Page Header */
 .page-header {
   padding: 0 var(--margin-interior) var(--gap);
-  border-bottom: var(--border-accent);
 }
 
 .page-header h1 {
   font-family: var(--font-logo);
-  font-size: 3.5rem;
+  font-size: clamp(2.5rem, 8vw, 5rem);
   font-weight: 400;
+  font-feature-settings: "ss01" 1;
   color: var(--color-accent);
 }
 
 /* ===========================================
-   Mobile Layout - Tab Engine Alignment
-   - Full width zone: 4px from page edge
-   - Text zone: 8px from page edge (4px inset)
+   Mobile Layout
+   All mobile styles consolidated in one place
    =========================================== */
 @media (max-width: 768px) {
-  /* Remove container padding - let te-container handle it */
+  /* ===========================================
+     General Layout
+     =========================================== */
   .container {
     padding: 0;
   }
 
-  /* Logo: left-aligned, 8px from edge (4px te-container + 4px margin) */
   .site-logo {
     text-align: left;
-    margin: 0 0 1rem 4px;
+    margin: 0 0 1rem 16px;
   }
 
-  /* Hero: full width (2px from edge via te-container) */
   .hero {
     margin: 0;
   }
 
-  /* Text content: 4px inset from full-width zone (8px from page edge) */
+  .narrow-row {
+    max-width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  /* ===========================================
+     Content Margins
+     Text content: 16px inset (20px from page edge)
+     =========================================== */
   .intro,
   .prose,
   .products,
@@ -1200,52 +1000,184 @@ a.contact-row:hover .contact-address {
   .page-header,
   .about-section,
   .timeline {
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
-  /* Nested elements: 4px left only (parent already has right padding) */
-  .bilingual,
-  .timeline-columns > .col article {
-    padding-left: 4px;
+  /* Nested elements: no extra padding (parents already have 8px) */
+  .bilingual {
+    padding-left: 0;
     padding-right: 0;
   }
 
-  /* Products grid: remove gap, control spacing manually */
-  .products {
-    padding-top: 0;
-    padding-bottom: 0;
-    gap: 0;
-  }
-
-  /* Bartleby: space after (before Candide line) */
-  .product-bartleby {
-    padding-bottom: var(--space-line);
+  /* Timeline articles: no extra padding (parent .timeline already has 8px) */
+  .timeline-columns > .col article {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   /* ===========================================
-     Mobile Blue Lines - Standardized
-     - All lines span full width (4px from page edge)
-     - Consistent spacing using --space-line token
+     Bilingual Layout
      =========================================== */
+  .bilingual {
+    grid-template-columns: 1fr;
+  }
 
-  /* Newsletter row bottom line */
+  .bilingual > .lang-jp {
+    order: 2;
+  }
+
+  .bilingual > .lang-en {
+    order: 1;
+  }
+
+  /* ===========================================
+     About Section
+     =========================================== */
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image .taped-image {
+    max-width: 75%;
+    margin: 0 auto;
+  }
+
+  /* ===========================================
+     Timeline
+     =========================================== */
+  .timeline-columns {
+    flex-direction: column;
+  }
+
+  .timeline-columns::before {
+    display: none;
+  }
+
+  .timeline-columns > .col {
+    position: static !important;
+    min-height: auto !important;
+  }
+
+  .timeline-columns > .col article {
+    position: static !important;
+    top: auto !important;
+  }
+
+  .timeline-columns > .col:first-child time {
+    text-align: left;
+  }
+
+  .timeline-columns > .col:first-child article::before,
+  .timeline-columns > .col:first-child article::after,
+  .timeline-columns > .col:last-child article::before,
+  .timeline-columns > .col:last-child article::after {
+    display: none;
+  }
+
+  .timeline-columns > .col article .entry-image {
+    width: 35%;
+    max-width: 120px;
+    margin: 0.25rem 0.75rem 0.5rem 0;
+  }
+
+  .timeline-line {
+    left: var(--margin-interior);
+  }
+
+  .timeline-entries {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-entry {
+    padding-left: var(--gap);
+    padding-right: 0;
+    text-align: left;
+  }
+
+  .timeline-entry.timeline-left,
+  .timeline-entry.timeline-right {
+    grid-column: 1;
+  }
+
+  .timeline-entry.timeline-left {
+    text-align: left;
+  }
+
+  .timeline-entry.timeline-left .taped-image,
+  .timeline-entry.timeline-left .timeline-content p {
+    margin-left: 0;
+  }
+
+  .timeline-entry::before {
+    left: calc(-1rem - 5px);
+    right: auto;
+  }
+
+  /* ===========================================
+     Tape
+     =========================================== */
+  .tape {
+    width: 38px;
+  }
+
+  .taped-image {
+    padding-top: 10px;
+  }
+
+  .taped-image .tape-top {
+    top: 10px;
+    width: 38px;
+  }
+
+  /* ===========================================
+     Newsletter Row
+     =========================================== */
   .newsletter-row {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    padding: 1.5rem var(--margin-interior);
+    gap: 1rem;
     padding-bottom: var(--space-line);
   }
+
   .newsletter-row::after {
     left: 0;
     width: 100%;
   }
 
-  /* Intro bottom line */
+  /* ===========================================
+     Intro
+     =========================================== */
   .intro {
     padding-bottom: var(--space-line);
     margin-bottom: var(--space-line);
     border-bottom: var(--border-accent);
   }
 
-  /* Candide - space after line (padding-top), space before Console line (padding-bottom) */
+  .intro h2 {
+    font-size: 2.5rem;
+  }
+
+  .intro-taglines {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* ===========================================
+     Products Grid
+     =========================================== */
+  .products {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .product-bartleby {
+    padding-bottom: var(--space-line);
+  }
+
   .product:nth-child(2) {
     border-left: none;
     padding-left: 0;
@@ -1255,25 +1187,66 @@ a.contact-row:hover .contact-address {
     margin-bottom: 0;
     padding-bottom: var(--space-line);
   }
+
   .product:nth-child(2)::before {
-    left: -4px;
-    right: -4px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -16px;
+    right: -16px;
+    border-top: var(--border-accent);
   }
 
-  /* Console - space after line (padding-top), space before footer line (padding-bottom) */
+  /* ===========================================
+     Console
+     =========================================== */
   .product-console {
+    grid-template-columns: 1fr;
+    max-width: 100%;
     margin-top: 0;
     padding-top: var(--space-line);
     padding-bottom: var(--space-line);
   }
+
   .product-console::before {
     left: 0;
     width: 100%;
   }
 
-  /* Footer top line - space comes from Console's padding-bottom */
+  .product-console .product-image img {
+    max-height: none;
+  }
+
+  /* ===========================================
+     Footer
+     =========================================== */
   footer {
+    grid-template-columns: 1fr;
     margin-top: 0;
     border-top: var(--border-accent);
+  }
+
+  .footer-left {
+    padding: 0.75rem var(--margin-interior);
+  }
+
+  .footer-right {
+    border-left: none;
+    border-top: var(--border-accent);
+    padding-left: 0;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .footer-right > * {
+    padding: 0.75rem var(--margin-interior);
+  }
+
+  .newsletter-form input[type="email"] {
+    font-size: 0.75rem;
+  }
+
+  .newsletter-form input[type="email"]::placeholder {
+    font-size: 0.75rem;
   }
 }
