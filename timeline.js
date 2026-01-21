@@ -1,9 +1,25 @@
 // Timeline layout: position range articles based on single-month anchors
-// with content-based spacing adjustment
+// with sequential stacking within gaps
 
 function layoutTimeline() {
   const columns = document.querySelector('.timeline-columns');
   if (!columns) return;
+
+  // Skip JS layout on mobile - CSS handles it
+  if (window.innerWidth <= 768) {
+    // Reset any inline styles
+    columns.querySelectorAll('article').forEach(a => {
+      a.style.position = '';
+      a.style.top = '';
+      a.style.marginBottom = '';
+    });
+    const leftCol = columns.querySelector('.col:first-child');
+    if (leftCol) {
+      leftCol.style.position = '';
+      leftCol.style.minHeight = '';
+    }
+    return;
+  }
 
   const leftCol = columns.querySelector('.col:first-child');
   const rightCol = columns.querySelector('.col:last-child');
@@ -12,7 +28,7 @@ function layoutTimeline() {
   const rightArticles = Array.from(rightCol.querySelectorAll('article'));
   const leftArticles = Array.from(leftCol.querySelectorAll('article'));
 
-  const GAP = 0; // no additional JS spacing - rely on CSS margins
+  const MARGIN = 16; // matches CSS 1rem margin-bottom
 
   // Reset any previous inline styles
   rightArticles.forEach(a => a.style.marginBottom = '');
@@ -98,76 +114,63 @@ function layoutTimeline() {
   // Get initial anchors
   let anchors = buildAnchors();
 
-  // For each gap between anchors, calculate how much space the content needs
-  // and add margin to expand gaps that are too small
+  // Group range articles by which gap they fall into
+  // and calculate space needed for each gap
+  const gaps = [];
   for (let i = 0; i < anchors.length - 1; i++) {
-    const upperAnchor = anchors[i];     // newer, higher on page (lower Y)
-    const lowerAnchor = anchors[i + 1]; // older, lower on page (higher Y)
+    const upperAnchor = anchors[i];     // newer, higher on page
+    const lowerAnchor = anchors[i + 1]; // older, lower on page
 
-    // Find all left articles whose midValue falls in this gap
     const articlesInGap = leftData.filter(d =>
       d.midValue <= upperAnchor.value && d.midValue >= lowerAnchor.value
     );
 
-    if (articlesInGap.length === 0) continue;
+    gaps.push({
+      upperAnchor,
+      lowerAnchor,
+      articles: articlesInGap,
+      totalHeight: articlesInGap.reduce((sum, d) => sum + d.height + MARGIN, 0)
+    });
+  }
 
-    // Calculate total height needed for these articles (just heights, CSS handles margins)
-    const totalHeightNeeded = articlesInGap.reduce((sum, d) => sum + d.height, 0);
+  // Also handle articles newer than newest anchor or older than oldest anchor
+  const newestAnchor = anchors[0];
+  const oldestAnchor = anchors[anchors.length - 1];
 
-    // Current available space in this gap
-    // Use the bottom of upper anchor's article to top of lower anchor's article
-    const currentSpace = lowerAnchor.y - upperAnchor.bottom;
+  const articlesBeforeFirst = leftData.filter(d => d.midValue > newestAnchor.value);
+  const articlesAfterLast = leftData.filter(d => d.midValue < oldestAnchor.value);
 
-    // If we need more space, add margin to the upper anchor's article
-    if (totalHeightNeeded > currentSpace) {
-      const extraNeeded = totalHeightNeeded - currentSpace;
-      const article = rightArticles[upperAnchor.index];
+  // Add margin to right column articles to make room for range articles
+  gaps.forEach(gap => {
+    if (gap.articles.length === 0) return;
+
+    const currentSpace = gap.lowerAnchor.y - gap.upperAnchor.bottom;
+
+    if (gap.totalHeight > currentSpace) {
+      const extraNeeded = gap.totalHeight - currentSpace;
+      const article = rightArticles[gap.upperAnchor.index];
       const currentMargin = parseFloat(article.style.marginBottom) || 0;
       article.style.marginBottom = (currentMargin + extraNeeded) + 'px';
     }
-  }
+  });
 
   // Rebuild anchors after margin adjustments
   anchors = buildAnchors();
 
-  // Interpolate Y position for any date value
-  function getYForValue(value) {
-    if (anchors.length === 0) return 0;
-    if (anchors.length === 1) return anchors[0].y;
-
-    // Newer than all anchors - extrapolate
-    if (value > anchors[0].value) {
-      const rate = (anchors[0].y - anchors[1].y) / (anchors[0].value - anchors[1].value);
-      return anchors[0].y + rate * (value - anchors[0].value);
-    }
-
-    // Older than all anchors - extrapolate
-    if (value < anchors[anchors.length - 1].value) {
-      const n = anchors.length;
-      const rate = (anchors[n - 2].y - anchors[n - 1].y) / (anchors[n - 2].value - anchors[n - 1].value);
-      return anchors[n - 1].y + rate * (value - anchors[n - 1].value);
-    }
-
-    // Interpolate between anchors
-    for (let i = 0; i < anchors.length - 1; i++) {
-      if (value <= anchors[i].value && value >= anchors[i + 1].value) {
-        const t = (value - anchors[i + 1].value) / (anchors[i].value - anchors[i + 1].value);
-        return anchors[i + 1].y + t * (anchors[i].y - anchors[i + 1].y);
-      }
-    }
-
-    return 0;
+  // Rebuild gaps with new positions
+  for (let i = 0; i < gaps.length; i++) {
+    gaps[i].upperAnchor = anchors[i];
+    gaps[i].lowerAnchor = anchors[i + 1];
   }
 
   // Position left column articles
   leftCol.style.position = 'relative';
 
-  // Set absolute positioning and measure true heights
+  // Set absolute positioning first
   leftData.forEach(data => {
     data.article.style.position = 'absolute';
     data.article.style.left = '0';
     data.article.style.right = '0';
-    data.article.style.top = '0';
   });
 
   // Re-measure heights after positioning
@@ -175,21 +178,78 @@ function layoutTimeline() {
     data.height = data.article.offsetHeight;
   });
 
-  // Final positioning with collision detection
-  let prevBottom = 0;
-
-  leftData.forEach(data => {
-    const idealY = getYForValue(data.midValue);
-    const actualY = Math.max(idealY, prevBottom);
-
-    data.article.style.top = actualY + 'px';
-    prevBottom = actualY + data.height + GAP;
+  // Position articles sequentially within each gap
+  // Articles before the first anchor
+  let currentY = 0;
+  articlesBeforeFirst.forEach(data => {
+    data.article.style.top = currentY + 'px';
+    currentY += data.height + MARGIN;
   });
 
+  // Articles within gaps - stack sequentially starting at upper anchor bottom
+  gaps.forEach(gap => {
+    if (gap.articles.length === 0) return;
+
+    currentY = gap.upperAnchor.bottom;
+
+    gap.articles.forEach(data => {
+      data.article.style.top = currentY + 'px';
+      currentY += data.height + MARGIN;
+    });
+  });
+
+  // Articles after the last anchor
+  if (articlesAfterLast.length > 0) {
+    currentY = anchors[anchors.length - 1].bottom;
+    articlesAfterLast.forEach(data => {
+      data.article.style.top = currentY + 'px';
+      currentY += data.height + MARGIN;
+    });
+  }
+
   // Set left column height
-  leftCol.style.minHeight = Math.max(prevBottom, rightCol.offsetHeight) + 'px';
+  const lastLeftArticle = leftData[leftData.length - 1];
+  const leftBottom = lastLeftArticle ?
+    parseFloat(lastLeftArticle.article.style.top) + lastLeftArticle.height : 0;
+  leftCol.style.minHeight = Math.max(leftBottom, rightCol.offsetHeight) + 'px';
+}
+
+// Wait for images in timeline to load before layout
+function waitForTimelineImages(callback) {
+  const columns = document.querySelector('.timeline-columns');
+  if (!columns) {
+    callback();
+    return;
+  }
+
+  const images = columns.querySelectorAll('img');
+  if (images.length === 0) {
+    callback();
+    return;
+  }
+
+  let loadedCount = 0;
+  const totalImages = images.length;
+
+  function checkComplete() {
+    loadedCount++;
+    if (loadedCount >= totalImages) {
+      callback();
+    }
+  }
+
+  images.forEach(img => {
+    if (img.complete) {
+      checkComplete();
+    } else {
+      img.addEventListener('load', checkComplete);
+      img.addEventListener('error', checkComplete); // Handle failed loads too
+    }
+  });
 }
 
 // Run on load and resize
-document.addEventListener('DOMContentLoaded', layoutTimeline);
+document.addEventListener('DOMContentLoaded', () => {
+  waitForTimelineImages(layoutTimeline);
+});
 window.addEventListener('resize', layoutTimeline);

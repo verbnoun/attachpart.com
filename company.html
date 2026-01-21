@@ -34,18 +34,21 @@ description: Our story so far
         <article>
           <time>2025 November–December</time>
           <h3>USB Switching Architecture</h3>
+          <img src="https://picsum.photos/seed/usb-switch/300/200" alt="" class="entry-image">
           <p>USB switching architecture required hardware-only cartridge detection. No firmware involvement—we wanted the switch to happen before the MCU even boots. We designed a sense circuit where cartridge insertion grounds the sense pin, directly controlling the switch. Added ESD protection on the USB-C boundary because that's where fingers, cables, and static meet the circuit.</p>
         </article>
 
         <article>
           <time>2025 October–November</time>
           <h3>USB Topology</h3>
+          <img src="https://picsum.photos/seed/topology/300/200" alt="" class="entry-image">
           <p>USB topology work consumed most of two months. The challenge: switching between computer connection and cartridge communication while keeping power distribution clean. We selected the TS3USB30 USB switch and ran extensive desk validation—short USB cables everywhere, power flowing from USB-C splitting to Pico VSYS and cartridge VIN. Both paths verified stable. The USB saga taught us more about power distribution than we ever wanted to know.</p>
         </article>
 
         <article>
           <time>2025 May–June</time>
           <h3>Global Fulfillment</h3>
+          <img src="https://picsum.photos/seed/fulfillment/300/200" alt="" class="entry-image">
           <p>Fulfillment logistics across a global customer base proved complex for a small operation. We identified 3PL partners: Dropship China Pro for Asia-Pacific, Commercive for US/EU. Global fulfillment solved without building internal logistics.</p>
         </article>
 
@@ -58,12 +61,14 @@ description: Our story so far
         <article>
           <time>2024 September–October</time>
           <h3>MIDI 2.0 & MPE</h3>
+          <img src="https://picsum.photos/seed/midi/300/200" alt="" class="entry-image">
           <p>MIDI 2.0 and MPE implementation proved more complex than anticipated. Channel allocation, timing, the whole stack. We built a custom protocol layer and worked through issues methodically. Core expressivity features emerged functional.</p>
         </article>
 
         <article>
           <time>2024 July–August</time>
           <h3>Pressure Sensor Array</h3>
+          <img src="https://picsum.photos/seed/sensors/300/200" alt="" class="entry-image">
           <p>The pressure-sensitive keyboard required reading 50+ sensors without overwhelming the MCU. We designed an analog multiplexing system using CD74HC4067 chips and op-amp buffers. Validated Velostat at 0.2mm thickness—thicker than typical FSR layers, but the 9kΩ→1kΩ resistance range over 3N gives excellent resolution across a 12-bit ADC.</p>
         </article>
 
@@ -82,12 +87,14 @@ description: Our story so far
         <article>
           <time>2024 January–March</time>
           <h3>Cartridge Architecture</h3>
+          <img src="https://picsum.photos/seed/cartridge/300/200" alt="" class="entry-image">
           <p>Product concept needed focus—too many instrument ideas competing for attention. We consolidated the vision around a cartridge-based modular system. The pitch: "as familiar as a 16-bit video game system." Base station + synthesizer cartridge architecture chosen for plug-and-play simplicity. Complex under the hood, intuitive on the surface.</p>
         </article>
 
         <article>
           <time>2023 November–December</time>
           <h3>Kickstarter Postponed</h3>
+          <img src="https://picsum.photos/seed/kickstarter/300/200" alt="" class="entry-image">
           <p>Kickstarter launch planned for December 4 proved too aggressive given prototype maturity. We postponed to prioritize product refinement and started supply chain conversations with PCBWay. Bob Moog's story kept us honest—retailers at trade shows used to look at synthesizers and say "You expect me to sell that in my store? You expect musicians to understand all that?" and walk away. That resistance led to the Minimoog. We needed our Minimoog moment, not a rushed launch.</p>
         </article>
       </div>
@@ -97,12 +104,14 @@ description: Our story so far
         <article>
           <time>2026 January</time>
           <h3>Supply Chain Diversification</h3>
+          <img src="https://picsum.photos/seed/supplychain/300/200" alt="" class="entry-image">
           <p>Geopolitical tensions created banking and shipping concerns for China-based manufacturing. We researched Pacific Rim alternatives and identified vendors in Thailand, Taiwan, and Korea. Accepting a 10-15% cost premium and longer lead times provides supply chain insurance—routing resilience matters more than cost optimization at our volumes.</p>
         </article>
 
         <article>
           <time>2025 December</time>
           <h3>Power Delivery Validation</h3>
+          <img src="https://picsum.photos/seed/power/300/200" alt="" class="entry-image">
           <p>Power delivery needed to support both Pico and Daisy Seed reliably under sustained operation. We validated the power budget at ~350mA peak—well under USB 2.0's 500mA limit—and added TVS protection and ferrite beads on data lines. No more brownouts during hour-long sessions.</p>
         </article>
 
@@ -115,12 +124,14 @@ description: Our story so far
         <article>
           <time>2025 September</time>
           <h3>Content Strategy</h3>
+          <img src="https://picsum.photos/seed/content/300/200" alt="" class="entry-image">
           <p>Zero social media presence after years of avoiding platforms. We accepted reality and began planning an Asia tour for content generation. The strategy: borrowed audience through musician sessions. A post from someone with 5K followers beats twenty posts from our 500.</p>
         </article>
 
         <article>
           <time>2025 August</time>
           <h3>Cassette Futurism</h3>
+          <img src="https://picsum.photos/seed/cassette/300/200" alt="" class="entry-image">
           <p>The marketing website needed distinctive identity. We chose "cassette futurism"—the visual language of 1986 Japanese computer catalogs. Influences:</p>
           <ul>
             <li>Technical optimism without cold minimalism</li>
@@ -145,6 +156,7 @@ description: Our story so far
         <article>
           <time>2025 February</time>
           <h3>Cost Reduction</h3>
+          <img src="https://picsum.photos/seed/costs/300/200" alt="" class="entry-image">
           <p>Initial COG estimate of $465/unit made margins unsustainable at realistic volumes. We ran comprehensive cost reduction analysis:</p>
           <ul>
             <li>Plastics: 20% reduction through volume pricing</li>
@@ -163,12 +175,14 @@ description: Our story so far
         <article>
           <time>2024 December</time>
           <h3>CC Configuration</h3>
+          <img src="https://picsum.photos/seed/config/300/200" alt="" class="entry-image">
           <p>CC configuration between Bartleby and Candide was brittle—settings didn't survive reconnection gracefully. We implemented a configuration message format: cartridges declare their control mappings on connection. Format: <code>cc:0=74,1=71,2=73...</code> Simple, human-readable, extensible.</p>
         </article>
 
         <article>
           <time>2024 November</time>
           <h3>Communication Protocol</h3>
+          <img src="https://picsum.photos/seed/protocol/300/200" alt="" class="entry-image">
           <p>Bartleby and Candide needed reliable communication for cartridge detection and configuration exchange. We developed a UART-based handshake protocol with heartbeat monitoring. Then hit state management bugs—<code>'CandideConnectionProtocol' object has no attribute 'CONFIGURED'</code>. Architectural refactor required. Debugging continued into December.</p>
         </article>
 
@@ -187,12 +201,14 @@ description: Our story so far
         <article>
           <time>2023 October</time>
           <h3>Mobile Shop</h3>
+          <img src="https://picsum.photos/seed/mobileshop/300/200" alt="" class="entry-image">
           <p>First prototype deadline approached with incomplete design validation. We developed "mobile shop" capability—prototyping tools fit in a suitcase for travel-based R&D and community engagement. Development became location-independent.</p>
         </article>
 
         <article>
           <time>2023 September</time>
           <h3>Attach Part Founded</h3>
+          <img src="https://picsum.photos/seed/founded/300/200" alt="" class="entry-image">
           <p>Electronic music instruments lacked accessible, expressive options between toy-grade and professional-grade equipment. Even Hans Zimmer does 90% of his work on one synth plugin—complexity isn't serving anyone. We began product development with the goal Bob Moog would recognize: professional instruments that happen to be accessible. Not "learn synthesis" products. Real instruments for everyone.</p>
           <p>Attach Part founded.</p>
         </article>
