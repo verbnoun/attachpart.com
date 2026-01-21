@@ -1149,9 +1149,14 @@ a.contact-row:hover .contact-address {
 
   /* Products grid: remove gap, control spacing manually */
   .products {
-    padding-top: var(--space-block);
+    padding-top: 0;
     padding-bottom: 0;
     gap: 0;
+  }
+
+  /* Bartleby: space after (before Candide line) */
+  .product-bartleby {
+    padding-bottom: var(--space-line);
   }
 
   /* ===========================================
@@ -1176,7 +1181,7 @@ a.contact-row:hover .contact-address {
     border-bottom: var(--border-accent);
   }
 
-  /* Candide top line - remove desktop border-left, use horizontal line */
+  /* Candide - space after line (padding-top), space before Console line (padding-bottom) */
   .product:nth-child(2) {
     border-left: none;
     padding-left: 0;
@@ -1184,26 +1189,27 @@ a.contact-row:hover .contact-address {
     margin-top: 0;
     padding-top: var(--space-line);
     margin-bottom: 0;
-    padding-bottom: 0;
+    padding-bottom: var(--space-line);
   }
   .product:nth-child(2)::before {
     left: -4px;
     right: -4px;
   }
 
-  /* Console top line */
+  /* Console - space after line (padding-top), space before footer line (padding-bottom) */
   .product-console {
     margin-top: 0;
     padding-top: var(--space-line);
+    padding-bottom: var(--space-line);
   }
   .product-console::before {
     left: 0;
     width: 100%;
   }
 
-  /* Footer top line */
+  /* Footer top line - space comes from Console's padding-bottom */
   footer {
-    margin-top: var(--space-line);
+    margin-top: 0;
     border-top: var(--border-accent);
   }
 }

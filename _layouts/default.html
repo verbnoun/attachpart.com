@@ -18,6 +18,7 @@
     <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
     <div class="te-container">
       {% if page.url == '/' %}{{ content }}{% endif %}
+      {% if page.url == '/' %}{% include footer.html %}{% endif %}
     </div>
     <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
     <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
@@ -27,7 +28,7 @@
     <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
     <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
     <div class="te-container">
-      {% if page.url contains '/products' %}{{ content }}{% endif %}
+      {% if page.url contains '/products' %}{{ content }}{% include footer.html %}{% endif %}
     </div>
     <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
     <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
@@ -37,7 +38,7 @@
     <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
     <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
     <div class="te-container">
-      {% if page.url contains '/company' %}{{ content }}{% endif %}
+      {% if page.url contains '/company' %}{{ content }}{% include footer.html %}{% endif %}
     </div>
     <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
     <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
@@ -47,7 +48,7 @@
     <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
     <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
     <div class="te-container">
-      {% if page.url contains '/newsletter' %}{{ content }}{% endif %}
+      {% if page.url contains '/newsletter' %}{{ content }}{% include footer.html %}{% endif %}
     </div>
     <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
     <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
