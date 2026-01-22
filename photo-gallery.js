@@ -10,6 +10,12 @@
  * - click (while hover) → clicked
  * - click (while clicked, no drag) OR mouseleave → normal (with drift)
  * - drag (while clicked) → move photo within viewport bounds
+ *
+ * Supports mixed images and videos:
+ * - String URLs = images (backward compatible)
+ * - Objects with type: "video" = lazy-loaded videos
+ * - Objects with type: "image" = images with optional center point
+ * - center: [x%, y%] = object-position for cropping
  */
 
 (function() {
@@ -27,8 +33,12 @@
     putDownDrift: 31,
     putDownRotation: 7.5,
     maxDriftFromOrigin: 32,
-    dragThreshold: 5 // pixels moved before it counts as drag
+    dragThreshold: 5, // pixels moved before it counts as drag
+    frameCycleInterval: 300 // ms between frame changes for video previews
   };
+
+  // Track frame cycling intervals per photo
+  const frameCyclers = new WeakMap();
 
   // Drag state
   let dragState = {
@@ -117,6 +127,105 @@
     photo.style.setProperty('--shine-intensity', 0.15);
   }
 
+  // Track loaded videos to avoid reloading
+  const loadedVideos = new WeakSet();
+
+  /**
+   * Load and play video (lazy load on first interaction)
+   */
+  function loadAndPlayVideo(photo) {
+    const video = photo.querySelector('video');
+    if (!video) return;
+
+    // If already loaded, just play
+    if (loadedVideos.has(video)) {
+      video.play().catch(() => {});
+      return;
+    }
+
+    const src = video.dataset.lazySrc;
+    if (!src) return;
+
+    // Create and add source element
+    const source = document.createElement('source');
+    source.src = src;
+    source.type = 'video/mp4';
+    video.appendChild(source);
+
+    // Load and play
+    video.load();
+    video.play().catch(() => {});
+
+    loadedVideos.add(video);
+    delete video.dataset.lazySrc;
+  }
+
+  /**
+   * Pause video playback
+   */
+  function pauseVideo(photo) {
+    const video = photo.querySelector('video');
+    if (video && !video.paused) {
+      video.pause();
+    }
+  }
+
+  /**
+   * Start frame cycling for video preview (at rest)
+   */
+  function startFrameCycling(photo) {
+    const frames = photo.dataset.frames;
+    if (!frames) return;
+
+    const frameList = JSON.parse(frames);
+    if (frameList.length < 2) return;
+
+    const img = photo.querySelector('.pg-frame-preview');
+    if (!img) return;
+
+    let currentFrame = 0;
+
+    const cycler = setInterval(() => {
+      currentFrame = (currentFrame + 1) % frameList.length;
+      img.src = frameList[currentFrame];
+    }, PG_CONFIG.frameCycleInterval);
+
+    frameCyclers.set(photo, cycler);
+  }
+
+  /**
+   * Stop frame cycling
+   */
+  function stopFrameCycling(photo) {
+    const cycler = frameCyclers.get(photo);
+    if (cycler) {
+      clearInterval(cycler);
+      frameCyclers.delete(photo);
+    }
+  }
+
+  /**
+   * Show video element, hide frame preview
+   */
+  function showVideo(photo) {
+    const video = photo.querySelector('video');
+    const preview = photo.querySelector('.pg-frame-preview');
+    if (video) video.style.display = 'block';
+    if (preview) preview.style.display = 'none';
+    stopFrameCycling(photo);
+  }
+
+  /**
+   * Show frame preview, hide video element
+   */
+  function showFramePreview(photo) {
+    const video = photo.querySelector('video');
+    const preview = photo.querySelector('.pg-frame-preview');
+    if (video) video.style.display = 'none';
+    if (preview) preview.style.display = 'block';
+    startFrameCycling(photo);
+  }
+
   let baseZIndex = 100;
 
   // States: 'normal', 'hover', 'clicked'
@@ -170,6 +279,10 @@
     photo.style.zIndex = baseZIndex++;
 
     photo.style.transform = `translate(${constrained.x}px, ${constrained.y}px) rotate(${targetRotation}deg) scale(${PG_CONFIG.hoverScale}) rotateX(0deg) rotateY(0deg)`;
+
+    // Switch from frame preview to video and play
+    showVideo(photo);
+    loadAndPlayVideo(photo);
   }
 
   /**
@@ -199,6 +312,10 @@
    */
   function enterNormalState(photo) {
     if (photo.dataset.state === 'normal') return;
+
+    // Pause video and show frame preview if present
+    pauseVideo(photo);
+    showFramePreview(photo);
 
     photo.classList.remove('hovering', 'clicked', 'tilt-right', 'tilt-left', 'tilt-up', 'tilt-down');
     photo.dataset.state = 'normal';
@@ -364,14 +481,40 @@
   }
 
   /**
-   * Create a single photo element
+   * Parse item data into normalized format
+   * Supports: string URL, array [url], or object {type, src, thumb, center}
    */
-  function createPhotoElement(imageSrc, index, position) {
+  function parseItemData(itemData) {
+    // String URL = image (backward compatible)
+    if (typeof itemData === 'string') {
+      return { type: 'image', src: itemData };
+    }
+
+    // Array = take first element as image URL (backward compatible)
+    if (Array.isArray(itemData)) {
+      return { type: 'image', src: itemData[0] };
+    }
+
+    // Object = use as-is, default type to 'image'
+    return {
+      type: itemData.type || 'image',
+      src: itemData.src,
+      thumb: itemData.thumb,
+      frames: itemData.frames,
+      center: itemData.center
+    };
+  }
+
+  /**
+   * Create a single photo element (image or video)
+   */
+  function createPhotoElement(itemData, index, position) {
+    const item = parseItemData(itemData);
+    const isVideo = item.type === 'video';
+
     const photo = document.createElement('div');
     photo.className = 'pg-photo';
-
-    // Get image URL (support both array and string formats)
-    const src = Array.isArray(imageSrc) ? imageSrc[0] : imageSrc;
+    if (isVideo) photo.classList.add('pg-video');
 
     // Store position state
     photo.dataset.originX = position.x;
@@ -391,13 +534,50 @@
     const inner = document.createElement('div');
     inner.className = 'pg-photo-inner';
 
-    // Create image (7:5 aspect ratio)
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = '';
-    img.draggable = false;
+    // Create media element (video or image)
+    if (isVideo) {
+      // Create video element (hidden initially if frames exist)
+      const video = document.createElement('video');
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.poster = item.thumb || '';
+      video.dataset.lazySrc = item.src; // Lazy load on hover
+      video.draggable = false;
+      if (item.center) {
+        video.style.objectPosition = `${item.center[0]}% ${item.center[1]}%`;
+      }
 
-    inner.appendChild(img);
+      // If frames exist, create frame preview img and hide video initially
+      if (item.frames && item.frames.length > 0) {
+        video.style.display = 'none';
+
+        const framePreview = document.createElement('img');
+        framePreview.className = 'pg-frame-preview';
+        framePreview.src = item.frames[0];
+        framePreview.alt = '';
+        framePreview.draggable = false;
+        if (item.center) {
+          framePreview.style.objectPosition = `${item.center[0]}% ${item.center[1]}%`;
+        }
+        inner.appendChild(framePreview);
+
+        // Store frames for cycling
+        photo.dataset.frames = JSON.stringify(item.frames);
+      }
+
+      inner.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = '';
+      img.draggable = false;
+      if (item.center) {
+        img.style.objectPosition = `${item.center[0]}% ${item.center[1]}%`;
+      }
+      inner.appendChild(img);
+    }
+
     photo.appendChild(inner);
 
     // Create edges
@@ -423,6 +603,11 @@
       }
     });
     photo.addEventListener('mousemove', (e) => onPhotoMouseMove(photo, e));
+
+    // Start frame cycling for videos with frames
+    if (photo.dataset.frames) {
+      startFrameCycling(photo);
+    }
 
     return photo;
   }
