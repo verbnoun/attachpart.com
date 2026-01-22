@@ -1308,12 +1308,14 @@ a.contact-row:hover .contact-address {
 }
 
 /* Taped images in product sections */
-.product-section .taped-image img:not(.tape) {
+.product-section .taped-image img:not(.tape),
+.product-section .taped-image video {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 10px;
   box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
+  object-fit: cover;
 }
 
 /* ===========================================
