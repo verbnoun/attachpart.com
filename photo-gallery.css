@@ -1,0 +1,201 @@
+/**
+ * Photo Gallery Styles
+ * All classes prefixed with pg-
+ */
+
+/* ===========================================
+   Container
+   =========================================== */
+.pg-gallery {
+  position: relative;
+  width: var(--gallery-width, 770px);
+  height: var(--gallery-height, 129px);
+  margin: 2rem auto;
+  perspective: 1000px;
+  z-index: 1;
+}
+
+/* Raise gallery above everything when it has a hovering photo */
+.pg-gallery:has(.pg-photo.hovering) {
+  z-index: 9999;
+}
+
+/* When inside product info column, align left */
+.product-info-col .pg-gallery {
+  margin: 1.5rem 0 0 0;
+}
+
+/* Ensure hovering photos appear above siblings */
+.pg-photo.hovering {
+  z-index: 100 !important;
+}
+
+/* ===========================================
+   Photo Wrapper
+   =========================================== */
+.pg-photo {
+  position: absolute;
+  width: 180px;
+  height: 129px; /* 7:5 aspect ratio */
+  cursor: pointer;
+  transform-style: preserve-3d;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+  --tilt-speed: 0ms;
+  --shine-intensity: 0.15;
+}
+
+.pg-photo.hovering {
+  transition: transform var(--tilt-speed) ease, box-shadow var(--tilt-speed) ease;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.pg-photo:not(.hovering) {
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+/* ===========================================
+   Photo Inner (image + gloss)
+   =========================================== */
+.pg-photo-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.pg-photo-inner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Glossy reflection overlay - static light source (top-left) */
+.pg-photo-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.4) 20%,
+    rgba(255, 255, 255, 0) 45%
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: var(--shine-intensity);
+  transition: opacity 0.15s ease;
+}
+
+/* Subtle base gloss */
+.pg-photo-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(0, 0, 0, 0.03) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===========================================
+   Edges (visible on tilt)
+   =========================================== */
+.pg-edge {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.pg-edge-right {
+  top: 8px;
+  right: -4px;
+  bottom: 8px;
+  width: 4px;
+  background: linear-gradient(to left, #d0d0d0, #b8b8b8);
+  transform: rotateY(-90deg);
+  transform-origin: left center;
+}
+
+.pg-edge-left {
+  top: 8px;
+  left: -4px;
+  bottom: 8px;
+  width: 4px;
+  background: linear-gradient(to right, #e8e8e8, #d0d0d0);
+  transform: rotateY(90deg);
+  transform-origin: right center;
+}
+
+.pg-edge-top {
+  top: -4px;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  background: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
+  transform: rotateX(90deg);
+  transform-origin: bottom center;
+}
+
+.pg-edge-bottom {
+  bottom: -4px;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  background: linear-gradient(to top, #c8c8c8, #a8a8a8);
+  transform: rotateX(-90deg);
+  transform-origin: top center;
+}
+
+/* Show edges only when tilting that direction */
+.pg-photo.tilt-right .pg-edge-right { opacity: 1; }
+.pg-photo.tilt-left .pg-edge-left { opacity: 1; }
+.pg-photo.tilt-up .pg-edge-top { opacity: 1; }
+.pg-photo.tilt-down .pg-edge-bottom { opacity: 1; }
+
+/* ===========================================
+   Mobile Styles
+   =========================================== */
+@media (max-width: 768px) {
+  .pg-gallery {
+    transform: scale(0.6);
+    transform-origin: top left;
+    margin: 1rem 0;
+    margin-bottom: calc(var(--gallery-height, 129px) * -0.4 + 1rem);
+    margin-right: calc(var(--gallery-width, 770px) * -0.4);
+  }
+
+  .pg-photo.hovering {
+    /* Disable 3D tilt on mobile */
+  }
+
+  .pg-edge {
+    display: none;
+  }
+}
+
+/* ===========================================
+   Print Styles
+   =========================================== */
+@media print {
+  .pg-gallery {
+    display: none;
+  }
+}

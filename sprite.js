@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tapes.forEach(tape => {
     const randomTape = tapeImages[Math.floor(Math.random() * tapeImages.length)];
-    tape.src = `images/${randomTape}`;
+    tape.src = `/images/${randomTape}`;
   });
 
   // Random tilt for product images (0.1-0.3 degrees either way)
