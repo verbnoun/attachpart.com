@@ -40,6 +40,36 @@
   // Track frame cycling intervals per photo
   const frameCyclers = new WeakMap();
 
+  // SVG icons for audio toggle (used if video-lazy.js hasn't loaded yet)
+  const ICON_MUTED = '<svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>';
+
+  // Helper to get audio controller (from video-lazy.js global)
+  function getAudioCtrl() {
+    return window.videoAudioController;
+  }
+
+  // Viewport observer for auto-fading audio when gallery video leaves view
+  const galleryAudioObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      const photo = video.closest('.pg-photo');
+      const toggle = photo?.querySelector('.video-audio-toggle-wrapper');
+
+      if (entry.intersectionRatio < 0.5) {
+        // Hide toggle when 50%+ off screen
+        if (toggle) toggle.classList.add('offscreen');
+        // Fade out audio if playing
+        if (!video.muted) {
+          const ctrl = getAudioCtrl();
+          if (ctrl) ctrl.setAudioInactive(video);
+        }
+      } else {
+        // Show toggle when 50%+ visible
+        if (toggle) toggle.classList.remove('offscreen');
+      }
+    });
+  }, { threshold: [0, 0.5] });
+
   // Drag state
   let dragState = {
     active: false,
@@ -60,6 +90,7 @@
   function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
   }
+
 
   /**
    * Generate positions for photos based on layout
@@ -313,9 +344,13 @@
   function enterNormalState(photo) {
     if (photo.dataset.state === 'normal') return;
 
-    // Pause video and show frame preview if present
-    pauseVideo(photo);
-    showFramePreview(photo);
+    // If audio is playing, keep video running; otherwise pause and show frames
+    const video = photo.querySelector('video');
+    const audioActive = video && !video.muted;
+    if (!audioActive) {
+      pauseVideo(photo);
+      showFramePreview(photo);
+    }
 
     photo.classList.remove('hovering', 'clicked', 'tilt-right', 'tilt-left', 'tilt-up', 'tilt-down');
     photo.dataset.state = 'normal';
@@ -466,6 +501,8 @@
     // If it wasn't a drag, treat as click to dismiss
     if (!wasDrag && photo.dataset.state === 'clicked') {
       enterNormalState(photo);
+      // Mark that we just dismissed, so next click goes to hover instead of mouseenter
+      photo.dataset.justDismissed = 'true';
     }
   }
 
@@ -567,6 +604,37 @@
       }
 
       inner.appendChild(video);
+
+      // Create audio toggle with wrapper (wrapper has transform-style: flat to isolate from 3D tilt)
+      const toggleWrapper = document.createElement('div');
+      toggleWrapper.className = 'video-audio-toggle-wrapper';
+
+      const toggle = document.createElement('button');
+      toggle.className = 'video-audio-toggle';
+      toggle.innerHTML = ICON_MUTED;
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const ctrl = getAudioCtrl();
+        if (ctrl) ctrl.toggleAudio(video);
+      });
+
+      toggleWrapper.appendChild(toggle);
+
+      // Stop mouse events on wrapper to prevent photo state changes
+      ['mousedown', 'mouseup', 'mousemove', 'mouseenter'].forEach(eventType => {
+        toggleWrapper.addEventListener(eventType, (e) => e.stopPropagation());
+      });
+
+      // Create rainbow glow element
+      const glow = document.createElement('div');
+      glow.className = 'video-audio-glow';
+
+      // Store elements to add after inner
+      photo._audioToggleWrapper = toggleWrapper;
+      photo._audioGlow = glow;
+
+      // Observe video for viewport-based audio fade
+      galleryAudioObserver.observe(video);
     } else {
       const img = document.createElement('img');
       img.src = item.src;
@@ -580,6 +648,14 @@
 
     photo.appendChild(inner);
 
+    // Add audio controls after inner (for videos only)
+    if (photo._audioToggleWrapper) {
+      photo.appendChild(photo._audioGlow);
+      photo.appendChild(photo._audioToggleWrapper);
+      delete photo._audioToggleWrapper;
+      delete photo._audioGlow;
+    }
+
     // Create edges
     ['bottom', 'right', 'left', 'top'].forEach(side => {
       const edge = document.createElement('div');
@@ -591,10 +667,21 @@
     updateShineFromRotation(photo, position.rotation);
 
     // Event listeners
-    photo.addEventListener('mouseenter', () => enterHoverState(photo));
-    photo.addEventListener('mouseleave', () => onPhotoMouseLeave(photo));
+    photo.addEventListener('mouseenter', () => {
+      // Don't auto-hover if we just dismissed from clicked state
+      if (photo.dataset.justDismissed) return;
+      enterHoverState(photo);
+    });
+    photo.addEventListener('mouseleave', () => {
+      delete photo.dataset.justDismissed;
+      onPhotoMouseLeave(photo);
+    });
     photo.addEventListener('mousedown', (e) => {
-      if (photo.dataset.state === 'hover') {
+      if (photo.dataset.state === 'normal' && photo.dataset.justDismissed) {
+        // Click after dismiss goes to hover (medium zoom)
+        delete photo.dataset.justDismissed;
+        enterHoverState(photo);
+      } else if (photo.dataset.state === 'hover') {
         // Click to enter clicked state
         enterClickedState(photo);
       } else if (photo.dataset.state === 'clicked') {

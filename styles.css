@@ -1536,3 +1536,129 @@ a.contact-row:hover .contact-address {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===========================================
+   Video Audio Controls
+   =========================================== */
+
+/* Audio toggle wrapper - isolates button from 3D transforms */
+.video-audio-toggle-wrapper {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-style: flat;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* Audio toggle button - bottom center of video */
+.video-audio-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* Hero video toggle positioning (no wrapper) */
+.taped-image > .video-audio-toggle {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.video-audio-toggle:hover {
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+}
+
+/* Hide toggle when video is 50%+ off screen */
+.video-audio-toggle.offscreen,
+.video-audio-toggle-wrapper.offscreen {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-audio-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+/* Smaller toggle in gallery */
+.pg-photo .video-audio-toggle-wrapper {
+  bottom: 8px;
+}
+
+.pg-photo .video-audio-toggle {
+  width: 24px;
+  height: 24px;
+}
+
+.pg-photo .video-audio-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Rainbow glow stroke for active audio - hero videos (uses outline for consistent positioning) */
+.taped-image .video-audio-glow {
+  position: absolute;
+  top: 20px; /* Skip tape padding */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.taped-image .video-audio-glow.active {
+  animation: gallery-rainbow-glow 6s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .taped-image .video-audio-glow {
+    top: 10px; /* Mobile tape padding */
+  }
+}
+
+/* Rainbow glow stroke for active audio - gallery (no pseudo, uses outline to avoid scale issues) */
+.pg-photo .video-audio-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.pg-photo .video-audio-glow.active {
+  animation: gallery-rainbow-glow 6s linear infinite;
+}
+
+@keyframes gallery-rainbow-glow {
+  0% { outline: 2px solid #f20d0d; outline-offset: 0; }
+  14% { outline: 2px solid #f2820d; outline-offset: 0; }
+  28% { outline: 2px solid #f2f20d; outline-offset: 0; }
+  42% { outline: 2px solid #0df20d; outline-offset: 0; }
+  57% { outline: 2px solid #0d0df2; outline-offset: 0; }
+  71% { outline: 2px solid #8a0df2; outline-offset: 0; }
+  85% { outline: 2px solid #f20d0d; outline-offset: 0; }
+  100% { outline: 2px solid #f20d0d; outline-offset: 0; }
+}
+
+/* Taped image needs position relative for glow */
+.taped-image {
+  position: relative;
+}
