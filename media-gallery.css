@@ -15,6 +15,7 @@
   perspective: 1000px;
   position: relative;
   z-index: 1;
+  --photo-size: 180px; /* Base size for long edge, overridden on mobile */
 }
 
 /* Raise gallery above everything when it has a hovering or clicked photo */
@@ -64,13 +65,14 @@ body:has(.pg-photo.clicked) .hero-image {
 .pg-photo {
   position: relative;
   width: 180px;
-  height: 129px; /* 7:5 aspect ratio */
+  height: 129px; /* Default 7:5, JS overrides with actual ratio */
   cursor: pointer;
   transform-style: preserve-3d;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
   --tilt-speed: 0ms;
   --shine-intensity: 0.15;
+  transition: width 0.2s ease, height 0.2s ease;
 }
 
 .pg-photo.hovering {
@@ -331,16 +333,7 @@ body:has(.pg-photo.clicked) .hero-image {
   .pg-gallery {
     gap: 6px;
     margin: 1rem 0;
-  }
-
-  .pg-photo {
-    width: 108px;  /* 60% of 180 */
-    height: 77px;  /* 60% of 129 */
-  }
-
-  .pg-photo.pg-portrait {
-    width: 77px;   /* 60% of 129 */
-    height: 108px; /* 60% of 180 */
+    --photo-size: 108px; /* Mobile size */
   }
 
   .pg-photo.hovering {
@@ -391,9 +384,9 @@ body:has(.pg-photo.clicked) .hero-image {
 /* ===========================================
    Portrait Orientation
    =========================================== */
+/* Portrait class added by JS - dimensions set dynamically based on actual aspect ratio */
 .pg-photo.pg-portrait {
-  width: 129px;   /* Same as landscape height */
-  height: 180px;  /* Same as landscape width (long side) */
+  /* JS sets width/height based on actual media dimensions */
 }
 
 /* ===========================================

@@ -273,9 +273,7 @@
           console.log('[loadVideo] Video canplay:', src);
           if (photo) {
             removeLoadingBar(photo);
-            if (video.videoHeight > video.videoWidth) {
-              photo.classList.add('pg-portrait');
-            }
+            applyAspectRatio(photo, video.videoWidth, video.videoHeight);
           }
         }, { once: true });
 
@@ -605,7 +603,12 @@
     const relX = (e.clientX - centerX) / (rect.width / 2);
     const relY = (e.clientY - centerY) / (rect.height / 2);
 
-    const tiltStrength = CONFIG.hoverTilt;
+    // Reduce tilt when mouse is near bottom center (audio button area)
+    // Button is at bottom center, so check if relY > 0.5 and |relX| < 0.4
+    const nearButton = relY > 0.5 && Math.abs(relX) < 0.4;
+    const tiltDampen = nearButton ? 0.2 : 1;
+
+    const tiltStrength = CONFIG.hoverTilt * tiltDampen;
     const tiltX = relY * tiltStrength;
     const tiltY = -relX * tiltStrength;
 
@@ -839,6 +842,8 @@
         enterHoverState(photo);
       } else if (photo.dataset.state === 'hover') {
         enterClickedState(photo);
+        // Start drag immediately so click-and-hold works
+        onPhotoMouseDown(photo, e);
       } else if (photo.dataset.state === 'clicked') {
         onPhotoMouseDown(photo, e);
       }
@@ -878,18 +883,39 @@
     rootMargin: CONFIG.lazyLoadMargin
   });
 
+  function applyAspectRatio(photo, width, height) {
+    // Get base size from CSS custom property (for responsive) or use CONFIG default
+    const gallery = photo.closest('.pg-gallery');
+    const cssSize = gallery ? getComputedStyle(gallery).getPropertyValue('--photo-size') : null;
+    const baseSize = cssSize ? parseInt(cssSize) : CONFIG.photoSize;
+
+    // Long side stays at baseSize, short side calculated from ratio
+    const isPortrait = height > width;
+    const ratio = width / height;
+
+    if (isPortrait) {
+      photo.classList.add('pg-portrait');
+      photo.style.width = `${baseSize * ratio}px`;
+      photo.style.height = `${baseSize}px`;
+    } else {
+      photo.classList.remove('pg-portrait');
+      photo.style.width = `${baseSize}px`;
+      photo.style.height = `${baseSize / ratio}px`;
+    }
+  }
+
   function loadGalleryAssets(gallery) {
-    // Load all images with data-src
+    // Load all images with data-src (both regular images and video preview GIFs)
     const lazyImages = gallery.querySelectorAll('img[data-src]');
     lazyImages.forEach(img => {
       img.src = img.dataset.src;
       delete img.dataset.src;
 
-      // Detect orientation after load
+      // Apply actual aspect ratio after load
       img.addEventListener('load', () => {
         const photo = img.closest('.pg-photo');
-        if (photo && img.naturalHeight > img.naturalWidth) {
-          photo.classList.add('pg-portrait');
+        if (photo) {
+          applyAspectRatio(photo, img.naturalWidth, img.naturalHeight);
         }
       }, { once: true });
     });
