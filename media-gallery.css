@@ -1,0 +1,406 @@
+/**
+ * Media Gallery Styles
+ * Unified styles for gallery and hero video components.
+ * All gallery classes prefixed with pg-
+ */
+
+/* ===========================================
+   Gallery Container
+   =========================================== */
+.pg-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 2rem auto;
+  perspective: 1000px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Raise gallery above everything when it has a hovering or clicked photo */
+.pg-gallery:has(.pg-photo.hovering),
+.pg-gallery:has(.pg-photo.clicked) {
+  z-index: 99999;
+}
+
+/* Raise the article containing the active photo above sibling articles */
+article:has(.pg-photo.hovering),
+article:has(.pg-photo.clicked) {
+  position: relative;
+  z-index: 99999 !important;
+}
+
+/* Elements with filters create stacking contexts - ensure they stay below active gallery */
+body:has(.pg-photo.hovering) h1,
+body:has(.pg-photo.hovering) h2,
+body:has(.pg-photo.hovering) h3,
+body:has(.pg-photo.hovering) h4,
+body:has(.pg-photo.hovering) h5,
+body:has(.pg-photo.hovering) h6,
+body:has(.pg-photo.hovering) .taped-image,
+body:has(.pg-photo.hovering) .hero,
+body:has(.pg-photo.hovering) .hero-image,
+body:has(.pg-photo.clicked) h1,
+body:has(.pg-photo.clicked) h2,
+body:has(.pg-photo.clicked) h3,
+body:has(.pg-photo.clicked) h4,
+body:has(.pg-photo.clicked) h5,
+body:has(.pg-photo.clicked) h6,
+body:has(.pg-photo.clicked) .taped-image,
+body:has(.pg-photo.clicked) .hero,
+body:has(.pg-photo.clicked) .hero-image {
+  position: relative;
+  z-index: 0 !important;
+}
+
+/* When inside product info column, align left */
+.product-info-col .pg-gallery {
+  margin: 1.5rem 0 0 0;
+}
+
+/* ===========================================
+   Photo Wrapper
+   =========================================== */
+.pg-photo {
+  position: relative;
+  width: 180px;
+  height: 129px; /* 7:5 aspect ratio */
+  cursor: pointer;
+  transform-style: preserve-3d;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+  --tilt-speed: 0ms;
+  --shine-intensity: 0.15;
+}
+
+.pg-photo.hovering {
+  transition: transform var(--tilt-speed) ease, box-shadow var(--tilt-speed) ease;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.pg-photo:not(.hovering) {
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+/* ===========================================
+   Photo Inner (image + gloss)
+   =========================================== */
+.pg-photo-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.pg-photo-inner img,
+.pg-photo-inner video,
+.pg-photo-inner .pg-preview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Glossy reflection overlay - static light source (top-left) */
+.pg-photo-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.4) 20%,
+    rgba(255, 255, 255, 0) 45%
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: var(--shine-intensity);
+  transition: opacity 0.15s ease;
+}
+
+/* Subtle base gloss */
+.pg-photo-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(0, 0, 0, 0.03) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===========================================
+   Edges (visible on tilt)
+   =========================================== */
+.pg-edge {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.pg-edge-right {
+  top: 8px;
+  right: -4px;
+  bottom: 8px;
+  width: 4px;
+  background: linear-gradient(to left, #d0d0d0, #b8b8b8);
+  transform: rotateY(-90deg);
+  transform-origin: left center;
+}
+
+.pg-edge-left {
+  top: 8px;
+  left: -4px;
+  bottom: 8px;
+  width: 4px;
+  background: linear-gradient(to right, #e8e8e8, #d0d0d0);
+  transform: rotateY(90deg);
+  transform-origin: right center;
+}
+
+.pg-edge-top {
+  top: -4px;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  background: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
+  transform: rotateX(90deg);
+  transform-origin: bottom center;
+}
+
+.pg-edge-bottom {
+  bottom: -4px;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  background: linear-gradient(to top, #c8c8c8, #a8a8a8);
+  transform: rotateX(-90deg);
+  transform-origin: top center;
+}
+
+/* Show edges only when tilting that direction */
+.pg-photo.tilt-right .pg-edge-right { opacity: 1; }
+.pg-photo.tilt-left .pg-edge-left { opacity: 1; }
+.pg-photo.tilt-up .pg-edge-top { opacity: 1; }
+.pg-photo.tilt-down .pg-edge-bottom { opacity: 1; }
+
+/* ===========================================
+   Video Audio Controls
+   =========================================== */
+
+/* Audio toggle wrapper - isolates button from 3D transforms */
+.video-audio-toggle-wrapper {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-style: flat;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* Audio toggle button - bottom center of video */
+.video-audio-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* Hero video toggle positioning (no wrapper) */
+.taped-image > .video-audio-toggle {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.video-audio-toggle:hover {
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+}
+
+/* Hide toggle when video is 50%+ off screen */
+.video-audio-toggle.offscreen,
+.video-audio-toggle-wrapper.offscreen {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-audio-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+/* Smaller toggle in gallery */
+.pg-photo .video-audio-toggle-wrapper {
+  bottom: 8px;
+}
+
+.pg-photo .video-audio-toggle {
+  width: 24px;
+  height: 24px;
+}
+
+.pg-photo .video-audio-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ===========================================
+   Rainbow Glow (Active Audio Indicator)
+   =========================================== */
+
+/* Hero videos glow */
+.taped-image .video-audio-glow {
+  position: absolute;
+  top: 20px; /* Skip tape padding */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.taped-image .video-audio-glow.active {
+  animation: media-rainbow-glow 6s linear infinite;
+}
+
+/* Gallery videos glow */
+.pg-photo .video-audio-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.pg-photo .video-audio-glow.active {
+  animation: media-rainbow-glow 6s linear infinite;
+}
+
+@keyframes media-rainbow-glow {
+  0% { outline: 2px solid #f20d0d; outline-offset: 0; }
+  14% { outline: 2px solid #f2820d; outline-offset: 0; }
+  28% { outline: 2px solid #f2f20d; outline-offset: 0; }
+  42% { outline: 2px solid #0df20d; outline-offset: 0; }
+  57% { outline: 2px solid #0d0df2; outline-offset: 0; }
+  71% { outline: 2px solid #8a0df2; outline-offset: 0; }
+  85% { outline: 2px solid #f20d0d; outline-offset: 0; }
+  100% { outline: 2px solid #f20d0d; outline-offset: 0; }
+}
+
+/* Taped image needs position relative for glow */
+.taped-image {
+  position: relative;
+}
+
+/* ===========================================
+   Mobile Styles
+   =========================================== */
+@media (max-width: 768px) {
+  .pg-gallery {
+    gap: 6px;
+    margin: 1rem 0;
+  }
+
+  .pg-photo {
+    width: 108px;  /* 60% of 180 */
+    height: 77px;  /* 60% of 129 */
+  }
+
+  .pg-photo.pg-portrait {
+    width: 77px;   /* 60% of 129 */
+    height: 108px; /* 60% of 180 */
+  }
+
+  .pg-photo.hovering {
+    /* Disable 3D tilt on mobile */
+  }
+
+  .pg-edge {
+    display: none;
+  }
+
+  .taped-image .video-audio-glow {
+    top: 10px; /* Mobile tape padding */
+  }
+}
+
+/* ===========================================
+   Loading Indicator
+   =========================================== */
+.pg-loading-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  font: 9px/1 monospace;
+  color: #0f0;
+}
+
+.pg-loading-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 255, 0, 0.3);
+  transition: width 0.1s ease;
+}
+
+.pg-loading-bar-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===========================================
+   Portrait Orientation
+   =========================================== */
+.pg-photo.pg-portrait {
+  width: 129px;   /* Same as landscape height */
+  height: 180px;  /* Same as landscape width (long side) */
+}
+
+/* ===========================================
+   Print Styles
+   =========================================== */
+@media print {
+  .pg-gallery {
+    display: none;
+  }
+}
