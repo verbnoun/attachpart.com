@@ -76,28 +76,8 @@
    - Headings have no top margin, consistent bottom
    =========================================== */
 
-/* Base block styles applied to all content sections */
-.block,
-.intro,
-.products,
-.product,
-.newsletter-row,
-.about-section,
-.page-header,
-.prose {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-/* Headings in content blocks - no top margin */
-.intro h2,
-.product h2,
-.product h3,
-.about-section h2,
-.page-header h1,
-.prose h2,
-.prose h3 {
-  margin-top: 0;
+/* Heading spacing - bottom margin for all headings */
+h1, h2, h3 {
   margin-bottom: var(--space-heading);
 }
 
@@ -110,6 +90,7 @@
 
 .container > .divider {
   margin: 0;
+  padding: 0;
 }
 
 /* Text color utilities */
@@ -199,6 +180,11 @@ body.flash::before {
   gap: var(--gap);
 }
 
+.container > * {
+  padding-left: var(--margin-interior);
+  padding-right: var(--margin-interior);
+}
+
 .narrow-row {
   max-width: 75%;
   margin-left: auto;
@@ -209,9 +195,6 @@ body.flash::before {
 }
 
 /* Prose - long-form text content */
-.prose {
-  padding: 0 var(--margin-interior);
-}
 
 .prose p,
 .prose ul,
@@ -281,14 +264,6 @@ body.flash::before {
   margin: 0 auto 1em;
 }
 
-.prose .taped-image img:not(.tape) {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
-}
-
 .newsletter-date {
   display: block;
   max-width: 75%;
@@ -315,7 +290,6 @@ body.flash::before {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--gap);
-  padding: 0 var(--margin-interior);
 }
 
 .bilingual > .lang-jp {
@@ -346,7 +320,6 @@ body.flash::before {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--gap);
-  padding: 0 var(--margin-interior);
 }
 
 .about-image .taped-image {
@@ -355,11 +328,8 @@ body.flash::before {
 }
 
 .about-image .taped-image img:not(.tape) {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
+  height: 100%;
 }
 
 .about-text {
@@ -383,10 +353,6 @@ body.flash::before {
 /* ===========================================
    Timeline - bars + entries layout
    =========================================== */
-.timeline {
-  padding: 0 var(--margin-interior);
-}
-
 .timeline > h2 {
   margin-bottom: var(--gap);
 }
@@ -483,11 +449,13 @@ body:not(.page-home) .container {
 
 
 /* Hero */
-.hero {
-  position: relative;
-  z-index: 1;
+.hero .taped-image {
   border-radius: 10px;
   box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
+}
+
+.hero .taped-image img:not(.tape) {
+  box-shadow: none;
 }
 
 .hero-image {
@@ -502,10 +470,10 @@ body:not(.page-home) .container {
 /* Hero highlight with rainbow animation */
 .hero-highlight-wrapper {
   position: absolute;
-  top: 0;
+  top: 20px;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 20px);
   z-index: 1;
   border-radius: 10px;
   overflow: hidden;
@@ -592,10 +560,12 @@ body:not(.page-home) .container {
   transform: translateX(-50%) translateY(-50%) rotate(1.5deg);
 }
 
-/* Console tape - uses same taped-image styling */
-
-/* Product and console images styling */
-.product-image img:not(.tape) {
+/* Generic taped image/video styling */
+.taped-image img:not(.tape),
+.taped-image video {
+  display: block;
+  width: 100%;
+  height: auto;
   border-radius: 10px;
   box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
 }
@@ -605,7 +575,7 @@ body:not(.page-home) .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  padding: 0;
+  padding-bottom: var(--space-line);
   align-items: center;
   max-width: 75%;
   margin-left: auto;
@@ -653,7 +623,7 @@ body:not(.page-home) .container {
 
 /* Intro */
 .intro {
-  padding: 0 var(--margin-interior);
+  padding-bottom: var(--space-line);
   border-bottom: var(--border-accent);
 }
 
@@ -678,7 +648,6 @@ body:not(.page-home) .container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--gap) 5rem;
-  padding: 0 var(--margin-interior);
 }
 
 .product {
@@ -930,9 +899,6 @@ a.contact-row:hover .contact-address {
 }
 
 /* Page Header */
-.page-header {
-  padding: 0 var(--margin-interior) 0;
-}
 
 .page-header h1 {
   font-size: var(--text-hero);
@@ -960,9 +926,6 @@ a.contact-row:hover .contact-address {
     padding: 0;
   }
 
-  .hero {
-    margin: 0;
-  }
 
   .narrow-row {
     max-width: 100%;
@@ -973,13 +936,7 @@ a.contact-row:hover .contact-address {
      Content Margins
      Text content: 16px inset (20px from page edge)
      =========================================== */
-  .intro,
-  .prose,
-  .products,
-  .newsletter-row,
-  .page-header,
-  .about-section,
-  .timeline {
+  .container > * {
     padding-left: 16px;
     padding-right: 16px;
   }
@@ -1050,7 +1007,6 @@ a.contact-row:hover .contact-address {
   .newsletter-row {
     grid-template-columns: 1fr;
     max-width: 100%;
-    padding: 0 var(--margin-interior);
     gap: 1rem;
   }
 
@@ -1063,8 +1019,6 @@ a.contact-row:hover .contact-address {
      Intro
      =========================================== */
   .intro {
-    padding-bottom: 0;
-    margin-bottom: 0;
     border-bottom: var(--border-accent);
   }
 
@@ -1165,10 +1119,6 @@ a.contact-row:hover .contact-address {
    =========================================== */
 
 /* Shared Product Section Styles */
-.product-section {
-  padding: 0 var(--margin-interior);
-}
-
 .product-section h2 {
   margin-bottom: 0.5em;
 }
@@ -1210,14 +1160,9 @@ a.contact-row:hover .contact-address {
   margin-bottom: 0.5em;
 }
 
-/* Taped images in product sections */
+/* Taped images in product sections - override only */
 .product-section .taped-image img:not(.tape),
 .product-section .taped-image video {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
   object-fit: cover;
 }
 
@@ -1380,11 +1325,6 @@ a.contact-row:hover .contact-address {
    Products Page - Mobile Styles
    =========================================== */
 @media (max-width: 768px) {
-  .product-section {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
   /* Hero Stack Mobile */
   .product-section-hero-stack .product-gallery-3-1 {
     grid-template-columns: 1fr 1fr;
