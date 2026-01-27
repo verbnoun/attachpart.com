@@ -1,0 +1,50 @@
+# Timeline bars - colored ranges that span multiple months
+# Colors from sprite.js noise background palettes
+
+- title: Orlando
+  color: "#ff6600"
+  segments:
+    - start: 2024-07
+      end: 2025-04
+    - start: 2025-09
+      end: 2026-01
+
+- title: Tokyo
+  color: "#ff0000"
+  segments:
+    - start: 2025-05
+      end: 2025-05
+    - start: 2025-07
+      end: 2025-08
+
+- title: Bangkok
+  color: "#ffff00"
+  segments:
+    - start: 2025-06
+      end: 2025-06
+
+- title: Hardware
+  color: "#0000ff"
+  segments:
+    - start: 2024-07
+      end: 2025-04
+    - start: 2025-09
+      end: 2026-01
+
+- title: Software
+  color: "#cc00cc"
+  segments:
+    - start: 2024-07
+      end: 2026-01
+
+- title: Bartleby
+  color: "#00ff00"
+  segments:
+    - start: 2024-08
+      end: 2025-08
+
+- title: Candide
+  color: "#56a2c4"
+  segments:
+    - start: 2024-11
+      end: 2025-10

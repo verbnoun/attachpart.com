@@ -39,7 +39,8 @@
   --text-xs: 0.75rem;      /* 12px - captions, metadata */
   --text-sm: 0.875rem;     /* 14px - small text, labels */
   --text-base: 1.125rem;   /* 18px - body text */
-  --text-lg: 1.75rem;      /* 28px - lead text, h4 */
+  --text-md: 1.375rem;     /* 22px - lead text, intros */
+  --text-lg: 1.75rem;      /* 28px - h4 */
   --text-xl: 2.5rem;       /* 40px - h3 */
   --text-2xl: 3.75rem;     /* 60px - h2 */
   --text-3xl: 5rem;        /* 80px - h1 */
@@ -105,6 +106,10 @@
   border: none;
   border-top: var(--border-accent);
   margin: var(--space-line) 0;
+}
+
+.container > .divider {
+  margin: 0;
 }
 
 /* Text color utilities */
@@ -189,6 +194,9 @@ body.flash::before {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
 
 .narrow-row {
@@ -339,7 +347,6 @@ body.flash::before {
   grid-template-columns: 1fr 1fr;
   gap: var(--gap);
   padding: 0 var(--margin-interior);
-  margin-bottom: var(--gap);
 }
 
 .about-image .taped-image {
@@ -370,126 +377,103 @@ body.flash::before {
   max-width: 50ch;
   margin-bottom: 1em;
   line-height: 1.6;
+  font-size: var(--text-md);
 }
 
 /* ===========================================
-   Timeline - 2 column layout
+   Timeline - bars + entries layout
    =========================================== */
 .timeline {
-  padding: var(--gap) var(--margin-interior);
+  padding: 0 var(--margin-interior);
 }
 
 .timeline > h2 {
   margin-bottom: var(--gap);
 }
 
-.timeline-columns {
+.timeline-layout {
   display: flex;
   gap: var(--gap);
-  position: relative;
 }
 
-/* Center line */
-.timeline-columns::before {
-  content: '';
+/* Bars column - left side, horizontal layout */
+.timeline-bars {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  position: relative;
+  align-self: flex-start;
+  /* Height set by JS to match entries */
+}
+
+.timeline-bar {
+  position: relative;
+  width: 20px;
+  height: 100%; /* Fill container height so segments can position within */
+}
+
+.bar-segment {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--bar-color, var(--color-accent));
+  border-radius: 4px;
+  /* Top and height set by JS */
+}
+
+.timeline-bar .bar-title {
   position: absolute;
   left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--color-accent);
+  color: white;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+  background: var(--bar-color, var(--color-accent));
+  padding: 4px 2px;
+  border-radius: 2px;
+  z-index: 10;
   transform: translateX(-50%);
+  /* Top position updated by JS on scroll */
 }
 
-.timeline-columns > .col {
+/* Entries column - right side */
+.timeline-entries {
   flex: 1;
 }
 
-/* Spacing between articles */
-.timeline-columns > .col article {
-  margin-bottom: 1rem;
+.timeline-entries article {
+  margin-bottom: 1.5rem;
   padding: 0.75rem;
+  border-left: 2px solid var(--color-accent);
 }
 
-/* Timeline entry images */
-.timeline-columns > .col article .entry-image {
-  float: left;
-  width: 45%;
-  margin: 0.25rem 1rem 0.5rem 0;
-  border-radius: 6px;
-  box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Clear float after article content */
-.timeline-columns > .col article p:last-of-type::after,
-.timeline-columns > .col article ul:last-of-type::after {
-  content: '';
+.timeline-entries article time {
   display: block;
-  clear: both;
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  margin-bottom: 0.25rem;
 }
 
-/* Left column: right-align dates */
-.timeline-columns > .col:first-child time {
-  display: block;
-  text-align: right;
+.timeline-entries article h3 {
+  font-size: var(--text-lg);
+  margin-bottom: 0.5rem;
 }
 
-/* Left column: horizontal line + dot */
-.timeline-columns > .col:first-child article {
-  position: relative;
+.timeline-entries article p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
 }
 
-/* Horizontal line from far left to center */
-.timeline-columns > .col:first-child article::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: calc(-1 * var(--gap) / 2);
-  left: calc(-1 * var(--margin-interior));
-  height: 1px;
-  background: var(--color-accent);
+.timeline-entries article ul {
+  margin-bottom: 0.75rem;
+  padding-left: 1.25rem;
 }
 
-/* Dot on the center line */
-.timeline-columns > .col:first-child article::after {
-  content: '';
-  position: absolute;
-  top: 0.5px;
-  right: calc(-1 * var(--gap) / 2);
-  width: 6px;
-  height: 6px;
-  background: var(--color-accent);
-  border-radius: 50%;
-  transform: translate(50%, -50%);
-}
-
-/* Right column: horizontal line + dot */
-.timeline-columns > .col:last-child article {
-  position: relative;
-}
-
-/* Horizontal line from far right to center */
-.timeline-columns > .col:last-child article::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: calc(-1 * var(--gap) / 2);
-  right: calc(-1 * var(--margin-interior));
-  height: 1px;
-  background: var(--color-accent);
-}
-
-/* Dot on the center line */
-.timeline-columns > .col:last-child article::after {
-  content: '';
-  position: absolute;
-  top: 0.5px;
-  left: calc(-1 * var(--gap) / 2);
-  width: 6px;
-  height: 6px;
-  background: var(--color-accent);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
+.timeline-entries article li {
+  margin-bottom: 0.25rem;
 }
 
 /* Non-home pages get min viewport height */
@@ -497,15 +481,6 @@ body:not(.page-home) .container {
   min-height: calc(100vh - 80px);
 }
 
-/* Site Logo */
-.site-logo {
-  font-family: var(--font-logo);
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 400;
-  font-feature-settings: "ss01" 1;
-  color: var(--color-accent);
-  margin: 0 var(--margin-interior) 1rem;
-}
 
 /* Hero */
 .hero {
@@ -630,7 +605,7 @@ body:not(.page-home) .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  padding: 2rem 0;
+  padding: 0;
   align-items: center;
   max-width: 75%;
   margin-left: auto;
@@ -678,7 +653,7 @@ body:not(.page-home) .container {
 
 /* Intro */
 .intro {
-  padding: 0 var(--margin-interior) var(--gap) var(--margin-interior);
+  padding: 0 var(--margin-interior);
   border-bottom: var(--border-accent);
 }
 
@@ -703,7 +678,7 @@ body:not(.page-home) .container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--gap) 5rem;
-  padding: var(--gap) var(--margin-interior);
+  padding: 0 var(--margin-interior);
 }
 
 .product {
@@ -956,7 +931,7 @@ a.contact-row:hover .contact-address {
 
 /* Page Header */
 .page-header {
-  padding: 0 var(--margin-interior) var(--gap);
+  padding: 0 var(--margin-interior) 0;
 }
 
 .page-header h1 {
@@ -983,11 +958,6 @@ a.contact-row:hover .contact-address {
      =========================================== */
   .container {
     padding: 0;
-  }
-
-  .site-logo {
-    text-align: left;
-    margin: 0 0 1rem 16px;
   }
 
   .hero {
@@ -1020,9 +990,13 @@ a.contact-row:hover .contact-address {
     padding-right: 0;
   }
 
-  /* Timeline articles: no extra padding (parent .timeline already has 8px) */
-  .timeline-columns > .col article {
-    padding-left: 0;
+  /* Timeline: hide bars on mobile, full-width entries */
+  .timeline-bars {
+    display: none;
+  }
+
+  .timeline-entries article {
+    padding-left: 0.5rem;
     padding-right: 0;
   }
 
@@ -1053,76 +1027,6 @@ a.contact-row:hover .contact-address {
     margin: 0 auto;
   }
 
-  /* ===========================================
-     Timeline
-     =========================================== */
-  .timeline-columns {
-    flex-direction: column;
-  }
-
-  .timeline-columns::before {
-    display: none;
-  }
-
-  .timeline-columns > .col {
-    position: static !important;
-    min-height: auto !important;
-  }
-
-  .timeline-columns > .col article {
-    position: static !important;
-    top: auto !important;
-  }
-
-  .timeline-columns > .col:first-child time {
-    text-align: left;
-  }
-
-  .timeline-columns > .col:first-child article::before,
-  .timeline-columns > .col:first-child article::after,
-  .timeline-columns > .col:last-child article::before,
-  .timeline-columns > .col:last-child article::after {
-    display: none;
-  }
-
-  .timeline-columns > .col article .entry-image {
-    width: 35%;
-    max-width: 120px;
-    margin: 0.25rem 0.75rem 0.5rem 0;
-  }
-
-  .timeline-line {
-    left: var(--margin-interior);
-  }
-
-  .timeline-entries {
-    grid-template-columns: 1fr;
-  }
-
-  .timeline-entry {
-    padding-left: var(--gap);
-    padding-right: 0;
-    text-align: left;
-  }
-
-  .timeline-entry.timeline-left,
-  .timeline-entry.timeline-right {
-    grid-column: 1;
-  }
-
-  .timeline-entry.timeline-left {
-    text-align: left;
-  }
-
-  .timeline-entry.timeline-left .taped-image,
-  .timeline-entry.timeline-left .timeline-content p {
-    margin-left: 0;
-  }
-
-  .timeline-entry::before {
-    left: calc(-1rem - 5px);
-    right: auto;
-  }
 
   /* ===========================================
      Tape
@@ -1146,9 +1050,8 @@ a.contact-row:hover .contact-address {
   .newsletter-row {
     grid-template-columns: 1fr;
     max-width: 100%;
-    padding: 1.5rem var(--margin-interior);
+    padding: 0 var(--margin-interior);
     gap: 1rem;
-    padding-bottom: var(--space-line);
   }
 
   .newsletter-row::after {
@@ -1160,8 +1063,8 @@ a.contact-row:hover .contact-address {
      Intro
      =========================================== */
   .intro {
-    padding-bottom: var(--space-line);
-    margin-bottom: var(--space-line);
+    padding-bottom: 0;
+    margin-bottom: 0;
     border-bottom: var(--border-accent);
   }
 
@@ -1535,130 +1438,4 @@ a.contact-row:hover .contact-address {
   .product-section-editorial .product-details-grid {
     grid-template-columns: 1fr;
   }
-}
-
-/* ===========================================
-   Video Audio Controls
-   =========================================== */
-
-/* Audio toggle wrapper - isolates button from 3D transforms */
-.video-audio-toggle-wrapper {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  transform-style: flat;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-/* Audio toggle button - bottom center of video */
-.video-audio-toggle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, opacity 0.2s ease;
-  opacity: 0.7;
-}
-
-/* Hero video toggle positioning (no wrapper) */
-.taped-image > .video-audio-toggle {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.video-audio-toggle:hover {
-  background: rgba(0, 0, 0, 0.8);
-  opacity: 1;
-}
-
-/* Hide toggle when video is 50%+ off screen */
-.video-audio-toggle.offscreen,
-.video-audio-toggle-wrapper.offscreen {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.video-audio-toggle svg {
-  width: 20px;
-  height: 20px;
-  fill: white;
-}
-
-/* Smaller toggle in gallery */
-.pg-photo .video-audio-toggle-wrapper {
-  bottom: 8px;
-}
-
-.pg-photo .video-audio-toggle {
-  width: 24px;
-  height: 24px;
-}
-
-.pg-photo .video-audio-toggle svg {
-  width: 14px;
-  height: 14px;
-}
-
-/* Rainbow glow stroke for active audio - hero videos (uses outline for consistent positioning) */
-.taped-image .video-audio-glow {
-  position: absolute;
-  top: 20px; /* Skip tape padding */
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 10px;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.taped-image .video-audio-glow.active {
-  animation: gallery-rainbow-glow 6s linear infinite;
-}
-
-@media (max-width: 768px) {
-  .taped-image .video-audio-glow {
-    top: 10px; /* Mobile tape padding */
-  }
-}
-
-/* Rainbow glow stroke for active audio - gallery (no pseudo, uses outline to avoid scale issues) */
-.pg-photo .video-audio-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 8px;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.pg-photo .video-audio-glow.active {
-  animation: gallery-rainbow-glow 6s linear infinite;
-}
-
-@keyframes gallery-rainbow-glow {
-  0% { outline: 2px solid #f20d0d; outline-offset: 0; }
-  14% { outline: 2px solid #f2820d; outline-offset: 0; }
-  28% { outline: 2px solid #f2f20d; outline-offset: 0; }
-  42% { outline: 2px solid #0df20d; outline-offset: 0; }
-  57% { outline: 2px solid #0d0df2; outline-offset: 0; }
-  71% { outline: 2px solid #8a0df2; outline-offset: 0; }
-  85% { outline: 2px solid #f20d0d; outline-offset: 0; }
-  100% { outline: 2px solid #f20d0d; outline-offset: 0; }
-}
-
-/* Taped image needs position relative for glow */
-.taped-image {
-  position: relative;
 }

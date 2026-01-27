@@ -18,232 +18,52 @@ description: Our story so far
       </div>
     </div>
     <div class="about-text">
-      <h2>About Attach Part</h2>
-      <p>Attach Part is a Tokyo-based boutique electronic music instrument company developing modular synthesizer systems that bridge professional capability with plug-and-play simplicity. The founding team brings 25 years of fashion industry experience spanning design, media, sales, manufacturing, and fulfillment—now applied to electronics product development. We operate on a lean model with in-house design, development, and promotion while partnering with Asian OEMs for manufacturing and 3PL providers for fulfillment.</p>
-      <p>The flagship product system pairs <strong>Bartleby</strong>, a 25-key MIDI 2.0 controller base station with per-key pressure sensitivity along X and Z axes, with <strong>Candide</strong>, a 6-voice subtractive synthesizer cartridge. The cartridge architecture—"as familiar as a 16-bit video game system"—enables instant playability while supporting an expandable ecosystem where cartridges work across different base stations through graceful degradation. The bundle targets $600 at retail, positioning Attach Part between basic MIDI controllers (<$200) and professional MPE instruments ($1,500+).</p>
-      <p>Our aesthetic draws from "cassette futurism"—the technical optimism of 1986 Japanese computer catalogs—expressed through distinctive industrial design that eschews both minimalism and utilitarianism. Products are validated through group-buy preorders and community feedback, with manufacturing planned across Pacific Rim partners and a Kickstarter launch targeting Q2 2026.</p>
+      <p>Attach Part is a Tokyo-based boutique electronic music instrument company developing modular synthesizer systems that bridge professional capability with plug-and-play simplicity. The company was founded by Jackson and Jordan in 2024. We operate on a lean model with in-house design, development, and promotion while partnering with OEMs for manufacturing and 3PL providers for fulfillment.</p>
+      <p>Attach Part is launching with <strong>Bartleby</strong>, an MPE keyboard basestation, and <strong>Candide</strong>, a subtractive synthesizer cartridge. This basestation and cartridge architecture enables instant play while also providing deep customization.</p>
     </div>
   </section>
 
   <!-- Timeline -->
   <section class="timeline">
     <h2>Our Story</h2>
-    <div class="timeline-columns">
-      <!-- Left column: Date ranges -->
-      <div class="col">
-        <article>
-          <time>2025 November–December</time>
-          <h3>USB Switching Architecture</h3>
-          <p>USB switching architecture required hardware-only cartridge detection. No firmware involvement—we wanted the switch to happen before the MCU even boots. We designed a sense circuit where cartridge insertion grounds the sense pin, directly controlling the switch. Added ESD protection on the USB-C boundary because that's where fingers, cables, and static meet the circuit.</p>
-          <div class="pg-gallery"
-               data-layout="grid"
-               data-images='[
-                 "https://picsum.photos/seed/usb-1/360/257",
-                 "https://picsum.photos/seed/usb-2/360/257",
-                 "https://picsum.photos/seed/usb-3/360/257",
-                 "https://picsum.photos/seed/usb-4/360/257"
-               ]'>
+
+    {% assign timeline_posts = site.posts | where: "category", "timeline" | sort: "date" | reverse %}
+    {% assign oldest_date = timeline_posts | last | map: "date" | date: "%Y-%m" %}
+    {% assign newest_date = timeline_posts | first | map: "date" | date: "%Y-%m" %}
+
+    <div class="timeline-layout">
+      <!-- Bars Column -->
+      <div class="timeline-bars" id="timeline-bars">
+        {% for bar in site.data.timeline_bars %}
+          <div class="timeline-bar"
+               style="--bar-color: {{ bar.color }};"
+               data-segments='{{ bar.segments | jsonify }}'>
+            {% for segment in bar.segments %}
+              <div class="bar-segment"
+                   data-start="{{ segment.start }}"
+                   data-end="{{ segment.end }}">
+              </div>
+            {% endfor %}
+            <span class="bar-title">{{ bar.title }}</span>
           </div>
-        </article>
-
-        <article>
-          <time>2025 October–November</time>
-          <h3>USB Topology</h3>
-          <img src="https://picsum.photos/seed/topology/300/200" alt="" class="entry-image">
-          <p>USB topology work consumed most of two months. The challenge: switching between computer connection and cartridge communication while keeping power distribution clean. We selected the TS3USB30 USB switch and ran extensive desk validation—short USB cables everywhere, power flowing from USB-C splitting to Pico VSYS and cartridge VIN. Both paths verified stable. The USB saga taught us more about power distribution than we ever wanted to know.</p>
-        </article>
-
-        <article>
-          <time>2025 May–June</time>
-          <h3>Global Fulfillment</h3>
-          <img src="https://picsum.photos/seed/fulfillment/300/200" alt="" class="entry-image">
-          <p>Fulfillment logistics across a global customer base proved complex for a small operation. We identified 3PL partners: Dropship China Pro for Asia-Pacific, Commercive for US/EU. Global fulfillment solved without building internal logistics.</p>
-        </article>
-
-        <article>
-          <time>2025 March–April</time>
-          <h3>Group Buy Model</h3>
-          <p>Group buy model appeared better suited to boutique hardware than traditional Kickstarter. We researched comparable launches—mechanical keyboards and synthesizer communities regularly pull $100-150K raises. The synth community specifically validated our approach.</p>
-        </article>
-
-        <article>
-          <time>2024 September–October</time>
-          <h3>MIDI 2.0 & MPE</h3>
-          <img src="https://picsum.photos/seed/midi/300/200" alt="" class="entry-image">
-          <p>MIDI 2.0 and MPE implementation proved more complex than anticipated. Channel allocation, timing, the whole stack. We built a custom protocol layer and worked through issues methodically. Core expressivity features emerged functional.</p>
-        </article>
-
-        <article>
-          <time>2024 July–August</time>
-          <h3>Pressure Sensor Array</h3>
-          <p>The pressure-sensitive keyboard required reading 50+ sensors without overwhelming the MCU. We designed an analog multiplexing system using CD74HC4067 chips and op-amp buffers. Validated Velostat at 0.2mm thickness—thicker than typical FSR layers, but the 9kΩ→1kΩ resistance range over 3N gives excellent resolution across a 12-bit ADC.</p>
-          <div class="pg-gallery"
-               data-layout="grid"
-               data-images='[
-                 {"type": "video", "src": "/videos/bartleby-gold-keys-demo-1080p-30fps-crf28.mp4", "thumb": "/videos/bartleby-gold-keys-demo-thumb.jpg", "frames": ["/videos/bartleby-gold-keys-demo-frame-01.jpg", "/videos/bartleby-gold-keys-demo-frame-02.jpg", "/videos/bartleby-gold-keys-demo-frame-03.jpg", "/videos/bartleby-gold-keys-demo-frame-04.jpg"], "center": [50, 50]},
-                 "https://picsum.photos/seed/sensor-2/360/257",
-                 "https://picsum.photos/seed/sensor-3/360/257",
-                 "https://picsum.photos/seed/sensor-4/360/257"
-               ]'>
-          </div>
-        </article>
-
-        <article>
-          <time>2024 April–June</time>
-          <h3>MCU Selection</h3>
-          <p>Microcontroller selection required balancing audio quality, cost, and supply chain risk. We evaluated three platforms:</p>
-          <ul>
-            <li>Raspberry Pi Pico: excellent for control, limited audio</li>
-            <li>ESP32-S3: good balance, China-native supply chain</li>
-            <li>Daisy Seed: superior audio, US-made (tariff exposure)</li>
-          </ul>
-          <p>Chose Pico for the controller (Bartleby) and Daisy Seed for synthesis (Candide). Each plays to its strengths.</p>
-        </article>
-
-        <article>
-          <time>2024 January–March</time>
-          <h3>Cartridge Architecture</h3>
-          <img src="https://picsum.photos/seed/cartridge/300/200" alt="" class="entry-image">
-          <p>Product concept needed focus—too many instrument ideas competing for attention. We consolidated the vision around a cartridge-based modular system. The pitch: "as familiar as a 16-bit video game system." Base station + synthesizer cartridge architecture chosen for plug-and-play simplicity. Complex under the hood, intuitive on the surface.</p>
-        </article>
-
-        <article>
-          <time>2023 November–December</time>
-          <h3>Kickstarter Postponed</h3>
-          <img src="https://picsum.photos/seed/kickstarter/300/200" alt="" class="entry-image">
-          <p>Kickstarter launch planned for December 4 proved too aggressive given prototype maturity. We postponed to prioritize product refinement and started supply chain conversations with PCBWay. Bob Moog's story kept us honest—retailers at trade shows used to look at synthesizers and say "You expect me to sell that in my store? You expect musicians to understand all that?" and walk away. That resistance led to the Minimoog. We needed our Minimoog moment, not a rushed launch.</p>
-        </article>
+        {% endfor %}
       </div>
 
-      <!-- Right column: Single months -->
-      <div class="col">
+      <!-- Entries Column -->
+      <div class="timeline-entries">
+        {% for post in timeline_posts %}
         <article>
-          <time>2026 January</time>
-          <h3>Supply Chain Diversification</h3>
-          <img src="https://picsum.photos/seed/supplychain/300/200" alt="" class="entry-image">
-          <p>Geopolitical tensions created banking and shipping concerns for China-based manufacturing. We researched Pacific Rim alternatives and identified vendors in Thailand, Taiwan, and Korea. Accepting a 10-15% cost premium and longer lead times provides supply chain insurance—routing resilience matters more than cost optimization at our volumes.</p>
-        </article>
-
-        <article>
-          <time>2025 December</time>
-          <h3>Power Delivery Validation</h3>
-          <img src="https://picsum.photos/seed/power/300/200" alt="" class="entry-image">
-          <p>Power delivery needed to support both Pico and Daisy Seed reliably under sustained operation. We validated the power budget at ~350mA peak—well under USB 2.0's 500mA limit—and added TVS protection and ferrite beads on data lines. No more brownouts during hour-long sessions.</p>
-        </article>
-
-        <article>
-          <time>2025 October</time>
-          <h3>Tariff Response</h3>
-          <p>The Trump administration announced 100% tariff threats on Chinese goods. Daisy Seed—manufactured in the US—into China assembly created double tariff exposure. We began evaluating ESP32-S3 as an alternative and started requiring LCSC + Mouser dual availability for all components. Flexibility preserved regardless of trade policy.</p>
-        </article>
-
-        <article>
-          <time>2025 September</time>
-          <h3>Content Strategy</h3>
-          <img src="https://picsum.photos/seed/content/300/200" alt="" class="entry-image">
-          <p>Zero social media presence after years of avoiding platforms. We accepted reality and began planning an Asia tour for content generation. The strategy: borrowed audience through musician sessions. A post from someone with 5K followers beats twenty posts from our 500.</p>
-        </article>
-
-        <article>
-          <time>2025 August</time>
-          <h3>Cassette Futurism</h3>
-          <p>The marketing website needed distinctive identity. We chose "cassette futurism"—the visual language of 1986 Japanese computer catalogs. Influences:</p>
-          <ul>
-            <li>Technical optimism without cold minimalism</li>
-            <li>Grid layouts, bitmap fonts, geometric patterns</li>
-            <li>Contemporary product photography dropped into retro framework</li>
-          </ul>
-          <p>Benefit-first messaging, community built through participation not forced branding. No "Attach Part Club."</p>
+          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%Y %B" }}</time>
+          <h3>{{ post.title }}</h3>
+          {{ post.content }}
+          {% if post.gallery %}
           <div class="pg-gallery"
                data-layout="grid"
-               data-images='[
-                 "https://picsum.photos/seed/cassette-1/360/257",
-                 "https://picsum.photos/seed/cassette-2/360/257",
-                 "https://picsum.photos/seed/cassette-3/360/257",
-                 "https://picsum.photos/seed/cassette-4/360/257"
-               ]'>
+               data-images='{{ post.gallery | jsonify }}'>
           </div>
+          {% endif %}
         </article>
-
-        <article>
-          <time>2025 July</time>
-          <h3>Manufacturing Analysis</h3>
-          <p>Plastic parts dominated BOM cost. We evaluated manufacturing approaches:</p>
-          <ul>
-            <li>Resin printing: current approach, good for low volume</li>
-            <li>Urethane casting: competitive at 100-200 units</li>
-            <li>Injection molding: crossover at ~1500 units, requires $50K tooling</li>
-          </ul>
-          <p>Clear decision framework established for scaling.</p>
-        </article>
-
-        <article>
-          <time>2025 February</time>
-          <h3>Cost Reduction</h3>
-          <img src="https://picsum.photos/seed/costs/300/200" alt="" class="entry-image">
-          <p>Initial COG estimate of $465/unit made margins unsustainable at realistic volumes. We ran comprehensive cost reduction analysis:</p>
-          <ul>
-            <li>Plastics: 20% reduction through volume pricing</li>
-            <li>PCBs: 30% reduction at 100+ units</li>
-            <li>Assembly: workflow optimization from $50 to $40/unit</li>
-          </ul>
-          <p>Hit $320 target COG. At 250 units and $600 retail, that's $70K net after Kickstarter fees—$20K buffer over our $50K threshold.</p>
-        </article>
-
-        <article>
-          <time>2025 January</time>
-          <h3>Business Model Validation</h3>
-          <p>Business model needed validation before seeking funding. We built financial models and stress-tested assumptions. Break-even: 250 units at $600 with $320 COG. The math worked.</p>
-        </article>
-
-        <article>
-          <time>2024 December</time>
-          <h3>CC Configuration</h3>
-          <img src="https://picsum.photos/seed/config/300/200" alt="" class="entry-image">
-          <p>CC configuration between Bartleby and Candide was brittle—settings didn't survive reconnection gracefully. We implemented a configuration message format: cartridges declare their control mappings on connection. Format: <code>cc:0=74,1=71,2=73...</code> Simple, human-readable, extensible.</p>
-        </article>
-
-        <article>
-          <time>2024 November</time>
-          <h3>Communication Protocol</h3>
-          <img src="https://picsum.photos/seed/protocol/300/200" alt="" class="entry-image">
-          <p>Bartleby and Candide needed reliable communication for cartridge detection and configuration exchange. We developed a UART-based handshake protocol with heartbeat monitoring. Then hit state management bugs—<code>'CandideConnectionProtocol' object has no attribute 'CONFIGURED'</code>. Architectural refactor required. Debugging continued into December.</p>
-        </article>
-
-        <article>
-          <time>2024 August</time>
-          <h3>Product Naming</h3>
-          <p>Products needed memorable identities. We named them after literary characters:</p>
-          <ul>
-            <li><strong>Bartleby</strong> (the passive rebel from Melville)</li>
-            <li><strong>Candide</strong> (Voltaire's naive optimist)</li>
-            <li>Future cartridges: Dante, Ebenezer, Faust, Grendel</li>
-          </ul>
-          <p>The mix of heroes, antiheroes, and monsters reflects product personality. Someone pointed out we'd assembled quite the rogues' gallery—Candide is really the only genuinely good guy in the bunch.</p>
-        </article>
-
-        <article>
-          <time>2023 October</time>
-          <h3>Mobile Shop</h3>
-          <img src="https://picsum.photos/seed/mobileshop/300/200" alt="" class="entry-image">
-          <p>First prototype deadline approached with incomplete design validation. We developed "mobile shop" capability—prototyping tools fit in a suitcase for travel-based R&D and community engagement. Development became location-independent.</p>
-        </article>
-
-        <article>
-          <time>2023 September</time>
-          <h3>Attach Part Founded</h3>
-          <p>Electronic music instruments lacked accessible, expressive options between toy-grade and professional-grade equipment. Even Hans Zimmer does 90% of his work on one synth plugin—complexity isn't serving anyone. We began product development with the goal Bob Moog would recognize: professional instruments that happen to be accessible. Not "learn synthesis" products. Real instruments for everyone.</p>
-          <p>Attach Part founded.</p>
-          <div class="pg-gallery"
-               data-layout="grid"
-               data-images='[
-                 {"type": "video", "src": "/videos/oled-prototype-breadboard-1080p-30fps-crf28.mp4", "thumb": "/videos/oled-prototype-breadboard-thumb.jpg", "frames": ["/videos/oled-prototype-breadboard-frame-01.jpg", "/videos/oled-prototype-breadboard-frame-02.jpg", "/videos/oled-prototype-breadboard-frame-03.jpg", "/videos/oled-prototype-breadboard-frame-04.jpg"], "center": [50, 30]},
-                 "https://picsum.photos/seed/founded-2/360/257",
-                 {"type": "video", "src": "/videos/bartleby-workbench-demo-1080p-30fps-crf28.mp4", "thumb": "/videos/bartleby-workbench-demo-thumb.jpg", "frames": ["/videos/bartleby-workbench-demo-frame-01.jpg", "/videos/bartleby-workbench-demo-frame-02.jpg", "/videos/bartleby-workbench-demo-frame-03.jpg", "/videos/bartleby-workbench-demo-frame-04.jpg"], "center": [50, 50]},
-                 "https://picsum.photos/seed/founded-4/360/257"
-               ]'>
-          </div>
-        </article>
+        {% endfor %}
       </div>
     </div>
   </section>

@@ -421,7 +421,8 @@
     startY: 0,
     offsetX: 0,
     offsetY: 0,
-    hasDragged: false
+    hasDragged: false,
+    isFirstClick: false
   };
 
   function randomInRange(min, max) {
@@ -678,6 +679,7 @@
 
     const photo = dragState.photo;
     const wasDrag = dragState.hasDragged;
+    const wasFirstClick = dragState.isFirstClick;
 
     photo.style.transition = `transform ${CONFIG.transitionSpeed}ms ease, box-shadow ${CONFIG.transitionSpeed}ms ease`;
 
@@ -693,10 +695,12 @@
       startY: 0,
       offsetX: 0,
       offsetY: 0,
-      hasDragged: false
+      hasDragged: false,
+      isFirstClick: false
     };
 
-    if (!wasDrag && photo.dataset.state === 'clicked') {
+    // Only dismiss if it's a second click (not first click to zoom) and no drag happened
+    if (!wasDrag && photo.dataset.state === 'clicked' && !wasFirstClick) {
       enterNormalState(photo);
       photo.dataset.justDismissed = 'true';
     }
@@ -842,10 +846,12 @@
         enterHoverState(photo);
       } else if (photo.dataset.state === 'hover') {
         enterClickedState(photo);
-        // Start drag immediately so click-and-hold works
+        // Start drag but mark as first click (don't dismiss on mouseup unless dragged)
         onPhotoMouseDown(photo, e);
+        dragState.isFirstClick = true;
       } else if (photo.dataset.state === 'clicked') {
         onPhotoMouseDown(photo, e);
+        dragState.isFirstClick = false;
       }
     });
     photo.addEventListener('mousemove', (e) => onPhotoMouseMove(photo, e));

@@ -131,12 +131,12 @@
         if (window.matchMedia(MOBILE_QUERY).matches) return;
         const depthOffsets = getDepthOffsets();
         const offset = depthOffsets[depth] || depthOffsets[depthOffsets.length - 1];
+        const targetPx = 6;
+        const angle = (targetPx / pageEl.offsetHeight) * (180 / Math.PI);
         if (isLeftOfActive) {
-          // Left tabs: shift up and tilt left (negative rotation)
-          pageEl.style.transform = `translate(${offset.x}px, ${offset.y - 3}px) rotate(-0.25deg)`;
+          pageEl.style.transform = `translate(${offset.x}px, ${offset.y - 3}px) rotate(-${angle}deg)`;
         } else {
-          // Right tabs: current behavior
-          pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px) rotate(0.25deg)`;
+          pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px) rotate(${angle}deg)`;
         }
       });
 
