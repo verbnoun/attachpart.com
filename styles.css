@@ -449,14 +449,6 @@ body:not(.page-home) .container {
 
 
 /* Hero */
-.hero .taped-image {
-  border-radius: 10px;
-  box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
-}
-
-.hero .taped-image img:not(.tape) {
-  box-shadow: none;
-}
 
 .hero-image {
   position: relative;
@@ -777,7 +769,30 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-top: var(--border-accent);
+  margin-top: var(--gap);
   padding-bottom: 2rem;
+}
+
+.footer-nav {
+  grid-column: 1 / -1;
+  display: flex;
+  border-bottom: var(--border-accent);
+}
+
+.footer-nav a {
+  flex: 1;
+  padding: 0.75rem var(--gap);
+  text-decoration: none;
+  color: var(--color-accent);
+  text-align: center;
+}
+
+.footer-nav a + a {
+  border-left: var(--border-accent);
+}
+
+.footer-nav a:hover {
+  text-decoration: underline;
 }
 
 .footer-left {
@@ -904,11 +919,46 @@ a.contact-row:hover .contact-address {
   font-size: var(--text-hero);
 }
 
+/* Page Info Box - top right of page header */
+.page-info {
+  float: right;
+  display: grid;
+  grid-template-columns: auto auto;
+  border-left: var(--border-accent);
+  border-bottom: var(--border-accent);
+  line-height: 1;
+  margin-right: calc(-1 * var(--margin-interior) - 1rem);
+}
+
+.page-info dt,
+.page-info dd {
+  padding: 1rem;
+}
+
+.page-info dt {
+  color: var(--color-accent);
+  border-right: var(--border-accent);
+}
+
+.page-info dd {
+  margin: 0;
+  text-align: center;
+}
+
+.page-info dt:nth-of-type(2),
+.page-info dd:last-of-type {
+  border-top: var(--border-accent);
+}
+
 /* ===========================================
    Mobile Layout
    All mobile styles consolidated in one place
    =========================================== */
 @media (max-width: 768px) {
+  .page-info {
+    display: none;
+  }
+
   /* ===========================================
      Mobile Type Scale
      =========================================== */
@@ -1085,8 +1135,8 @@ a.contact-row:hover .contact-address {
      =========================================== */
   footer {
     grid-template-columns: 1fr;
-    margin-top: 0;
     border-top: var(--border-accent);
+    margin-top: var(--gap);
   }
 
   .footer-left {
