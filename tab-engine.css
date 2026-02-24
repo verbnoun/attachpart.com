@@ -12,6 +12,12 @@
   padding-top: 100px;
   padding-left: 36px;
   padding-right: 36px;
+  opacity: 0;
+}
+
+/* Reveal after tab engine init */
+.te-page-stack.te-ready {
+  opacity: 1;
 }
 
 /* Individual page - positioned absolutely within stack */

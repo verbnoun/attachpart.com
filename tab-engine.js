@@ -196,6 +196,8 @@
     setupHoverAnimations(depths, activePage);
     setTabDimensions();
     positionTabs();
+
+    document.querySelector('.te-page-stack').classList.add('te-ready');
   }
 
   if (document.readyState === 'loading') {
