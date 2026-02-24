@@ -99,10 +99,10 @@ class NoiseBackground {
 
     this.canvas.style.cssText = `
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: calc(-1 * env(safe-area-inset-top, 0px));
+      left: calc(-1 * env(safe-area-inset-left, 0px));
+      width: calc(100% + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+      height: calc(100% + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
       z-index: -2;
       pointer-events: none;
     `;
@@ -167,8 +167,8 @@ class NoiseBackground {
   }
 
   generateBaseNoise() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    this.canvas.width = this.canvas.clientWidth;
+    this.canvas.height = this.canvas.clientHeight;
 
     this.baseImageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
     const data = this.baseImageData.data;

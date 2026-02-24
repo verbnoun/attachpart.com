@@ -74,6 +74,7 @@
 
   function applyDepths(depths, activePage) {
     const pages = document.querySelectorAll('.te-page');
+    const isMobile = window.matchMedia(MOBILE_QUERY).matches;
     const depthOffsets = getDepthOffsets();
 
     pages.forEach(pageEl => {
@@ -85,10 +86,10 @@
       if (depth === undefined) return;
 
       pageEl.style.zIndex = 100 - depth;
+      pageEl.style.borderRadius = CONFIG.cornerRadius + 'px';
 
       const offset = depthOffsets[depth] || depthOffsets[depthOffsets.length - 1];
       pageEl.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
-      pageEl.style.borderRadius = CONFIG.cornerRadius + 'px';
 
       const color = DEPTH_COLORS[depth] || DEPTH_COLORS[DEPTH_COLORS.length - 1];
       pageEl.style.background = color;
@@ -106,6 +107,8 @@
   }
 
   function setupHoverAnimations(depths, activePage) {
+    if (window.matchMedia(MOBILE_QUERY).matches) return;
+
     const pages = document.querySelectorAll('.te-page');
     const activeIndex = getPageIndex(activePage);
 

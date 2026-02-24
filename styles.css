@@ -105,6 +105,7 @@ h1, h2, h3 {
 
 html {
   background: #000;
+  overflow-x: hidden;
 }
 
 body {
@@ -155,10 +156,10 @@ ul li::marker {
 body::before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100dvw;
-  height: 100dvh;
+  top: calc(-1 * env(safe-area-inset-top, 0px));
+  left: calc(-1 * env(safe-area-inset-left, 0px));
+  width: calc(100dvw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+  height: calc(100dvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
