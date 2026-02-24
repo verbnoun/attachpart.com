@@ -116,6 +116,13 @@ class NoiseBackground {
       moon: ['#ff00ff', '#cc00cc', '#ffff00', '#cccc00']      // Magenta + Yellow
     };
 
+    // Mobile detection
+    this.isMobile = window.matchMedia('(max-width: 768px)').matches;
+    window.matchMedia('(max-width: 768px)').addEventListener('change', e => {
+      this.isMobile = e.matches;
+      this.generateBaseNoise();
+    });
+
     // Settings
     this.jitterAmount = 0.47;
     this.scrollSensitivity = 5.0;
@@ -197,6 +204,28 @@ class NoiseBackground {
       this.canvas.height
     );
     this.ctx.putImageData(this.currentImageData, 0, 0);
+    this.applyEdgeFade();
+  }
+
+  applyEdgeFade() {
+    if (!this.isMobile) return;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const fadeHeight = 60;
+
+    // Top: black to transparent
+    const topGrad = this.ctx.createLinearGradient(0, 0, 0, fadeHeight);
+    topGrad.addColorStop(0, 'rgba(0,0,0,1)');
+    topGrad.addColorStop(1, 'rgba(0,0,0,0)');
+    this.ctx.fillStyle = topGrad;
+    this.ctx.fillRect(0, 0, w, fadeHeight);
+
+    // Bottom: transparent to black
+    const botGrad = this.ctx.createLinearGradient(0, h - fadeHeight, 0, h);
+    botGrad.addColorStop(0, 'rgba(0,0,0,0)');
+    botGrad.addColorStop(1, 'rgba(0,0,0,1)');
+    this.ctx.fillStyle = botGrad;
+    this.ctx.fillRect(0, h - fadeHeight, w, fadeHeight);
   }
 
   applyJitter(intensity) {
@@ -227,6 +256,7 @@ class NoiseBackground {
       }
     }
     this.ctx.putImageData(this.currentImageData, 0, 0);
+    this.applyEdgeFade();
   }
 
   animate() {
