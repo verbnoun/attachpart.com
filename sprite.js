@@ -99,10 +99,10 @@ class NoiseBackground {
 
     this.canvas.style.cssText = `
       position: fixed;
-      top: calc(-1 * env(safe-area-inset-top, 0px));
-      left: calc(-1 * env(safe-area-inset-left, 0px));
-      width: calc(100% + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
-      height: calc(100% + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
+      top: -50px;
+      left: -50px;
+      width: calc(100% + 100px);
+      height: calc(100% + 100px);
       z-index: -2;
       pointer-events: none;
     `;
