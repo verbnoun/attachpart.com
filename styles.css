@@ -459,56 +459,6 @@ body:not(.page-home) .container {
   border-radius: 10px;
 }
 
-/* Hero highlight with rainbow animation */
-.hero-highlight-wrapper {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 20px);
-  z-index: 1;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.hero-rainbow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    #f20d0d, #f2820d, #f2f20d, #0df20d, #0d0df2, #8a0df2, #f20d0d
-  );
-  background-size: 50% 100%;
-  animation: rainbow-scroll 6s linear infinite;
-}
-
-.hero-rainbow-noise {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-@keyframes rainbow-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.hero-highlight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 2;
-}
 
 /* Tape - skeuomorphic tape strips */
 .tape {
@@ -569,9 +519,7 @@ body:not(.page-home) .container {
   gap: 2rem;
   padding-bottom: var(--space-line);
   align-items: center;
-  max-width: 75%;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 100%;
   position: relative;
 }
 
@@ -579,8 +527,8 @@ body:not(.page-home) .container {
   content: '';
   position: absolute;
   bottom: 0;
-  left: -16.667%;
-  width: 133.333%;
+  left: 0;
+  width: 100%;
   border-bottom: var(--border-accent);
 }
 
@@ -666,6 +614,7 @@ body:not(.page-home) .container {
 .product-features {
   flex: 0 0 auto;
   list-style: none;
+  padding-left: 0;
 }
 
 .product-image {
