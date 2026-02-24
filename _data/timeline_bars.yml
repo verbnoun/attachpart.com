@@ -1,8 +1,16 @@
 # Timeline bars - colored ranges that span multiple months
-# Colors from sprite.js noise background palettes
+# Locations share column 1 (never overlap in time)
+#
+# Palette (10 colors, all support white text):
+#   Warm Gold    #b08c4a     Slate Teal   #4d6b66
+#   Ocean Blue   #5090b8     Terra Cotta  #a86848
+#   Sage Green   #5a8a5e     Dusty Mauve  #887088
+#   Dark Navy    #384860     Warm Gray    #707070
+#   Espresso     #5a3830     Steel Blue   #4a7098
 
 - title: Orlando
-  color: "#ff6600"
+  color: "#b08c4a"
+  col: 1
   segments:
     - start: 2024-07
       end: 2025-04
@@ -10,41 +18,63 @@
       end: 2026-01
 
 - title: Tokyo
-  color: "#ff0000"
+  color: "#5090b8"
+  col: 1
   segments:
     - start: 2025-05
       end: 2025-05
     - start: 2025-07
       end: 2025-08
+    - start: 2026-02
+      end: 2026-02
 
 - title: Bangkok
-  color: "#ffff00"
+  color: "#5a8a5e"
+  col: 1
   segments:
     - start: 2025-06
       end: 2025-06
 
 - title: Hardware
-  color: "#0000ff"
+  color: "#4d6b66"
+  col: 2
   segments:
     - start: 2024-07
       end: 2025-04
     - start: 2025-09
       end: 2026-01
 
+- title: Plastics
+  color: "#a86848"
+  col: 2
+  segments:
+    - start: 2026-02
+      end: 2026-02
+
 - title: Software
-  color: "#cc00cc"
+  color: "#887088"
+  col: 3
   segments:
     - start: 2024-07
       end: 2026-01
 
+- title: AP Console
+  color: "#4a7098"
+  col: 3
+  segments:
+    - start: 2026-02
+      end: 2026-02
+
 - title: Bartleby
-  color: "#00ff00"
+  color: "#384860"
+  col: 4
   segments:
     - start: 2024-08
       end: 2025-08
 
 - title: Candide
-  color: "#56a2c4"
+  color: "#707070"
+  col: 5
   segments:
     - start: 2024-11
       end: 2025-10

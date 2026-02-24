@@ -375,8 +375,16 @@
     }
   }
 
+  // Videos with no audio track — skip audio controls
+  const NO_AUDIO = [
+    'bartleby-cad-render/video.mp4',
+    'oled-prototype-breadboard/video.mp4'
+  ];
+
   function addAudioControls(container, video) {
     if (container.querySelector('.video-audio-toggle')) return;
+    const src = video.getAttribute('src') || video.getAttribute('data-lazy-src') || '';
+    if (NO_AUDIO.some(path => src.includes(path))) return;
 
     // Create wrapper for 3D isolation
     const wrapper = document.createElement('div');
@@ -597,6 +605,9 @@
   function onPhotoMouseMove(photo, e) {
     if (photo.dataset.state !== 'hover') return;
 
+    // Skip tilt for videos — 3D transforms distort audio toggle hit area
+    if (photo.querySelector('video')) return;
+
     const rect = photo.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -604,14 +615,8 @@
     const relX = (e.clientX - centerX) / (rect.width / 2);
     const relY = (e.clientY - centerY) / (rect.height / 2);
 
-    // Reduce tilt when mouse is near bottom center (audio button area)
-    // Button is at bottom center, so check if relY > 0.5 and |relX| < 0.4
-    const nearButton = relY > 0.5 && Math.abs(relX) < 0.4;
-    const tiltDampen = nearButton ? 0.2 : 1;
-
-    const tiltStrength = CONFIG.hoverTilt * tiltDampen;
-    const tiltX = relY * tiltStrength;
-    const tiltY = -relX * tiltStrength;
+    const tiltX = relY * CONFIG.hoverTilt;
+    const tiltY = -relX * CONFIG.hoverTilt;
 
     const hoverX = parseFloat(photo.dataset.hoverX);
     const hoverY = parseFloat(photo.dataset.hoverY);
@@ -815,6 +820,21 @@
     }
 
     photo.appendChild(inner);
+
+    // Filename label — visible when enlarged
+    // Show parent folder + filename for identification (e.g. "bartleby-cad-render/video.mp4")
+    const parts = item.src.split('/').filter(Boolean);
+    const labelText = parts.length >= 2 ? parts.slice(-2).join('/') : parts.pop();
+    if (labelText) {
+      const label = document.createElement('span');
+      label.className = 'pg-filename';
+      label.textContent = labelText;
+      // Block drag/dismiss from firing when interacting with the label
+      label.addEventListener('mousedown', (e) => e.stopPropagation());
+      label.addEventListener('mouseup', (e) => e.stopPropagation());
+      label.addEventListener('click', (e) => e.stopPropagation());
+      photo.appendChild(label);
+    }
 
     // Add audio controls for video
     if (photo._video) {

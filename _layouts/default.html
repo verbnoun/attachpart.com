@@ -23,16 +23,6 @@
     <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
     <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
   </div>
-  <div class="te-page te-page-products">
-    <a href="/products/" class="te-tab">Products</a>
-    <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
-    <span class="corner-symbol corner-top-right">{% if page.corner_top_right %}{{ page.corner_top_right }}{% else %}♃{% endif %}</span>
-    <div class="te-container">
-      {% if page.url contains '/products' %}{{ content }}{% include footer.html %}{% endif %}
-    </div>
-    <span class="corner-symbol corner-bottom-left">{% if page.corner_bottom_left %}{{ page.corner_bottom_left }}{% else %}☉{% endif %}</span>
-    <span class="corner-symbol corner-bottom-right">{% if page.corner_bottom_right %}{{ page.corner_bottom_right }}{% else %}☽{% endif %}</span>
-  </div>
   <div class="te-page te-page-company">
     <a href="/company/" class="te-tab">Company</a>
     <span class="corner-symbol corner-top-left">{% if page.corner_top_left %}{{ page.corner_top_left }}{% else %}♄{% endif %}</span>
@@ -57,6 +47,7 @@
 <script src="/sprite.js"></script>
 <script src="/tab-engine.js"></script>
 <script src="/media-gallery.js"></script>
+<script src="/timeline.js"></script>
 <script data-goatcounter="https://attachpart.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>

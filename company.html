@@ -18,11 +18,13 @@ description: Our story so far
     <div class="about-image">
       <div class="taped-image">
         <img src="/images/tape1.png" alt="" class="tape tape-top">
-        <img src="https://picsum.photos/seed/synth/300/400" alt="Bartleby and Candide">
+        <img src="/images/timeline/2025-02/02.jpg" alt="Bartleby and Candide">
       </div>
     </div>
     <div class="about-text">
-      <p>Attach Part is a Tokyo-based boutique electronic music instrument company developing modular synthesizer systems that bridge professional capability with plug-and-play simplicity. The company was founded by Jackson and Jordan in 2024. We operate on a lean model with in-house design, development, and promotion while partnering with OEMs for manufacturing and 3PL providers for fulfillment.</p>
+      <p lang="ja">Attach Partは、本格的な性能と、つないですぐ使える手軽さを両立するモジュラー・シンセサイザーを開発する、少数精鋭の電子楽器メーカーです。2024年にJacksonとJordanが設立しました。設計・開発・販売促進は自社で行い、製造はOEM、物流は3PLと提携する少人数体制で運営しています。</p>
+      <p lang="ja">Attach Partは、MPEキーボード・ベースステーションの<strong>Bartleby</strong>と、サブトラクティブ・シンセサイザー・カートリッジの<strong>Candide</strong>で展開を始めます。このベースステーションとカートリッジの仕組みが、すぐに演奏できる手軽さと、奥深い音作りの両方を実現します。</p>
+      <p>Attach Part is a boutique electronic music instrument company developing modular synthesizer systems that bridge professional capability with plug-and-play simplicity. The company was founded by Jackson and Jordan in 2024. We operate on a lean model with in-house design, development, and promotion while partnering with OEMs for manufacturing and 3PL providers for fulfillment.</p>
       <p>Attach Part is launching with <strong>Bartleby</strong>, an MPE keyboard basestation, and <strong>Candide</strong>, a subtractive synthesizer cartridge. This basestation and cartridge architecture enables instant play while also providing deep customization.</p>
     </div>
   </section>
@@ -32,31 +34,31 @@ description: Our story so far
     <h2>Our Story</h2>
 
     {% assign timeline_posts = site.posts | where: "category", "timeline" | sort: "date" | reverse %}
-    {% assign oldest_date = timeline_posts | last | map: "date" | date: "%Y-%m" %}
-    {% assign newest_date = timeline_posts | first | map: "date" | date: "%Y-%m" %}
+    {% assign nv_y = timeline_posts.first.date | date: "%Y" | plus: 0 %}
+    {% assign nv_m = timeline_posts.first.date | date: "%m" | plus: 0 %}
+    {% assign nv = nv_y | times: 12 | plus: nv_m %}
 
-    <div class="timeline-layout">
-      <!-- Bars Column -->
-      <div class="timeline-bars" id="timeline-bars">
-        {% for bar in site.data.timeline_bars %}
-          <div class="timeline-bar"
-               style="--bar-color: {{ bar.color }};"
-               data-segments='{{ bar.segments | jsonify }}'>
-            {% for segment in bar.segments %}
-              <div class="bar-segment"
-                   data-start="{{ segment.start }}"
-                   data-end="{{ segment.end }}">
-              </div>
-            {% endfor %}
-            <span class="bar-title">{{ bar.title }}</span>
+    <div class="timeline-grid">
+      {% for bar in site.data.timeline_bars %}
+        {% for segment in bar.segments %}
+          {% assign sp = segment.start | split: "-" %}
+          {% assign sv = sp[0] | times: 12 | plus: sp[1] %}
+          {% assign ep = segment.end | split: "-" %}
+          {% assign ev = ep[0] | times: 12 | plus: ep[1] %}
+          {% assign rs = nv | minus: ev | plus: 1 %}
+          {% assign re = nv | minus: sv | plus: 2 %}
+          <div class="bar-seg" style="grid-row:{{ rs }}/{{ re }}; grid-column:{{ bar.col }}; --bar-color:{{ bar.color }};">
+            <span class="bar-label">{{ bar.title }}</span>
           </div>
         {% endfor %}
-      </div>
+      {% endfor %}
 
-      <!-- Entries Column -->
-      <div class="timeline-entries">
-        {% for post in timeline_posts %}
-        <article>
+      {% for post in timeline_posts %}
+        {% assign py = post.date | date: "%Y" | plus: 0 %}
+        {% assign pm = post.date | date: "%m" | plus: 0 %}
+        {% assign pv = py | times: 12 | plus: pm %}
+        {% assign pr = nv | minus: pv | plus: 1 %}
+        <article style="grid-row:{{ pr }}; grid-column:7;">
           <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%Y %B" }}</time>
           <h3>{{ post.title }}</h3>
           {{ post.content }}
@@ -67,8 +69,7 @@ description: Our story so far
           </div>
           {% endif %}
         </article>
-        {% endfor %}
-      </div>
+      {% endfor %}
     </div>
   </section>
 </div>

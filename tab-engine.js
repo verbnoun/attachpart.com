@@ -7,7 +7,7 @@
  */
 
 (function() {
-  const PAGE_ORDER = ['home', 'products', 'company', 'newsletter'];
+  const PAGE_ORDER = ['home', 'company', 'newsletter'];
 
   const CONFIG = {
     tabOffset: 127,

@@ -12,19 +12,12 @@
 <link rel="stylesheet" href="/tab-engine.css">
 <link rel="stylesheet" href="/media-gallery.css">
 {% if page.url == '/' %}
-<link rel="prefetch" href="/products/">
-<link rel="prefetch" href="/company/">
-<link rel="prefetch" href="/newsletter/">
-{% elsif page.url contains '/products' %}
-<link rel="prefetch" href="/">
 <link rel="prefetch" href="/company/">
 <link rel="prefetch" href="/newsletter/">
 {% elsif page.url contains '/company' %}
 <link rel="prefetch" href="/">
-<link rel="prefetch" href="/products/">
 <link rel="prefetch" href="/newsletter/">
 {% elsif page.url contains '/newsletter' %}
 <link rel="prefetch" href="/">
-<link rel="prefetch" href="/products/">
 <link rel="prefetch" href="/company/">
 {% endif %}
