@@ -3,6 +3,8 @@ description: Cartridge Synthesis System
 url: "https://attachpart.com"
 baseurl: ""
 
+timezone: Asia/Tokyo
+
 # Build settings
 markdown: kramdown
 exclude:
