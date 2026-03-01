@@ -271,11 +271,35 @@ body.flash::before {
 .newsletter-date {
   display: block;
   max-width: 75%;
-  margin: 0 auto 1em;
+  margin: 1rem auto 1em;
+  font-family: var(--font-logo);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  color: var(--color-text);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.newsletter-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: var(--gap);
   font-family: var(--font-mono);
-  font-size: 1rem;
-  color: var(--color-muted);
-  text-align: right;
+  font-size: var(--text-sm);
+}
+
+.newsletter-toc a {
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border: var(--border-accent);
+  width: fit-content;
+}
+
+.newsletter-toc a:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
 }
 
 .prose > .figure-row .taped-image {
@@ -405,6 +429,40 @@ body.flash::before {
 .timeline-grid > article h3 {
   font-size: var(--text-lg);
   margin-bottom: 0.5rem;
+}
+
+.timeline-grid > article a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.timeline-grid > article a:hover {
+  text-decoration: underline;
+}
+
+.timeline-text {
+  float: left;
+  width: 50%;
+  margin: 0 1rem 0.5rem 0;
+}
+
+.timeline-gallery .pg-gallery {
+  display: block !important;
+  direction: rtl;
+  --photo-size: 170px;
+}
+
+.timeline-gallery .pg-gallery > * {
+  display: inline-block !important;
+  vertical-align: top;
+  float: none !important;
+  margin: 8px;
+}
+
+.timeline-grid > article::after {
+  content: "";
+  display: block;
+  clear: both;
 }
 
 .timeline-entries article p {
@@ -973,6 +1031,16 @@ a.contact-row:hover .contact-address {
     padding-right: 0;
   }
 
+  .timeline-text {
+    float: none;
+    width: 100%;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .timeline-gallery .pg-gallery {
+    --photo-size: 100px;
+  }
+
   /* ===========================================
      Bilingual Layout
      =========================================== */
@@ -1209,6 +1277,22 @@ a.contact-row:hover .contact-address {
 .product-section-hero-stack .product-hero-full,
 .product-section-console .product-hero-full {
   margin-bottom: var(--gap);
+}
+
+.cta-link {
+  display: inline-block;
+  margin: 1.5rem 0;
+  padding: 0.5rem 1.25rem;
+  border: var(--border-accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.cta-link:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
 }
 
 .product-section-hero-stack .product-hero-full .taped-image {

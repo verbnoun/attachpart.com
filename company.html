@@ -62,12 +62,16 @@ permalink: /company/
         <article style="grid-row:{{ pr }}; grid-column:7;">
           <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%Y %B" }}</time>
           <h3>{{ post.title }}</h3>
-          {{ post.content }}
           {% if post.gallery %}
-          <div class="pg-gallery"
-               data-layout="grid"
-               data-images='{{ post.gallery | jsonify }}'>
+          <div class="timeline-text">{{ post.content }}</div>
+          <div class="timeline-gallery">
+            <div class="pg-gallery"
+                 data-layout="grid"
+                 data-images='{{ post.gallery | jsonify }}'>
+            </div>
           </div>
+          {% else %}
+          {{ post.content }}
           {% endif %}
         </article>
       {% endfor %}
